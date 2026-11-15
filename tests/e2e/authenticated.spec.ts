@@ -419,6 +419,10 @@ test.describe("live authentication lifecycle", () => {
         )
         .fill("X");
       await page.getByLabel("Slug", { exact: true }).fill(reserved.data.slug);
+      await page.locator('[name="country"]').fill("GH");
+      await page.locator('[name="baseCurrency"]').fill("GHS");
+      await page.locator('[name="timezone"]').fill("Africa/Accra");
+      await page.locator('[name="defaultLocale"]').selectOption("en");
       await page
         .getByRole("button", {
           name: locale === "fr" ? "Créer l'institution" : "Create institution",
@@ -429,6 +433,10 @@ test.describe("live authentication lifecycle", () => {
         locale === "fr"
           ? "Vérifiez les informations"
           : "Check the institution details",
+      );
+      await expect(page.locator('[name="name"]')).toHaveValue("X");
+      await expect(page.locator('[name="slug"]')).toHaveValue(
+        reserved.data.slug,
       );
       await page
         .getByLabel(
@@ -447,6 +455,18 @@ test.describe("live authentication lifecycle", () => {
           ? "Ce slug est déjà utilisé"
           : "This slug is already used",
       );
+      await expect(page.locator('[name="name"]')).toHaveValue(
+        "E2E browser institution",
+      );
+      await expect(page.locator('[name="slug"]')).toHaveValue(
+        reserved.data.slug,
+      );
+      await expect(page.locator('[name="country"]')).toHaveValue("GH");
+      await expect(page.locator('[name="baseCurrency"]')).toHaveValue("GHS");
+      await expect(page.locator('[name="timezone"]')).toHaveValue(
+        "Africa/Accra",
+      );
+      await expect(page.locator('[name="defaultLocale"]')).toHaveValue("en");
       const before = await owner.client
         .from("memberships")
         .select("id")
@@ -493,10 +513,10 @@ test.describe("live authentication lifecycle", () => {
         .single();
       expect(settings.error).toBeNull();
       expect(settings.data).toMatchObject({
-        country: "TG",
-        base_currency: "XOF",
-        timezone: "Africa/Lome",
-        default_locale: "fr",
+        country: "GH",
+        base_currency: "GHS",
+        timezone: "Africa/Accra",
+        default_locale: "en",
       });
       const audit = await owner.client
         .from("audit_events")

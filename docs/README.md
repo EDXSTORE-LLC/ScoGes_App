@@ -63,3 +63,7 @@ Security follow-up: [R3 distributed Redis limits and browser policy](R3_ABUSE_AN
 Direct API follow-up: [R3 database write-quota backstop](R3_DIRECT_RPC_BACKSTOP.md) describes the prepared append-only migration, security/retention/transaction boundaries and pending deployment gate.
 
 R4 planning package: [recovery/deployment/monitoring plan](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md), [isolated restore runbook/evidence template](runbooks/RESTORE_DRILL.md), and [release/rollback/incident runbook](runbooks/RELEASE_MONITORING_INCIDENTS.md). These are plans, not executed recovery or production readiness. Owner objectives, budget, targets and responders remain pending.
+
+- [R4 implementation proposal and approved recovery targets](R4_IMPLEMENTATION_PROPOSAL.md): feasibility, budget gaps and staged approval; not executed.
+
+- [Current Sprint 0 R1–R7 acceptance review](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md): evidence, proposed development dispositions, pilot gates and remaining owner decisions (2026-11-15).

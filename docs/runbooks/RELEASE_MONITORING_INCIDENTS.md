@@ -2,6 +2,10 @@
 
 Status: **not executed/configured**. Read [the R4 decision/monitoring plan](../R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). Main remains PR-only; required checks stay mandatory. No deployment, DNS change, secret rotation, paid plan or real notification is authorized by this template.
 
+## Approved response coverage
+
+Owner-approved planning targets, 2026-11-12: foundation/controlled pilot RPO ≤4h with automated backups 24/7; RTO ≤8 covered business hours. Human coverage: Monday–Friday 09:00–17:00 Atlantic/Reykjavik; primary is the project owner, backup unassigned. Count covered recovery time from incident onset through validated service and report full elapsed outage separately. Do not promise 24/7 human response. Unattended backup failures need a tested escalation disposition; the targets are not yet achieved. Budget evaluation ≤US$50/month total additional cost; purchases/upgrades need approval.
+
 ## Environment and release map
 
 Complete this map with metadata/secret references only before deployment:

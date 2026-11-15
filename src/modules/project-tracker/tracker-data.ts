@@ -34,7 +34,7 @@ export const sprintTrackers: SprintTracker[] = [
     status: "in_progress",
     progress: 100,
     summary:
-      "Les six jalons techniques sont livrés. Porte de clôture ouverte : migrations R2/R3 vérifiées ; plan R4 préparé, décisions et exercices de reprise/supervision en attente. Sprint 1 non activé.",
+      "Les six jalons techniques sont livrés. Porte de clôture ouverte : migrations R2/R3 vérifiées ; absence de sauvegardes automatiques acceptée pour le développement uniquement ; reprise et supervision du pilote encore à valider. Sprint 1 non activé.",
     features: [
       {
         id: "workspace-quality",

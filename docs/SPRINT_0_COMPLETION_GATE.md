@@ -1,5 +1,19 @@
 # Foundation completion gate
 
+Current evidence review (2026-11-15): [R1–R7 acceptance matrix](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) separates completed R2 remediation, partial R1/R3/R6/R7 controls, the scoped R4 backup acceptance, unaccepted development deferrals and pilot blockers. It supersedes older absent-control/pending-deployment descriptions; overall Sprint 0 remains open.
+
+## Owner-approved backup risk disposition — 2026-11-15
+
+The owner manually verified the dashboard for configured Supabase project `jlaufrjmjjheisdqkkao` and reported: **organization plan Free; latest successful scheduled backup N/A (no automatic project backups on this plan); PITR disabled/unavailable**. This is owner-verified dashboard evidence, not a successful connector/API inspection. No off-site backup or recoverability is inferred.
+
+The owner explicitly accepts **this lack of automatic backup/PITR protection as a residual infrastructure risk for development and Sprint 0 technical closure only**. This supersedes the earlier unaccepted/pending disposition for the backup portion of R4. It does not accept every R4 item, other R1–R7 dispositions, or overall Sprint 0 completion. Keep Sprint 0 `in_progress` pending the remaining applicable checks and explicit overall acceptance; R3 and remaining R4 operational work stay open.
+
+**Pilot/production blocker:** before real school/student/financial data is used, approve and implement adequate backup/recovery protection and test restoration. A paid daily backup alone does not meet the approved four-hour RPO; off-site manual backups alone do not demonstrate the previously approved automated 24/7 objective. Retain the four-hour RPO/eight-covered-business-hour RTO as unproven pilot planning targets unless explicitly revised. No production readiness, purchase, upgrade, PITR activation, export, restore, destructive database operation, PR merge or Sprint 1 activation is authorized.
+
+Primary risk owner: project owner (user); technical backup remains unassigned. Reassess before pilot/production and before financial transactions become live. Execution evidence remains required for the operational protection, even though this scoped risk is accepted for development closure.
+
+## Historical baseline — read with the 2026-11-15 scoped disposition above
+
 Assessment: **2026-11-01 — owner kept the gate open for remediation**. Six technical milestones are delivered at 100%; Sprint 0 stays `in_progress` until explicit acceptance is recorded. Sprint 1 remains planned at 0%. This is a development-foundation gate, not production certification or authorization to activate a later sprint.
 
 The owner declined the proposed R1–R7 deferrals. Use [the remediation backlog](SPRINT_0_REMEDIATION.md) before requesting renewed closure acceptance. All items remain open; no risk waiver, merge, deployment or Sprint 1 activation is implied.

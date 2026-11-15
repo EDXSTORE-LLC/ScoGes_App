@@ -2,6 +2,8 @@
 
 Status: **not executed**. Use with [the R4 plan](../R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). This template authorizes no export, restore, destructive action, resource purchase or disclosure. Current configured Supabase is the source to protect, not a rehearsal overwrite target.
 
+Approved planning targets (2026-11-12): Sprint 0 foundation/controlled pilot, RPO ≤4h with automated backups 24/7; RTO ≤8 covered business hours. Coverage is Monday–Friday 09:00–17:00 Atlantic/Reykjavik. These are objectives, not demonstrated capabilities. See the [implementation proposal](../R4_IMPLEMENTATION_PROPOSAL.md).
+
 ## Preconditions / stop rules
 
 1. Record approved RPO/RTO, owner and backup responder, drill window, cost envelope, source artifact and dataset permission. Assign an independent reviewer to verify source/target identities.
@@ -21,7 +23,7 @@ Stop if source/target identities differ from approval, backup scope is incomplet
 4. Reconstruct environment-specific Auth issuer/URLs/redirects, mail sink, secret references and separate Redis. Do not reuse production provider secrets in the drill target. Validate private-schema function paths and quota trigger before allowing application writes.
 5. Run the validation matrix below. Distinguish restored source canaries from freshly seeded data. Record failures as failures; do not edit balances, roles, history or counters merely to make checks pass.
 6. Evaluate restored security state: backups can reintroduce old roles, sessions or pending invitations. Reconcile post-backup role/membership revocations and consumed invitation/recovery credentials before reopening access. Apply a reviewed provider-supported session/link invalidation/reconciliation procedure when needed; do not blindly resurrect access or rotate signing keys without authorization.
-7. Capture usable-service/canary completion and owner acceptance time. Compute observed RPO from the last recovered source commit and observed RTO from incident start to validated service. Include staffing, network, provisioning and verification delays.
+7. Capture usable-service/canary completion and owner acceptance time. Compute observed RPO as the interval between incident onset and the latest recoverable source snapshot/controlled commit, documenting write inactivity separately. Compute covered RTO by summing only overlap with Monday–Friday 09:00–17:00 Atlantic/Reykjavik from incident onset through validated usable service; pass threshold is eight covered hours. No holiday exclusions are approved. Separately report total elapsed outage without removing nights/weekends. Include provisioning, retrieval, decryption, import, security reconciliation and validation. Record detection/acknowledgement delay independently. For example, a Friday 16:00 incident restored Monday 16:00 consumes eight covered hours but 72 elapsed hours.
 8. Record disposition and cleanup. Destroy only the approved disposable target/artifacts under explicit cleanup authorization and retention policy; never delete the source or its last good backup. Keep sanitized evidence and checksum references.
 
 ## Required validation matrix
@@ -42,18 +44,18 @@ Local-only destructive upgrade/race fixtures in existing scripts must never be p
 
 ## Evidence record — fill only after execution
 
-| Field                                                       | Recorded value                                                                                                     |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Approval / source classification / exact target             | Pending                                                                                                            |
-| Primary, backup, reviewer and coverage                      | Primary: project owner (user); technical backup/reviewer unassigned; business hours, exact window/timezone pending |
-| Accepted RPO/RTO                                            | Pending                                                                                                            |
-| Incident start / recovery-point UTC / validated-service UTC | Not measured                                                                                                       |
-| Tool/DB versions, backup ID/checksum/key reference          | Not captured; references only, no secrets                                                                          |
-| Export/decrypt/import/configure/validate timings            | Not measured                                                                                                       |
-| Observed RPO / observed RTO / objective met                 | Not measured / not claimed                                                                                         |
-| Validation outcomes and access/link reconciliation          | Not executed                                                                                                       |
-| Alert delivery / acknowledgement                            | Not executed                                                                                                       |
-| Source unchanged / cleanup proof / retained artifacts       | Not executed                                                                                                       |
-| Failures, residual risks and owner sign-off                 | Pending                                                                                                            |
+| Field                                                       | Recorded value                                                                                                    |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Approval / source classification / exact target             | Pending                                                                                                           |
+| Primary, backup, reviewer and coverage                      | Primary: project owner (user); technical backup/reviewer unassigned; Monday–Friday 09:00–17:00 Atlantic/Reykjavik |
+| Accepted RPO/RTO                                            | Planning: ≤4h / ≤8 covered business hours; not demonstrated                                                       |
+| Incident start / recovery-point UTC / validated-service UTC | Not measured                                                                                                      |
+| Tool/DB versions, backup ID/checksum/key reference          | Not captured; references only, no secrets                                                                         |
+| Export/decrypt/import/configure/validate timings            | Not measured                                                                                                      |
+| Observed RPO / covered RTO / elapsed outage / objective met | Not measured / not claimed                                                                                        |
+| Validation outcomes and access/link reconciliation          | Not executed                                                                                                      |
+| Alert delivery / acknowledgement                            | Not executed                                                                                                      |
+| Source unchanged / cleanup proof / retained artifacts       | Not executed                                                                                                      |
+| Failures, residual risks and owner sign-off                 | Pending                                                                                                           |
 
 Provider references: [backups and coverage](https://supabase.com/docs/guides/platform/backups), [provider-aware backup/restore](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore). Verify actual project capabilities before execution.
