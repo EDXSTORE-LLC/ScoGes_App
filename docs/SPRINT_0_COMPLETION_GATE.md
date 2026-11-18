@@ -1,5 +1,7 @@
 # Foundation completion gate
 
+Hosted-security evidence update — **2026-11-18**: [owner-verified review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) records Advisor **0 ERROR / 7 WARN / 1 INFO**, reconciled privileged RPCs and hosted Auth configuration. Advisor-count reduction does not close this gate: minimum **6/no classes** has no accepted exception; dependency/required final-head CI and owner dispositions remain outstanding. No overall development closure or subsequent phase is authorized.
+
 Current evidence review (2026-11-15): [R1–R7 acceptance matrix](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) separates completed R2 remediation, partial R1/R3/R6/R7 controls, the scoped R4 backup acceptance, unaccepted development deferrals and pilot blockers. It supersedes older absent-control/pending-deployment descriptions; overall Sprint 0 remains open.
 
 ## Owner-approved backup risk disposition — 2026-11-15

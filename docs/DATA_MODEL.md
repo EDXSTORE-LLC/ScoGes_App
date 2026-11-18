@@ -37,6 +37,14 @@ The administration migration adds two narrow write RPCs and a monotonic revision
 
 ## Verified migration chain
 
+2026-11-18 checkpoint: seven migrations are applied to the configured hosted
+development project, including the R2/R3 versions below and
+`20261118151125_security_advisor_function_privileges.sql`. The seventh changes
+function bodies/paths/ACLs and scoped creator defaults, without changing business
+tables or data. The legacy invitation wrapper and trusted service delivery are
+invoker functions; six authenticated atomic/authorization RPCs retain definer
+security. See [function review and rollout contract](SECURITY_ADVISOR_2026-11-18.md).
+
 | Version        | Scope                                                                        | Hosted checkpoint        |
 | -------------- | ---------------------------------------------------------------------------- | ------------------------ |
 | 20260917000100 | Foundation tables, catalog, RLS and onboarding RPC                           | Applied                  |

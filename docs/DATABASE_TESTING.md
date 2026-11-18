@@ -23,6 +23,16 @@ the override. See [Supabase SSL guidance](https://supabase.com/docs/guides/platf
 
 ## Commands
 
+The 2026-11-18 security suite additionally verifies minimal function ACLs,
+NULL/spoofed principals, delegated-admin escalation denial, trusted delivery
+digest/creator/quota/audit behavior, and retained automatic RLS infrastructure.
+`node scripts/test-database.mjs --security-candidate` explicitly applies the new
+privilege migration inside the enclosing rollback-only transaction before testing;
+it does not install migration history or retain schema/data changes. Ordinary
+`pnpm test:db` verifies the current installed contract. Fresh non-CI databases load
+the full ordered migration chain transactionally; CI still requires preinstalled
+migrations. Guarded disposable concurrency/upgrade suites remain local-only.
+
 ```sh
 pnpm check:supabase
 pnpm test:db

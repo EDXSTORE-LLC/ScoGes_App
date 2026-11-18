@@ -1,5 +1,22 @@
 # Shared handoff — Claude, Codex and Antigravity
 
+Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.
+
+Latest owner-verified hosted security follow-up — **2026-11-18**: [final review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) records Advisor **0 ERROR / 7 WARN / 1 INFO** after **0 / 14 / 1**, six intentionally authenticated definer functions and the plan-constrained leaked-password warning. Connector access is not a security defect or remaining count-verification blocker. Hosted password minimum **6**, no character requirements, disabled password-change protections and one-hour OTP lifetime are now owner-verified. No hosted Auth settings changed. Weak password policy has no accepted development exception and blocks the security gate, alongside dependency/required-CI issues. Preserve Sprint 0 in progress; no merge/deployment/pilot/plan change/Sprint 1.
+
+Security remediation checkpoint — **2026-11-18**: migration `20261118151125`
+is applied to the configured development project (seven versions). See
+[per-function review and actual verification](SECURITY_ADVISOR_2026-11-18.md).
+Anonymous function execution is revoked; delivery bookkeeping now requires the
+server-only secret client and service-role invoker RPC. Deploy that application
+change with this database contract; old user-session delivery calls fail closed.
+`SUPABASE_SECRET_KEY` is now required for application invitation bookkeeping as
+well as test fixtures; never expose it to the browser. Other business RPCs retain
+verified user sessions/RLS/permission guards. Full hosted Advisor refresh/password
+policy inspection remain blocked by connector access. Dependency audit now has
+one high and three moderate findings; older zero-high evidence is superseded.
+Sprint 0 remains open; no merge, public deployment, plan change or Sprint 1.
+
 Current hosted checkpoint — **2026-11-11**: PR #10 is merged; the R2 helper and R3 direct-RPC quota migrations are now applied to the configured project and post-deployment checks passed. [Deployment evidence](DEPLOYMENT_2026-11-11.md) supersedes older pending-deployment notes below. Full advisor refresh, Vercel/monitoring and Sprint 0 acceptance remain open; Sprint 1 is inactive.
 
 Checkpoint: **2026-11-01**, Sprint 0 closure candidate after merged PR #7 (`6a76c43`). Historical test counts below retain their original baseline. This is a repository handoff, not permission to execute the next sprint, deploy, reset databases, or contact recipients. Recheck repository and remote state before acting; conversation history and these dated counts can become stale.

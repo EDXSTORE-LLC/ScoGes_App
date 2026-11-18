@@ -1,5 +1,17 @@
 # Security
 
+Latest owner-verified assessment — **2026-11-18**: [hosted security review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) supersedes earlier missing-Advisor/password-value notes. Refreshed hosted result **0 ERROR / 7 WARN / 1 INFO** is owner-verified; current catalog/negative tests reconcile six deliberate authenticated definers and the plan-constrained password warning. Hosted minimum **6** with no required classes is a **Sprint 0 blocker**, not accepted development risk. Target **12 + digits/lowercase/uppercase/symbols** needs a coordinated application/test alignment and explicit owner dashboard action. No Auth setting changed; connector unavailability is not a security defect. Other password-change/OTP/public-exposure and dependency gates remain documented.
+
+2026-11-18: [Security Advisor remediation](SECURITY_ADVISOR_2026-11-18.md)
+records the applied seventh migration, exact function dispositions, anonymous
+revocations, hardened onboarding identity and server-only delivery bookkeeping.
+Six authenticated definer functions intentionally retain internal authorization;
+none of the flagged functions remains anonymously executable. Full Advisor
+after-count and hosted Auth password policy are unverified due access limits.
+Leaked-password protection remains a Free-plan residual and real-data gate.
+New dependency audit findings supersede historical zero-high evidence. Sprint 0
+security closure remains blocked.
+
 Current hosted checkpoint — **2026-11-11**: PR #10 is merged; the R2 helper and R3 direct-RPC quota migrations are now applied to the configured project and post-deployment checks passed. [Deployment evidence](DEPLOYMENT_2026-11-11.md) supersedes older pending-deployment notes below. Full advisor refresh, Vercel/monitoring and Sprint 0 acceptance remain open; Sprint 1 is inactive.
 
 ## Tenant Isolation

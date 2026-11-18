@@ -4,11 +4,21 @@ vi.mock("@/lib/security/request-limit", () => ({
 }));
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { authText } from "./auth-messages";
-const { rpc, send, membership, provider, cookieStore } = vi.hoisted(() => ({
+const {
+  rpc,
+  send,
+  membership,
+  provider,
+  recorder,
+  recordDelivery,
+  cookieStore,
+} = vi.hoisted(() => ({
   rpc: vi.fn(),
   send: vi.fn(),
   membership: vi.fn(),
   provider: vi.fn(),
+  recorder: vi.fn(),
+  recordDelivery: vi.fn(),
   cookieStore: { get: vi.fn(), set: vi.fn(), delete: vi.fn() },
 }));
 vi.mock("@/lib/supabase/server", () => ({
@@ -22,6 +32,9 @@ vi.mock("@/lib/auth/session", () => ({
   getActiveMembership: membership,
 }));
 vi.mock("@/lib/email/smtp", () => ({ createEmailProvider: provider }));
+vi.mock("./invitation-delivery", () => ({
+  createInvitationDeliveryRecorder: recorder,
+}));
 vi.mock("next/headers", () => ({ cookies: async () => cookieStore }));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("next/navigation", () => ({
@@ -46,6 +59,8 @@ describe("invitation actions", () => {
     vi.resetAllMocks();
     membership.mockResolvedValue({ tenantId: id, roles: ["tenant_admin"] });
     provider.mockReturnValue({ sendInvitation: send });
+    recorder.mockReturnValue(recordDelivery);
+    recordDelivery.mockResolvedValue(true);
     cookieStore.get.mockReturnValue({ value: token });
   });
   it.each(["limited", "unavailable"] as const)(
@@ -131,7 +146,12 @@ describe("invitation actions", () => {
     const url = new URL(send.mock.calls[0][0].url);
     expect(url.searchParams.has("token")).toBe(false);
     expect(url.hash).toBe(`#token=${token}`);
-    expect(rpc.mock.calls[1][1].delivered).toBe(true);
+    expect(rpc).toHaveBeenCalledTimes(1);
+    expect(recordDelivery).toHaveBeenCalledWith(
+      id,
+      expect.stringMatching(/^[a-f0-9]{64}$/),
+      true,
+    );
     expect(result.message).toBe(authText("en", "delivered"));
   });
   it("reports SMTP failure instead of a false success", async () => {
@@ -147,7 +167,28 @@ describe("invitation actions", () => {
       ok: false,
       message: authText("fr", "deliveryFailed"),
     });
-    expect(rpc.mock.calls[1][1].delivered).toBe(false);
+    expect(recordDelivery).toHaveBeenCalledWith(id, expect.any(String), false);
+  });
+  it("fails before issuing or sending when trusted delivery configuration is missing", async () => {
+    recorder.mockReturnValue(null);
+    expect(
+      await inviteMemberAction(
+        { ok: false },
+        form({ email: "a@example.com", role: "cashier" }),
+      ),
+    ).toEqual({ ok: false, message: authText("fr", "unavailable") });
+    expect(rpc).not.toHaveBeenCalled();
+    expect(send).not.toHaveBeenCalled();
+  });
+  it("does not report success when trusted delivery recording fails", async () => {
+    rpc.mockResolvedValue({ data: { id, token }, error: null });
+    recordDelivery.mockResolvedValue(false);
+    expect(
+      await inviteMemberAction(
+        { ok: false },
+        form({ email: "a@example.com", role: "cashier", delivered: "true" }),
+      ),
+    ).toEqual({ ok: false, message: authText("fr", "unavailable") });
   });
   it("rejects malformed tokens before setting cookies or calling RPCs", async () => {
     expect(

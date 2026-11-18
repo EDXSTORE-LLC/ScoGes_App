@@ -1,5 +1,18 @@
 # Sprint 0 closure review — 2026-11-01
 
+Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.
+
+Final hosted review follow-up — **2026-11-18**: [owner-verified security review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) records **0 ERROR / 7 WARN / 1 INFO** and actual hosted Auth values. Missing connector access is no longer a report-count/password-value blocker. The weak **6-character/no-class** policy is unaccepted and blocks Sprint 0 security closure; password hardening is proposed, not executed. Dependency and final-head/disposable-CI requirements remain open. **SPRINT 0 SECURITY GATE BLOCKED — REMEDIATION STILL REQUIRED**. No new residual-risk waiver, merge, public preview/deployment, pilot, plan change or Sprint 1.
+
+Security gate checkpoint — **2026-11-18**: **SPRINT 0 SECURITY GATE BLOCKED —
+REMEDIATION STILL REQUIRED**. [Detailed remediation/evidence](SECURITY_ADVISOR_2026-11-18.md)
+records the applied function-privilege migration and passing hosted transactional
+negative/valid-flow checks. A full hosted Advisor refresh and hosted password
+policy verification remain inaccessible; leaked-password protection is still
+plan-constrained. Newly reported Next.js/picomatch dependency advisories require
+review/remediation. No additional risk acceptance, overall closure, merge, public
+deployment, real-data pilot or Sprint 1 is authorized or claimed.
+
 Current evidence review (2026-11-15): [R1–R7 acceptance matrix](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) separates completed R2 remediation, partial R1/R3/R6/R7 controls, the scoped R4 backup acceptance, unaccepted development deferrals and pilot blockers. It supersedes older absent-control/pending-deployment descriptions; overall Sprint 0 remains open.
 
 ## Owner-approved backup risk disposition — 2026-11-15

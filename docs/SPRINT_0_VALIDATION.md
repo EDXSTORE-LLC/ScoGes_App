@@ -1,5 +1,11 @@
 # Sprint 0 validation
 
+Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.
+
+Latest hosted verification — **2026-11-18**: [final security assessment](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) uses owner-refreshed Advisor **0 ERROR / 7 WARN / 1 INFO** plus independently checked function ACLs and actual-role tests. Hosted Auth values are now owner-verified, not inferred; weak minimum **6/no required classes** blocks security closure. See the review for fresh command outcomes and remaining isolated-CI limits. No hosted configuration change.
+
+Latest security evidence — **2026-11-18**: [Security Advisor remediation](SECURITY_ADVISOR_2026-11-18.md) supersedes historical function-ACL/advisor status and zero-high dependency counts. The seventh migration is applied to configured hosted development. New rollback-only negative/valid-flow SQL assertions pass; full hosted Advisor/password-policy verification remains access-blocked. See that record for command results and limits.
+
 Latest checkpoint: **2026-11-01 — closure review**. Bilingual foundation and real email lifecycle verification are complete. [PR #8](https://github.com/Edleben/ScoGes_App/pull/8) refreshes exact-head checks and requests owner acceptance of [remaining risk dispositions](SPRINT_0_CLOSURE.md). The 2026-10-30 baseline below is historical; later checkpoints supersede its acceptance gaps and counts.
 
 ## Historical baseline — 2026-10-30

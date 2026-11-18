@@ -33,9 +33,28 @@ begin
     perform public.issue_tenant_invitation(current_setting('test.tenant_a')::uuid,current_setting('test.recipient') || '@example.invalid','cashier');
     raise exception 'invitation cooldown bypassed';
   exception when raise_exception then if sqlerrm<>'invitation cooldown' then raise; end if; end;
-  perform public.record_invitation_delivery((issued->>'id')::uuid,encode(sha256(convert_to(issued->>'token','UTF8')),'hex'),false);
+
 end;
 $$;
+
+-- SMTP bookkeeping is service-only, including for the authorized issuer.
+do $$
+begin
+  begin
+    perform public.record_invitation_delivery(current_setting('test.invitation_id')::uuid,
+      encode(sha256(convert_to(current_setting('test.invitation_token'),'UTF8')),'hex'),true);
+    raise exception 'issuer forged delivery';
+  exception when insufficient_privilege then null; end;
+end;
+$$;
+reset role;
+set local role service_role;
+select set_config('request.jwt.claims','{"role":"service_role"}',true);
+select set_config('request.jwt.claim.sub','',true);
+select public.record_invitation_delivery(current_setting('test.invitation_id')::uuid,
+  encode(sha256(convert_to(current_setting('test.invitation_token'),'UTF8')),'hex'),false);
+reset role;
+set local role authenticated;
 
 -- A different authenticated identity cannot use the token.
 select set_config('request.jwt.claim.sub',current_setting('test.user_b'),true);
@@ -55,6 +74,8 @@ reset role;
 update auth.users set email_confirmed_at=null where id=current_setting('test.recipient')::uuid;
 set local role authenticated;
 select set_config('request.jwt.claim.sub',current_setting('test.recipient'),true);
+select pg_temp.reject_invitation('not-a-token');
+select pg_temp.reject_invitation(repeat('f',64));
 select pg_temp.reject_invitation(current_setting('test.invitation_token'));
 reset role;
 update auth.users set email_confirmed_at=now() where id=current_setting('test.recipient')::uuid;

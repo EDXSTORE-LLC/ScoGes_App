@@ -6,6 +6,14 @@ Sprint 0 implements the foundation of the EDXSTORE school management SaaS. It do
 
 ## Application Architecture
 
+Invitation delivery bookkeeping uses a narrow `server-only` module,
+`src/modules/identity/invitation-delivery.ts`, with an isolated secret-key client.
+It receives only the database-issued invitation ID/digest and actual SMTP result;
+the user-facing Server Action supplies no browser-selected delivery/actor state.
+The service-only invoker RPC derives its audit actor from the invitation creator
+and rechecks authority; issuance, acceptance and other business operations keep
+their user-session clients. See [2026-11-18 security review](SECURITY_ADVISOR_2026-11-18.md).
+
 - Framework: Next.js 16 App Router.
 - Language: TypeScript strict mode.
 - Package manager: pnpm.

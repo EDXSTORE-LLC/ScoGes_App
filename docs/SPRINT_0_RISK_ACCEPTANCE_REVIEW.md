@@ -1,5 +1,7 @@
 # Sprint 0 R1–R7 acceptance review — 2026-11-15
 
+Hosted follow-up — **2026-11-18**: [owner-verified Advisor/Auth review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) supersedes historical missing-dashboard evidence: Advisor **0 ERROR / 7 WARN / 1 INFO**, six justified authenticated definers and the plan-constrained leaked-password warning. Actual minimum **6/no classes** is not accepted development risk and blocks Sprint 0 security closure. Connector access is not a defect. Newly reported dependency findings also supersede historical zero-high counts. No additional owner risk acceptance or hosted Auth change.
+
 **Result: Sprint 0 gate remains open.** This is an evidence review and proposed disposition, not risk acceptance, a merge decision, pilot approval or Sprint 1 activation. Only the backup-protection portion of R4 has explicit owner acceptance for development/Sprint 0 closure. Preserve all other safeguards and acceptance requirements.
 
 ## Evidence boundary

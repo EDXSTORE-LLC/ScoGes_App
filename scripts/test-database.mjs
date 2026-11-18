@@ -33,12 +33,15 @@ try {
   requireAppliedSchema(rows[0].installed);
   if (!rows[0].installed) {
     // A fresh database can be tested without installing anything permanently.
-    await client.query(
-      readFileSync(
-        "supabase/migrations/20260917000100_sprint_0_foundation.sql",
-        "utf8",
-      ),
-    );
+    const migrations = process.argv.includes("--baseline")
+      ? ["20260917000100_sprint_0_foundation.sql"]
+      : readdirSync("supabase/migrations")
+          .filter((name) => name.endsWith(".sql"))
+          .sort();
+    for (const migration of migrations)
+      await client.query(
+        readFileSync(`supabase/migrations/${migration}`, "utf8"),
+      );
   }
   if (!process.argv.includes("--baseline")) {
     const migration = readdirSync("supabase/migrations").find((name) =>
@@ -85,6 +88,16 @@ try {
         readFileSync(`supabase/migrations/${migration}`, "utf8"),
       );
     }
+    if (process.argv.includes("--security-candidate")) {
+      // Explicit owner-scoped development verification only; enclosing rollback
+      // discards the candidate DDL, privileges and every synthetic fixture.
+      await client.query(
+        readFileSync(
+          "supabase/migrations/20261118151125_security_advisor_function_privileges.sql",
+          "utf8",
+        ),
+      );
+    }
     await client.query(
       readFileSync("supabase/tests/authentication_lifecycle.sql", "utf8"),
     );
@@ -93,6 +106,12 @@ try {
       readFileSync("supabase/tests/administration.sql", "utf8"),
     );
     console.log("Administration and transactional audit assertions: passed");
+    await client.query(
+      readFileSync("supabase/tests/security_advisor.sql", "utf8"),
+    );
+    console.log(
+      "Security Advisor ACL, actor and trusted delivery assertions: passed",
+    );
   }
   console.log("Database authorization assertions: passed");
 } catch (error) {

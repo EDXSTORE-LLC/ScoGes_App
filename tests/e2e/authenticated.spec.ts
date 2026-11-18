@@ -2,7 +2,7 @@ import { test, expect } from "./fixtures";
 import { createClient } from "@supabase/supabase-js";
 import { existsSync, readFileSync } from "node:fs";
 import { parseEnv } from "node:util";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 
 const env = {
   ...(existsSync(".env.local")
@@ -123,6 +123,57 @@ test.describe("live authentication lifecycle", () => {
     await page.goto("/dashboard");
     await expect(page).toHaveURL(/\/login$/);
   });
+  test("direct clients cannot forge invitation delivery and trusted service records only the current digest", async () => {
+    const owner = await account();
+    const tenantId = await tenant(owner, "Delivery ACL fixture");
+    const issued = await owner.client.rpc("issue_tenant_invitation", {
+      target_tenant_id: tenantId,
+      invitee_email: `delivery-${randomUUID()}@example.invalid`,
+      role_key: "cashier",
+    });
+    if (issued.error || !issued.data?.id || !issued.data?.token)
+      throw new Error("Delivery ACL fixture issuance failed.");
+    const args = {
+      invitation_id: issued.data.id,
+      token_digest: createHash("sha256")
+        .update(issued.data.token)
+        .digest("hex"),
+      delivered: false,
+    };
+    const anonymous = createClient(
+      env.NEXT_PUBLIC_SUPABASE_URL!,
+      env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+      {
+        auth: { persistSession: false, autoRefreshToken: false },
+      },
+    );
+    expect(
+      (await anonymous.rpc("record_invitation_delivery", args)).error?.code,
+    ).toBe("42501");
+    expect(
+      (await owner.client.rpc("record_invitation_delivery", args)).error?.code,
+    ).toBe("42501");
+    expect(
+      (
+        await admin().rpc("record_invitation_delivery", {
+          ...args,
+          token_digest: "wrong",
+        })
+      ).error?.message,
+    ).toBe("delivery update denied");
+    // Synthetic transport-failure bookkeeping only; no external email is sent.
+    expect(
+      (await admin().rpc("record_invitation_delivery", args)).error,
+    ).toBeNull();
+    const recorded = await owner.client
+      .from("invitations")
+      .select("delivery_status")
+      .eq("id", args.invitation_id)
+      .single();
+    expect(recorded.error).toBeNull();
+    expect(recorded.data?.delivery_status).toBe("failed");
+  });
+
   test("invitation acceptance selects the invited tenant and cannot be replayed", async ({
     page,
   }) => {

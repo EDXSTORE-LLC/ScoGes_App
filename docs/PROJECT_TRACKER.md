@@ -1,5 +1,9 @@
 # Project tracker
 
+Latest hosted verification — **2026-11-18**: [owner-supplied Advisor/Auth evidence](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) resolves the missing dashboard-count/value evidence (**0 ERROR / 7 WARN / 1 INFO**), but the actual minimum **6/no character classes** is an unaccepted security blocker. No hosted Auth setting changed. Sprint 0 and milestone rows/progress remain unchanged; Sprint 1 is inactive.
+
+Security checkpoint — **2026-11-18**: [bounded Advisor remediation](SECURITY_ADVISOR_2026-11-18.md) is applied to hosted development with passing transactional isolation/privilege/invitation tests. Full Advisor refresh and password-policy verification are access-blocked; new dependency advisories require review. Milestone rows and UI statuses remain unchanged: Sprint 0 in progress; Sprint 1 inactive. No overall closure or residual-risk acceptance is inferred.
+
 Closure-review checkpoint: **2026-11-01**. Active sprint: **Sprint 0**, in progress. Work branch: `edwakson/ScoGes_App`; main changes only through validated PRs.
 
 This Markdown tracker and the UI consume the same milestone definitions in `src/modules/project-tracker/tracker-data.ts`. A unit test compares every row below with that data to prevent drift. Edit the data and this table together; rerun verification before changing completion status.
