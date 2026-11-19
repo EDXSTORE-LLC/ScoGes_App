@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import pg from "pg";
 import { databaseTestOptions, loopbackUrl } from "../ci/environment.mjs";
 
@@ -45,6 +45,23 @@ export async function testSecurityAdvisorMigration(env) {
   try {
     await client.connect();
     await client.query("begin");
+    const versions = readdirSync(
+      new URL("../../supabase/migrations/", import.meta.url),
+    )
+      .filter((name) => name.endsWith(".sql"))
+      .sort()
+      .map((name) => name.slice(0, 14));
+    assert.deepEqual(
+      (
+        await client.query(
+          "select version from supabase_migrations.schema_migrations order by version",
+        )
+      ).rows.map((row) => row.version),
+      versions,
+    );
+    console.log(
+      "Fresh migration history/order matches all reviewed migration files.",
+    );
     await client.query(
       readFileSync(
         new URL("../../supabase/tests/rpc_quota_fixtures.sql", import.meta.url),

@@ -101,6 +101,46 @@ test.describe("live authentication lifecycle", () => {
         throw new Error("Test account cleanup failed.");
   });
 
+  if (env.CI_ENFORCE_INTEGRATION === "1") {
+    test("isolated Auth rejects short and missing-class passwords directly", async () => {
+      // This provider-level negative probe must never run against hosted Auth.
+      expect(env.DATABASE_TEST_LOCAL).toBe("1");
+      expect(["127.0.0.1", "localhost", "[::1]"]).toContain(
+        new URL(env.NEXT_PUBLIC_SUPABASE_URL!).hostname,
+      );
+      const anonymous = createClient(
+        env.NEXT_PUBLIC_SUPABASE_URL!,
+        env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+        {
+          auth: { persistSession: false, autoRefreshToken: false },
+        },
+      );
+      for (const password of [
+        "Aa1!abcdefg",
+        "aa1!abcdefgh",
+        "AA1!ABCDEFGH",
+        "Aa!!abcdefgh",
+        "Aa12abcdefgh",
+      ]) {
+        const { data, error } = await anonymous.auth.signUp({
+          email: `edxstore-e2e-policy-${randomUUID()}@example.invalid`,
+          password,
+        });
+        // Exact synthetic account cleanup is retained even if the provider accepts a bad value.
+        if (data.user?.id) users.push(data.user.id);
+        expect(error?.code).toBe("weak_password");
+      }
+      const accepted = await anonymous.auth.signUp({
+        email: `edxstore-e2e-policy-${randomUUID()}@example.invalid`,
+        password: "Aa1!abcdefgh", // Exactly 12, with all four classes.
+      });
+      if (accepted.data.user?.id) users.push(accepted.data.user.id);
+      expect(accepted.error).toBeNull();
+      expect(accepted.data.user?.id).toBeTruthy();
+      expect(accepted.data.session).toBeNull(); // Confirmation remains required.
+    });
+  }
+
   test("sign in, protected dashboard, sign out and access denial", async ({
     page,
   }) => {

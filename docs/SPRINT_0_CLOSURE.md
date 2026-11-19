@@ -1,5 +1,7 @@
 # Sprint 0 closure review — 2026-11-01
 
+Final security/quality review checkpoint — 2026-11-19: [bounded final validation](SPRINT_0_FINAL_VALIDATION_2026-11-19.md) reconciles all seven owner-named Advisor findings. First candidate 0b3284b passed isolated PR CI including 37 browser cases and security/concurrency/replay checks. Final-head CI and hosted password save/compatibility evidence remain separately required. This is readiness evidence, not owner acceptance of remaining operational deferrals or authorization to merge/deploy/start Sprint 1.
+
 2026-11-19 dependency checkpoint: [targeted dependency fixes](DEPENDENCY_SECURITY_2026-11-19.md) now yield a zero-finding registry audit with Next/config 16.4.5 and upstream TypeScript-ESLint 8.73.0. This supersedes the dependency-advisory blocker in older checkpoints, subject to final review-head CI. Hosted password-policy alignment and other applicable owner/operational gates remain open; no overall Sprint 0 closure, waiver, merge, deployment, pilot or Sprint 1 is claimed.
 
 Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.

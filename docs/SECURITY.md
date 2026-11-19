@@ -1,5 +1,7 @@
 # Security
 
+Final verification checkpoint — 2026-11-19: [review/control matrix](SPRINT_0_FINAL_VALIDATION_2026-11-19.md) records six intentional authenticated definers plus Free-plan leaked-password protection, matches live function bodies/ACLs/paths to reviewed migrations and confirms no anonymous public definers. Initial isolated CI is green; final-head and owner-hosted policy evidence are tracked separately. No hosted function or setting is changed to obtain zero warnings.
+
 2026-11-19 dependency update: [targeted remediation](DEPENDENCY_SECURITY_2026-11-19.md) removes the three active moderate advisories (two Next.js and one transitive minimatch) using supported releases. Audit reports zero known findings; the former picomatch high advisory was withdrawn upstream and is not credited as a code fix. No audit/rule threshold was weakened. Existing hosted Auth and final-head isolated-CI/owner gates remain open.
 
 2026-11-19: [application password policy](PASSWORD_POLICY_2026-11-19.md) now enforces
