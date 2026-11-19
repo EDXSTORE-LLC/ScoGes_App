@@ -18,6 +18,7 @@ export type ImportState = SchoolState & {
     line: number;
     result: string;
     data?: Record<string, string | number | boolean | null>;
+    problems?: string[];
   }[];
 };
 export async function previewImportAction(
@@ -82,6 +83,7 @@ export async function previewImportAction(
             .map((r) => ({
               line: r.line,
               result: r.result as "invalidRow" | "duplicate",
+              problems: r.problems,
             })),
         })
       : undefined;

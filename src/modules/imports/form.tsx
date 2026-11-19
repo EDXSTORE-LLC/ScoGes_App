@@ -150,6 +150,17 @@ function ImportResults({
                         row.result as
                           "ready" | "inserted" | "duplicate" | "invalidRow",
                       )}
+                      {row.problems?.length ? (
+                        <ul>
+                          {row.problems.map((name) => (
+                            <li key={name}>
+                              {fieldKeys.includes(name as FieldKey)
+                                ? fieldText(locale, name as FieldKey)
+                                : name}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
                     </td>
                     <td className="p-2">
                       <dl className="grid gap-1">

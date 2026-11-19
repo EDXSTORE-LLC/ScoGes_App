@@ -8,7 +8,7 @@ set local role authenticated;
 select set_config('request.jwt.claim.sub',current_setting('test.school_actor'),true);
 do $$
 declare t uuid:=current_setting('test.tenant_a')::uuid; foreign_t uuid:=current_setting('test.tenant_b')::uuid;
- y uuid; l uuid; c uuid; s uuid; g uuid; n uuid; r uuid; caught boolean;
+ y uuid; l uuid; c uuid; c2 uuid; s uuid; g uuid; n uuid; r uuid; caught boolean;
 begin
  y:=public.save_school_record(t,'years',null,null,'{"code":"y2026","name":"2026","starts_on":"2026-01-01","ends_on":"2026-12-31","status":"active"}');
  begin
@@ -22,10 +22,13 @@ begin
  r:=public.save_school_record(t,'links',null,null,jsonb_build_object('student_id',s,'guardian_id',g,'relationship','guardian','primary_contact',true));
  n:=public.save_school_record(t,'enrollments',null,null,jsonb_build_object('student_id',s,'year_id',y,'level_id',l,'class_id',c,'status','draft'));
  perform public.save_school_record(t,'enrollments',n,1,'{"status":"active"}');
- perform public.save_school_record(t,'enrollments',n,2,'{"status":"completed"}');
- if (select count(*) from public.enrollment_history where enrollment_id=n)<>3 then raise exception 'test_enrollment_history_missing'; end if;
+ c2:=public.save_school_record(t,'classes',null,null,jsonb_build_object('code','group2','name','Group 2','year_id',y,'level_id',l));
+ perform public.save_school_record(t,'enrollments',n,2,jsonb_build_object('class_id',c2));
+ perform public.save_school_record(t,'enrollments',n,3,'{"status":"completed"}');
+ if not exists(select 1 from public.enrollment_history where enrollment_id=n and before_state->>'class_id'=c::text and after_state->>'class_id'=c2::text) then raise exception 'test_class_change_history_missing'; end if;
+ if (select count(*) from public.enrollment_history where enrollment_id=n)<>4 then raise exception 'test_enrollment_history_missing'; end if;
  begin
-  perform public.save_school_record(t,'enrollments',n,3,'{"status":"active"}');
+  perform public.save_school_record(t,'enrollments',n,4,'{"status":"active"}');
   raise exception 'test_terminal_enrollment_mutable';
  exception when raise_exception then if sqlerrm<>'terminal_enrollment' then raise; end if; end;
  begin

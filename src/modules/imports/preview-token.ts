@@ -1,6 +1,6 @@
 import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 import { z } from "zod";
-import { schoolKindSchema } from "@/modules/school/registry";
+import { schoolKindSchema, fieldKeys } from "@/modules/school/registry";
 export const previewSchema = z
   .object({
     version: z.literal(1),
@@ -28,6 +28,7 @@ export const previewSchema = z
           .object({
             line: z.number().int().min(2).max(501),
             result: z.enum(["invalidRow", "duplicate"]),
+            problems: z.array(z.enum(fieldKeys)).max(30).optional(),
           })
           .strict(),
       )

@@ -4,6 +4,7 @@ import {
   schoolEntities,
   schoolSchemas,
   type SchoolKind,
+  fieldKeys,
   type FieldKey,
   type SchoolRow,
 } from "@/modules/school/registry";
@@ -19,6 +20,7 @@ export type PreparedRow = {
   line: number;
   result: "ready" | "invalidRow" | "duplicate";
   data?: Record<string, string | number | boolean | null>;
+  problems?: FieldKey[];
 };
 export function templateHeaders(kind: ImportKind) {
   return schoolEntities[kind].fields.map((f) =>
@@ -113,9 +115,34 @@ export async function prepareRows(
       !data.preferred_language
     )
       data.preferred_language = defaultLanguage;
+    if (kind === "enrollments" && data.class_id) {
+      const c = lookup.classes?.find((c) => c.id === data.class_id);
+      if (
+        !c ||
+        c.year_id !== data.year_id ||
+        c.level_id !== data.level_id ||
+        c.program_id !== data.program_id
+      )
+        invalid = true;
+    }
+    if (
+      kind === "enrollments" &&
+      data.status &&
+      !["draft", "active"].includes(String(data.status))
+    )
+      invalid = true;
     const parsed = schoolSchemas[kind].safeParse(data);
     if (invalid || !parsed.success) {
-      prepared.push({ line: index + 2, result: "invalidRow" });
+      const problems = parsed.success
+        ? [kind === "enrollments" ? "class_id" : "code"]
+        : parsed.error.issues.map((issue) => String(issue.path[0]));
+      prepared.push({
+        line: index + 2,
+        result: "invalidRow",
+        problems: problems.filter((name): name is FieldKey =>
+          fieldKeys.includes(name as FieldKey),
+        ),
+      });
       continue;
     }
     const values = parsed.data as Record<

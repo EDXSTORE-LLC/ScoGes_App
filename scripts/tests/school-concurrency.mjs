@@ -70,6 +70,10 @@ export async function testSchoolConcurrency(env) {
       [tenant, `s1-${tenant}`],
     );
     await owner.query(
+      "insert into public.tenant_settings(tenant_id,country,base_currency,timezone,default_locale) values($1,'TG','XOF','Africa/Lome','en')",
+      [tenant],
+    );
+    await owner.query(
       "insert into public.memberships(id,tenant_id,user_id) values($1,$2,$3)",
       [membership, tenant, actor],
     );
@@ -136,6 +140,8 @@ export async function testSchoolConcurrency(env) {
     console.log(
       "Sprint 1 concurrent active-year, canonical-enrollment and revision/history assertions: passed",
     );
+  } catch (error) {
+    throw Error(`School concurrency failed (${error.code ?? "assertion"}).`);
   } finally {
     await owner.query("rollback").catch(() => {});
     await owner.query("delete from public.audit_events where tenant_id=$1", [
