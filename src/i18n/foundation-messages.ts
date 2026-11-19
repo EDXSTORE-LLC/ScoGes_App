@@ -67,7 +67,7 @@ const fr = {
   next: "Prochaines actions de Sprint 0",
   reviewPending:
     "Examiner les contrôles CI et les risques résiduels de la PR de clôture, puis accepter explicitement Sprint 0. L’acceptation du propriétaire reste en attente ; Sprint 1 n’est pas activé.",
-  validationPr: "Clôture de Sprint 0 (PR #8)",
+  validationPr: "Clôture de Sprint 0 (PR #11)",
   validationRun: "Contrôles CI de la PR",
   globalProgress: "Progression globale",
   sprints: "Sprints suivis",
@@ -143,7 +143,7 @@ const en = {
   next: "Next Sprint 0 actions",
   reviewPending:
     "Review the closure PR’s CI checks and residual risks, then explicitly accept Sprint 0. Owner acceptance is pending; Sprint 1 is not active.",
-  validationPr: "Sprint 0 closure (PR #8)",
+  validationPr: "Sprint 0 closure (PR #11)",
   validationRun: "Pull request CI checks",
   globalProgress: "Overall progress",
   sprints: "Tracked sprints",
