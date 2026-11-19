@@ -1,5 +1,12 @@
 # Project documentation map
 
+Current execution — **2026-11-19**: Sprint 0 closure PR #12 is merged on main
+`2b248aaff8d85bfcdfaf9db94ca43c19852fbf99` with green merge CI. The owner now
+authorizes [Sprint 1 implementation](prompts/SPRINT_1_MASTER_PROMPT.md) on its
+dedicated branch; [business decisions](SPRINT_1_DECISIONS.md) remain subject to
+explicit answers where the specifications do not settle them. This supersedes
+historical inactive-Sprint-1 notes, without authorizing deployment or Sprint 2.
+
 Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
 **development-only closure**, including documented residual risks with their
 existing gates; no mandatory security check or HIGH vulnerability is waived.

@@ -1,5 +1,25 @@
 # Implementation Log
 
+## 2026-11-19 — Sprint 1 activation and independent preparation
+
+- Owner explicitly authorized implementation on a dedicated feature branch after
+  formal development-only Sprint 0 closure. Clean main `2b248aa` and its green
+  merge CI were verified before creating `feat/sprint-1-academics-students-enrollments`.
+- Activated the Sprint 1 prompt and recorded proposed unresolved business rules in
+  `SPRINT_1_DECISIONS.md`; those proposals are not accepted by silence. No domain
+  permissions, enrollment transition rules or duplicate import behavior are fixed
+  before the required answers.
+- Added a UTF-8 CSV string parser with caller-supplied byte/row/column/cell limits,
+  strict quoting/header/row-shape checks and safe error codes. It performs no
+  business writes, formula evaluation or file retention and is not a complete
+  preview/commit workflow. Sixteen parser tests plus the existing 202 tests pass.
+- Installed Next 16.4.5 documentation recommends ignoring and untracking generated
+  `next-env.d.ts`; kept its local copy and tsconfig include, verified `next typegen`
+  regeneration, and changed only its ignore/index state.
+- Local lint, route type generation, typecheck, 218 tests, 12 CI guards and build
+  pass for this preparation. Full browser/CI evidence must be recorded separately;
+  no new migration, hosted setting or Sprint 1 milestone completion is claimed.
+
 ## 2026-09-17 Sprint 0 Foundation
 
 Implemented repository initialization and platform foundation:
