@@ -1,3 +1,4 @@
+import { schoolKindSchema } from "./validation";
 import Link from "next/link";
 import type { Route } from "next";
 import { notFound } from "next/navigation";
@@ -8,7 +9,6 @@ import { schoolContext } from "./context";
 import {
   schoolEntities,
   schoolKinds,
-  schoolKindSchema,
   rowTitle,
   type SchoolKind,
   type SchoolRow,

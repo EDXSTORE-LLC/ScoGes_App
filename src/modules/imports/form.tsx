@@ -5,7 +5,7 @@ import {
   commitImportAction,
   type ImportState,
 } from "./actions";
-import { importKinds, templateHeaders, type ImportKind } from "./prepare";
+import { importKinds, templateHeaders, type ImportKind } from "./templates";
 import { schoolText, entityText, fieldText } from "@/modules/school/messages";
 import { fieldKeys, type FieldKey } from "@/modules/school/registry";
 import { Button } from "@/components/ui/button";

@@ -1,31 +1,4 @@
-import { z } from "zod";
-import {
-  yearSchema,
-  programSchema,
-  levelSchema,
-  classSchema,
-  termSchema,
-} from "@/modules/academics/schemas";
-import {
-  studentSchema,
-  guardianSchema,
-  linkSchema,
-} from "@/modules/people/schemas";
-import {
-  enrollmentSchema,
-  enrollmentStatuses,
-} from "@/modules/enrollments/schemas";
-export const schoolSchemas = {
-  years: yearSchema,
-  programs: programSchema,
-  levels: levelSchema,
-  classes: classSchema,
-  terms: termSchema,
-  students: studentSchema,
-  guardians: guardianSchema,
-  links: linkSchema,
-  enrollments: enrollmentSchema,
-};
+import { enrollmentStatuses } from "@/modules/enrollments/model";
 export const schoolKinds = [
   "years",
   "programs",
@@ -37,9 +10,7 @@ export const schoolKinds = [
   "links",
   "enrollments",
 ] as const;
-export const schoolKindSchema = z.enum(schoolKinds);
 export type SchoolKind = (typeof schoolKinds)[number];
-export type SchoolData = z.infer<(typeof schoolSchemas)[SchoolKind]>;
 export const fieldKeys = [
   "code",
   "name",

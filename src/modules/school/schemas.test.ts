@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { schoolSchemas } from "./registry";
+import { schoolSchemas } from "./validation";
 import { mayTransitionEnrollment } from "@/modules/enrollments/schemas";
 import { hasPermission } from "@/modules/identity/permissions";
 const id = "10000000-0000-4000-8000-000000000001";

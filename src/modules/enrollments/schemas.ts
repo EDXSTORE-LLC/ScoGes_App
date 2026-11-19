@@ -1,12 +1,6 @@
 import { z } from "zod";
 import { uuidSchema, nullableUuid } from "@/modules/academics/schemas";
-export const enrollmentStatuses = [
-  "draft",
-  "active",
-  "completed",
-  "withdrawn",
-  "cancelled",
-] as const;
+import { enrollmentStatuses } from "./model";
 export const enrollmentSchema = z
   .object({
     student_id: uuidSchema,

@@ -1,6 +1,7 @@
 import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 import { z } from "zod";
-import { schoolKindSchema, fieldKeys } from "@/modules/school/registry";
+import { fieldKeys } from "@/modules/school/registry";
+import { schoolKindSchema } from "@/modules/school/validation";
 export const previewSchema = z
   .object({
     version: z.literal(1),

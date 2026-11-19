@@ -27,6 +27,10 @@ No automatic merge, hosted migration, public deployment or Sprint 2.
 - Labels, errors, status names, navigation and import outcomes are centralized
   in FR/EN messages. Responsive forms and horizontally scrollable tables preserve
   native labels, keyboard controls, required states and live error/status feedback.
+  Client form metadata is plain data; Zod schemas and database/import preparation
+  are server-only. This avoids browser JIT/eval under the unchanged strict CSP.
+  Form action state survives revisions; only the editor fields reset when the
+  server returns a new revision, preserving optimistic concurrency and feedback.
 
 ## Database and authorization
 

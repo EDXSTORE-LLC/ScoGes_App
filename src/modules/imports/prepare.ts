@@ -1,32 +1,22 @@
+import "server-only";
+import { schoolSchemas } from "@/modules/school/validation";
+import { templateHeaders, type ImportKind } from "./templates";
 import type { Locale } from "@/types/foundation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   schoolEntities,
-  schoolSchemas,
   type SchoolKind,
   fieldKeys,
   type FieldKey,
   type SchoolRow,
 } from "@/modules/school/registry";
 import type { TabularData } from "./csv";
-export const importKinds = [
-  "students",
-  "guardians",
-  "links",
-  "enrollments",
-] as const;
-export type ImportKind = (typeof importKinds)[number];
 export type PreparedRow = {
   line: number;
   result: "ready" | "invalidRow" | "duplicate";
   data?: Record<string, string | number | boolean | null>;
   problems?: FieldKey[];
 };
-export function templateHeaders(kind: ImportKind) {
-  return schoolEntities[kind].fields.map((f) =>
-    f.reference ? f.name.replace(/_id$/, "_code") : f.name,
-  );
-}
 // Batched tenant-scoped lookups: no per-cell network calls or matching by contacts.
 export async function prepareRows(
   client: SupabaseClient,
