@@ -1,5 +1,10 @@
 # Final bounded Sprint 0 validation — 2026-11-19
 
+**Superseding closure verification:** [owner closure review](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md)
+records the owner's hosted minimum-12/four-class confirmation, refreshed Advisor
+screenshots, exact final-commit CI and subsequent hosted compatibility checks.
+Pending statuses below describe the earlier checkpoint, not the latest decision.
+
 ## Authority and candidate scope
 
 Owner authorized final password/dependency remediation and isolated validation of

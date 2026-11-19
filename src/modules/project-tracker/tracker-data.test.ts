@@ -50,9 +50,9 @@ describe("project tracker data", () => {
     expect(sprintTrackers[1].status).toBe("planned");
   });
 
-  it("keeps Sprint 0 in review with completed technical milestones and Sprint 1 inactive", () => {
+  it("records owner-approved development closure while keeping later sprints inactive", () => {
     const sprint = sprintTrackers[0];
-    expect(sprint.status).toBe("in_progress");
+    expect(sprint.status).toBe("done");
     expect(sprint.progress).toBe(100);
     expect(sprint.progress).toBe(
       Math.round(

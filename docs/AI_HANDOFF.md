@@ -1,5 +1,25 @@
 # Shared handoff — Claude, Codex and Antigravity
 
+Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
+**development-only closure**, including documented residual risks with their
+existing gates; no mandatory security check or HIGH vulnerability is waived.
+[PR #11](https://github.com/Edleben/ScoGes_App/pull/11) is merged as
+`5a346d060a9cd95f793a5de59db4324faf1f3f61`;
+[merge CI](https://github.com/Edleben/ScoGes_App/actions/runs/44550187309) passed.
+[Current closure evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md) supersedes
+older pending-acceptance notes below. This follow-up records the approved tracker
+transition through a protected PR; it is not published to main until that PR
+merges. Public preview, real-data pilot and production remain separately gated.
+Sprint 1 planning is authorized only after the closure transition is finalized;
+implementation remains unauthorized. No deployment or plan change is authorized.
+
+Latest owner closure verification — 2026-11-19: [current evidence and decision](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md)
+supersedes the pending hosted-policy/final-CI checkpoints below. Owner confirms
+hosted minimum 12/four classes, screenshots show 0 ERROR / 7 WARN / 1 INFO,
+and application commit 7608a711 has green final CI with 38 E2E cases. Preserve
+the retained warning/residual-risk dispositions and await owner closure acceptance;
+no merge, public deployment, paid action or Sprint 1 is authorized.
+
 Final bounded validation checkpoint — 2026-11-19: [candidate/evidence](SPRINT_0_FINAL_VALIDATION_2026-11-19.md) records PR #11 candidate 0b3284b with green isolated CI (202 unit, 12 guards, 3 Redis, 37 browser cases and all fresh/upgrade/replay/concurrency/tenant checks). The next exact-head run must also validate explicit history ordering and direct local Auth policy boundaries. Hosted minimum-12/all-class confirmation and a fresh Advisor result are requested from the owner; do not infer them or close Sprint 0. PR metadata write access is unavailable; a manual body is prepared. No merge, deployment, paid action or Sprint 1.
 
 2026-11-19 final dependency verification: pnpm 11.19.0 frozen install, zero-finding audit, identical 123-file lint/rule coverage, matching/nonmatching parser glob probes, lint/typecheck, 202 unit/component tests, ten CI safety tests, rollback-only tenant/authorization suites and all 23 production Chromium cases pass. Next 16.4.5 builds on its first run without the former security warning. Final-head isolated CI and hosted Auth policy remain separate gates.
