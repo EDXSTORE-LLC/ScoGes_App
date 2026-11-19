@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useTransition } from "react";
+import { useActionState } from "react";
 import { saveSchoolAction } from "./actions";
 import {
   schoolEntities,
@@ -33,16 +33,12 @@ export function SchoolForm({
   const [state, action, actionPending] = useActionState(saveSchoolAction, {
     ok: false,
   } as SchoolState);
-  const [transitionPending, startTransition] = useTransition();
-  const pending = actionPending || transitionPending;
+  const pending = actionPending;
   return (
     <form
       className="grid gap-4 rounded-lg border p-4"
-      onSubmit={(event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        startTransition(() => action(data));
-      }}
+      action={action}
+      onReset={(event) => event.preventDefault()}
     >
       <input type="hidden" name="kind" value={kind} />
       <input type="hidden" name="locale" value={locale} />

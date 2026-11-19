@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useState, useTransition } from "react";
+import { useActionState, useState } from "react";
 import {
   previewImportAction,
   commitImportAction,
@@ -27,17 +27,14 @@ export function ImportForm({
     previewImportAction,
     initial,
   );
-  const [pending, startTransition] = useTransition();
+  const pending = previewPending;
   return (
     <section className="grid gap-5">
       <p>{policy}</p>
       <form
         className="grid gap-4 rounded border p-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const data = new FormData(e.currentTarget);
-          startTransition(() => previewAction(data));
-        }}
+        action={previewAction}
+        onReset={(event) => event.preventDefault()}
       >
         <input type="hidden" name="locale" value={locale} />
         <input type="hidden" name="contextTenantId" value={tenantId} />

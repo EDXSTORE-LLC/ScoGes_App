@@ -86,13 +86,15 @@ begin
  end if;
  if tg_table_name='academic_terms' then
   select * into y from public.academic_years where tenant_id=new.tenant_id and id=new.year_id;
-  if y.id is null or y.status in ('closed','archived') or new.starts_on<y.starts_on or new.ends_on>y.ends_on then raise exception 'invalid_reference'; end if;
+  if y.id is null or (y.status in ('closed','archived') and (tg_op='INSERT' or new.status<>'archived')) or new.starts_on<y.starts_on or new.ends_on>y.ends_on then raise exception 'invalid_reference'; end if;
  end if;
  if tg_table_name='academic_classes' then
+  if not(tg_op='UPDATE' and new.status='archived' and (new.year_id,new.level_id,new.program_id) is not distinct from (old.year_id,old.level_id,old.program_id)) then
   if not exists(select 1 from public.academic_years where tenant_id=new.tenant_id and id=new.year_id and status in ('planned','active'))
    or not exists(select 1 from public.academic_levels where tenant_id=new.tenant_id and id=new.level_id and status='active')
    or (new.program_id is not null and not exists(select 1 from public.academic_programs where tenant_id=new.tenant_id and id=new.program_id and status='active'))
   then raise exception 'invalid_reference'; end if;
+  end if;
   if tg_op='UPDATE' and (new.year_id,new.level_id,new.program_id) is distinct from (old.year_id,old.level_id,old.program_id)
     and exists(select 1 from public.enrollments where tenant_id=new.tenant_id and class_id=new.id)
   then raise exception 'historical_class'; end if;
@@ -112,6 +114,7 @@ begin
    if old.status in ('completed','withdrawn','cancelled') then raise exception 'terminal_enrollment'; end if;
    if new.status<>old.status and not ((old.status='draft' and new.status in ('active','cancelled')) or (old.status='active' and new.status in ('completed','withdrawn'))) then raise exception 'invalid_transition'; end if;
   elsif new.status not in ('draft','active') then raise exception 'invalid_transition'; end if;
+  if tg_op='INSERT' or new.status in ('draft','active') or (new.level_id,new.program_id,new.class_id) is distinct from (old.level_id,old.program_id,old.class_id) then
   select * into y from public.academic_years where tenant_id=new.tenant_id and id=new.year_id;
   if y.id is null or y.status in ('closed','archived')
    or not exists(select 1 from public.academic_levels where tenant_id=new.tenant_id and id=new.level_id and status='active')
@@ -119,6 +122,7 @@ begin
   if new.class_id is not null then
    select * into c from public.academic_classes where tenant_id=new.tenant_id and id=new.class_id;
    if c.id is null or c.status<>'active' or c.year_id<>new.year_id or c.level_id<>new.level_id or c.program_id is distinct from new.program_id then raise exception 'invalid_reference'; end if;
+  end if;
   end if;
  end if;
  return new;
@@ -147,6 +151,10 @@ begin
  if e.table_name is null or jsonb_typeof(record_data)<>'object' or pg_column_size(record_data)>16384 then raise exception 'invalid_input'; end if;
  if exists(select 1 from jsonb_object_keys(record_data) k where not(k=any(e.fields))) then raise exception 'invalid_input'; end if;
  perform app_private.school_authorize(target_tenant_id,e.domain_key||'.write');
+ if exists(select 1 from jsonb_each(record_data) p where jsonb_typeof(p.value) not in ('string','number','boolean','null')) then raise exception 'invalid_input'; end if;
+ if record_kind in ('students','guardians') and not(record_data?'preferred_language') and record_id is null then
+  record_data:=record_data||jsonb_build_object('preferred_language',(select default_locale from public.tenant_settings where tenant_id=target_tenant_id));
+ end if;
  if record_data->>'status'='archived' then perform app_private.school_authorize(target_tenant_id,e.domain_key||'.archive'); end if;
  if (select count(*) from public.audit_events where tenant_id=target_tenant_id and actor_user_id=auth.uid() and action like 'school.%' and created_at>clock_timestamp()-interval '10 minutes')>=1000 then raise exception 'rate_limited' using errcode='P0001'; end if;
  select string_agg(format('%I',k),','),string_agg(format('r.%I',k),',') into keys,projection from jsonb_object_keys(record_data) k;
@@ -159,6 +167,7 @@ begin
   execute format('select to_jsonb(r) from public.%I r where tenant_id=$1 and id=$2 for update',e.table_name)
    into old_data using target_tenant_id,record_id;
   if old_data is null then raise exception 'not_found'; end if;
+  if old_data->>'status'='archived' then perform app_private.school_authorize(target_tenant_id,e.domain_key||'.archive'); end if;
   if expected_revision is null or expected_revision<>(old_data->>'revision')::bigint then raise exception 'stale_write'; end if;
   execute format('update public.%I set (%s)=(select %s from jsonb_populate_record(null::public.%I,$3) r) where tenant_id=$1 and id=$2 returning id',e.table_name,keys,projection,e.table_name)
    into result_id using target_tenant_id,record_id,record_data;
@@ -226,7 +235,7 @@ alter table public.enrollment_history enable row level security;
 revoke all on public.enrollment_history from public,anon,authenticated;
 grant select on public.enrollment_history to authenticated;
 create policy enrollment_history_read on public.enrollment_history for select to authenticated
- using(public.current_user_has_permission(tenant_id,'enrollments.read'));
+ using(public.current_user_has_permission(tenant_id,'enrollments.read') and exists(select 1 from public.tenants t where t.id=tenant_id and t.status='active'));
 revoke all on function app_private.school_entity(text),app_private.school_authorize(uuid,text),app_private.school_record_guard(),app_private.school_record_audit() from public,anon,authenticated;
 
 -- Commit only. Preview is sealed by the application and has no database writes.

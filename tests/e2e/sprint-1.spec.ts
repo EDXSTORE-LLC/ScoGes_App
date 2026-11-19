@@ -1,4 +1,5 @@
 import { test, expect } from "./fixtures";
+import { tabularWorkbook } from "../fixtures/xlsx";
 import { createClient } from "@supabase/supabase-js";
 import { randomUUID } from "node:crypto";
 import { parseEnv } from "node:util";
@@ -102,7 +103,25 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
           status: locale === "fr" ? "Statut" : "Status",
         };
         async function screen(kind: string) {
-          await page.goto(`/dashboard/school/${kind}?locale=${locale}`);
+          const response = await page.goto(
+            `/dashboard/school/${kind}?locale=${locale}`,
+          );
+          const nonce = response!
+            .headers()
+            ["content-security-policy"]?.match(/'nonce-([^']+)'/)?.[1];
+          expect(Boolean(nonce), "School page has a request nonce").toBe(true);
+          const mismatches = await page
+            .locator("script[src], script:not([type])")
+            .evaluateAll(
+              (scripts, expected) =>
+                scripts.filter(
+                  (s) => (s as HTMLScriptElement).nonce !== expected,
+                ).length,
+              nonce,
+            );
+          expect(mismatches, "School scripts match the request CSP nonce").toBe(
+            0,
+          );
           await expect(page.locator("html")).toHaveAttribute("lang", locale);
         }
         async function submit() {
@@ -259,6 +278,50 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
         await expect(
           page.getByRole("button", { name: commit, exact: true }),
         ).toBeVisible();
+        await page.getByRole("checkbox", { name: commit, exact: true }).check();
+        await page.getByRole("button", { name: commit, exact: true }).click();
+        await expect(
+          page.getByRole("cell", {
+            name: locale === "fr" ? "Créé" : "Created",
+            exact: true,
+          }),
+        ).toBeVisible();
+        expect(
+          (await client.from("students").select("id").eq("tenant_id", tenantId))
+            .data,
+        ).toHaveLength(3);
+        await page.getByLabel(file).setInputFiles({
+          name: "students.xlsx",
+          mimeType:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          buffer: tabularWorkbook([
+            ["code", "first_name", "last_name"],
+            ["s004", "Workbook", "Student"],
+          ]),
+        });
+        await page.getByRole("button", { name: preview, exact: true }).click();
+        await expect(
+          page.getByRole("cell", {
+            name: locale === "fr" ? "Valide" : "Valid",
+            exact: true,
+          }),
+        ).toBeVisible();
+        expect(
+          (await client.from("students").select("id").eq("tenant_id", tenantId))
+            .data,
+        ).toHaveLength(3);
+        await page.getByRole("checkbox", { name: commit, exact: true }).check();
+        await page.getByRole("button", { name: commit, exact: true }).click();
+        await expect(
+          page.getByRole("cell", {
+            name: locale === "fr" ? "Créé" : "Created",
+            exact: true,
+          }),
+        ).toBeVisible();
+        expect(
+          (await client.from("students").select("id").eq("tenant_id", tenantId))
+            .data,
+        ).toHaveLength(4);
       } finally {
         if (tenantId) {
           const a = await admin
