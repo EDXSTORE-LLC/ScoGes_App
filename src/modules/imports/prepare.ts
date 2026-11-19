@@ -1,3 +1,4 @@
+import type { Locale } from "@/types/foundation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   schoolEntities,
@@ -30,6 +31,7 @@ export async function prepareRows(
   tenantId: string,
   kind: ImportKind,
   table: TabularData,
+  defaultLanguage: Locale = "fr",
 ): Promise<PreparedRow[]> {
   const entity = schoolEntities[kind],
     headers = templateHeaders(kind);
@@ -106,6 +108,11 @@ export async function prepareRows(
       } else if (raw[f.name] !== undefined && raw[f.name] !== "")
         data[f.name] = raw[f.name];
     }
+    if (
+      (kind === "students" || kind === "guardians") &&
+      !data.preferred_language
+    )
+      data.preferred_language = defaultLanguage;
     const parsed = schoolSchemas[kind].safeParse(data);
     if (invalid || !parsed.success) {
       prepared.push({ line: index + 2, result: "invalidRow" });

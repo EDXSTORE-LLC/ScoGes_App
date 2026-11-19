@@ -1,6 +1,7 @@
 import type { Locale } from "@/types/foundation";
 import type { FieldKey, SchoolKind } from "./registry";
 const common = {
+  pagination: ["Pagination", "Pagination"],
   title: ["Scolarité", "School administration"],
   create: ["Créer", "Create"],
   edit: ["Modifier", "Edit"],
@@ -80,8 +81,8 @@ const common = {
     "Archiving preserves links and history. Codes are immutable.",
   ],
   referenceLimit: [
-    "Les listes de références affichent jusqu’à 500 éléments. Utilisez la recherche sur la page du référentiel pour vérifier le code.",
-    "Reference lists show up to 500 records. Use search on the reference page to verify the code.",
+    "Choisissez une référence ou saisissez son code interne. La saisie du code permet de sélectionner une référence absente des 500 suggestions.",
+    "Choose a reference or enter its internal code. Entering a code also selects records outside the 500 suggestions.",
   ],
 } as const;
 const entities: Record<SchoolKind, readonly [string, string]> = {
@@ -173,4 +174,13 @@ export function schoolError(
                 ? "transition"
                 : "failed";
   return schoolText(l, key);
+}
+
+export function importPolicyText(
+  locale: Locale,
+  limits: { maxBytes: number; maxRows: number; previewSeconds: number },
+) {
+  return locale === "fr"
+    ? `Limites : ${limits.maxBytes / 1048576} Mio, ${limits.maxRows} lignes. Aperçu valable ${limits.previewSeconds / 60} minutes. Aucun enregistrement pendant la prévisualisation, aucune notification envoyée.`
+    : `Limits: ${limits.maxBytes / 1048576} MiB, ${limits.maxRows} rows. Preview valid for ${limits.previewSeconds / 60} minutes. No records are saved during preview and no notifications are sent.`;
 }

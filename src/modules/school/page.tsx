@@ -13,8 +13,9 @@ import {
   type SchoolKind,
   type SchoolRow,
 } from "./registry";
-import { schoolText, entityText, statusText } from "./messages";
+import { schoolText, entityText, statusText, fieldText } from "./messages";
 import { SchoolForm } from "./form";
+import { PersonConnections } from "@/modules/people/connections";
 export type SchoolQuery = {
   locale?: string;
   q?: string;
@@ -104,6 +105,12 @@ export async function SchoolPage({
     Object.fromEntries(referenceResults.map(([k, r]) => [k, r.data ?? []]));
   if (referenceResults.some(([, r]) => r.error))
     return <p role="alert">{schoolText(locale, "unavailable")}</p>;
+  const settings = await ctx.client
+    .from("tenant_settings")
+    .select("default_locale")
+    .eq("tenant_id", ctx.membership.tenantId)
+    .maybeSingle<{ default_locale: "fr" | "en" }>();
+  const defaultLanguage = settings.data?.default_locale ?? "fr";
   const canWrite = hasPermission(
     ctx.membership.roles,
     `${entity.domain}.write`,
@@ -173,11 +180,7 @@ export async function SchoolPage({
           </label>
         )}
         <label className="grid gap-1">
-          {statusText(locale, "status") === "status"
-            ? locale === "fr"
-              ? "Statut"
-              : "Status"
-            : statusText(locale, "status")}
+          {fieldText(locale, "status")}
           <select
             name="status"
             defaultValue={status ?? ""}
@@ -201,7 +204,7 @@ export async function SchoolPage({
           <thead>
             <tr>
               <th className="p-2">{entityText(locale, kind)}</th>
-              <th className="p-2">{locale === "fr" ? "Statut" : "Status"}</th>
+              <th className="p-2">{fieldText(locale, "status")}</th>
               <th className="p-2">{schoolText(locale, "edit")}</th>
             </tr>
           </thead>
@@ -234,10 +237,7 @@ export async function SchoolPage({
         </table>
         {!result.data?.length && <p>{schoolText(locale, "empty")}</p>}
       </div>
-      <nav
-        className="flex gap-4"
-        aria-label={locale === "fr" ? "Pagination" : "Pagination"}
-      >
+      <nav className="flex gap-4" aria-label={schoolText(locale, "pagination")}>
         {current > 1 && (
           <Link href={url({ page: String(current - 1) })}>
             {schoolText(locale, "previous")}
@@ -261,11 +261,21 @@ export async function SchoolPage({
             tenantId={ctx.membership.tenantId}
             row={selected}
             references={references}
+            defaultLanguage={defaultLanguage}
           />
           {referenceKinds.size > 0 && (
             <p className="text-sm">{schoolText(locale, "referenceLimit")}</p>
           )}
         </>
+      )}
+      {selected && (kind === "students" || kind === "guardians") && (
+        <PersonConnections
+          client={ctx.client}
+          tenantId={ctx.membership.tenantId}
+          id={selected.id}
+          kind={kind}
+          locale={locale}
+        />
       )}
       {history && (
         <section>

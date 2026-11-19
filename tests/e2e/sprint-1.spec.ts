@@ -120,34 +120,34 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
           return r.data!.id as string;
         }
         await screen("years");
-        await page.getByLabel(label.code).fill("year26");
-        await page.getByLabel(label.name).fill("2026");
-        await page.getByLabel(label.start).fill("2026-01-01");
-        await page.getByLabel(label.end).fill("2026-12-31");
+        await page.getByLabel(label.code, { exact: true }).fill("year26");
+        await page.getByLabel(label.name, { exact: true }).fill("2026");
+        await page.getByLabel(label.start, { exact: true }).fill("2026-01-01");
+        await page.getByLabel(label.end, { exact: true }).fill("2026-12-31");
         await submit();
         const year = await record("academic_years", "year26");
         await screen("levels");
-        await page.getByLabel(label.code).fill("grade1");
-        await page.getByLabel(label.name).fill("Grade 1");
+        await page.getByLabel(label.code, { exact: true }).fill("grade1");
+        await page.getByLabel(label.name, { exact: true }).fill("Grade 1");
         await submit();
         const level = await record("academic_levels", "grade1");
         await screen("classes");
-        await page.getByLabel(label.code).fill("group1");
-        await page.getByLabel(label.name).fill("Group 1");
-        await page.getByLabel(label.year).selectOption(year);
-        await page.getByLabel(label.level).selectOption(level);
+        await page.getByLabel(label.code, { exact: true }).fill("group1");
+        await page.getByLabel(label.name, { exact: true }).fill("Group 1");
+        await page.getByLabel(label.year, { exact: true }).selectOption(year);
+        await page.getByLabel(label.level, { exact: true }).selectOption(level);
         await submit();
         const group = await record("academic_classes", "group1");
         await screen("students");
-        await page.getByLabel(label.code).fill("s001");
-        await page.getByLabel(label.first).fill("Alex");
-        await page.getByLabel(label.last).fill("Example");
+        await page.getByLabel(label.code, { exact: true }).fill("s001");
+        await page.getByLabel(label.first, { exact: true }).fill("Alex");
+        await page.getByLabel(label.last, { exact: true }).fill("Example");
         await submit();
         const student = await record("students", "s001");
         await screen("guardians");
-        await page.getByLabel(label.code).fill("g001");
-        await page.getByLabel(label.first).fill("Robin");
-        await page.getByLabel(label.last).fill("Example");
+        await page.getByLabel(label.code, { exact: true }).fill("g001");
+        await page.getByLabel(label.first, { exact: true }).fill("Robin");
+        await page.getByLabel(label.last, { exact: true }).fill("Example");
         await page
           .getByLabel(locale === "fr" ? "Adresse e-mail" : "Email address", {
             exact: true,
@@ -156,8 +156,12 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
         await submit();
         const guardian = await record("guardians", "g001");
         await screen("links");
-        await page.getByLabel(label.student).selectOption(student);
-        await page.getByLabel(label.guardian).selectOption(guardian);
+        await page
+          .getByLabel(label.student, { exact: true })
+          .selectOption(student);
+        await page
+          .getByLabel(label.guardian, { exact: true })
+          .selectOption(guardian);
         await page
           .getByLabel(
             locale === "fr" ? "Type de relation" : "Relationship type",
@@ -171,10 +175,12 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
           .check();
         await submit();
         await screen("enrollments");
-        await page.getByLabel(label.student).selectOption(student);
-        await page.getByLabel(label.year).selectOption(year);
-        await page.getByLabel(label.level).selectOption(level);
-        await page.getByLabel(label.group).selectOption(group);
+        await page
+          .getByLabel(label.student, { exact: true })
+          .selectOption(student);
+        await page.getByLabel(label.year, { exact: true }).selectOption(year);
+        await page.getByLabel(label.level, { exact: true }).selectOption(level);
+        await page.getByLabel(label.group, { exact: true }).selectOption(group);
         await submit();
         const enrollment = await client
           .from("enrollments")
@@ -186,7 +192,10 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
         await page.goto(
           `/dashboard/school/enrollments?locale=${locale}&id=${enrollment.data!.id}`,
         );
-        await page.getByLabel(label.status).last().selectOption("active");
+        await page
+          .getByLabel(label.status, { exact: true })
+          .last()
+          .selectOption("active");
         await submit();
         const history = await client
           .from("enrollment_history")

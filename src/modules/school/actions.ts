@@ -5,6 +5,7 @@ import { getLocale } from "@/i18n/messages";
 import { requestLimit } from "@/lib/security/request-limit";
 import { schoolKindSchema, schoolEntities, schoolSchemas } from "./registry";
 import { schoolContext } from "./context";
+import { resolveReferenceOverrides } from "./references";
 import { schoolText, schoolError, type SchoolState } from "./messages";
 const identity = z.object({
   id: z.union([z.uuid(), z.literal("")]),
@@ -29,13 +30,6 @@ export async function saveSchoolAction(
         : (form.get(f.name) ?? ""),
     ]),
   );
-  const parsed = schoolSchemas[kind.data].safeParse(raw);
-  if (!parsed.success)
-    return {
-      ok: false,
-      message: schoolText(locale, "invalid"),
-      fields: parsed.error.issues.map((i) => String(i.path[0])),
-    };
   try {
     const ctx = await schoolContext(
       `${entity.domain}.write`,
@@ -48,6 +42,24 @@ export async function saveSchoolAction(
       return {
         ok: false,
         message: schoolText(locale, ctx ? "unavailable" : "denied"),
+      };
+    try {
+      await resolveReferenceOverrides(
+        ctx.client,
+        ctx.membership.tenantId,
+        entity.fields,
+        raw,
+        form,
+      );
+    } catch {
+      return { ok: false, message: schoolText(locale, "reference") };
+    }
+    const parsed = schoolSchemas[kind.data].safeParse(raw);
+    if (!parsed.success)
+      return {
+        ok: false,
+        message: schoolText(locale, "invalid"),
+        fields: parsed.error.issues.map((i) => String(i.path[0])),
       };
     const { error } = await ctx.client.rpc("save_school_record", {
       target_tenant_id: ctx.membership.tenantId,

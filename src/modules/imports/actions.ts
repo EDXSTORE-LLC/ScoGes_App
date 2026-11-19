@@ -51,11 +51,18 @@ export async function previewImportAction(
           ? await parseXlsx(bytes, limits)
           : null;
     if (!table || !table.rows.length) throw Error("invalid_file");
+    const settings = await ctx.client
+      .from("tenant_settings")
+      .select("default_locale")
+      .eq("tenant_id", ctx.membership.tenantId)
+      .maybeSingle<{ default_locale: "fr" | "en" }>();
+    if (settings.error || !settings.data) throw Error("reference_unavailable");
     const rows = await prepareRows(
       ctx.client,
       ctx.membership.tenantId,
       kind.data,
       table,
+      settings.data.default_locale,
     );
     const valid = rows.filter(
       (r): r is PreparedRow & { data: NonNullable<PreparedRow["data"]> } =>

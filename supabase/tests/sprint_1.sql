@@ -1,7 +1,9 @@
 -- Isolated CI only; invoked inside the enclosing rollback transaction.
 reset role;
 select set_config('test.school_actor',(select user_id::text from public.memberships where id=current_setting('test.membership_c')::uuid),true);
-update auth.users set email_confirmed_at=clock_timestamp() where id in (current_setting('test.school_actor')::uuid,current_setting('test.user_b')::uuid);
+update auth.users set email_confirmed_at=clock_timestamp() where id in (current_setting('test.school_actor')::uuid,current_setting('test.user_b')::uuid,current_setting('test.user_a')::uuid);
+delete from public.membership_roles where membership_id=current_setting('test.membership_a')::uuid;
+insert into public.membership_roles(membership_id,role_id) select current_setting('test.membership_a')::uuid,id from public.roles where key='cashier';
 set local role authenticated;
 select set_config('request.jwt.claim.sub',current_setting('test.school_actor'),true);
 do $$
