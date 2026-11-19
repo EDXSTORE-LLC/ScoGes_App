@@ -1,5 +1,11 @@
 # Project documentation map
 
+Current Sprint 1 implementation follows explicitly approved S1-D1–D6, including
+one active year per tenant, immutable codes and insert-only imports. Read
+[the implementation and verification record](SPRINT_1_IMPLEMENTATION.md) before
+working on these modules. The branch remains unmerged and no hosted rollout or
+Sprint 2 is authorized.
+
 Current execution — **2026-11-19**: Sprint 0 closure PR #12 is merged on main
 `2b248aaff8d85bfcdfaf9db94ca43c19852fbf99` with green merge CI. The owner now
 authorizes [Sprint 1 implementation](prompts/SPRINT_1_MASTER_PROMPT.md) on its

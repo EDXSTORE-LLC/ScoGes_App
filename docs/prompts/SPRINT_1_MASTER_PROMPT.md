@@ -25,12 +25,12 @@ the previous branch convention with `feat/sprint-1-academics-students-enrollment
 main changes still require reviewed PRs and required validation. Do not deploy or
 apply hosted migrations merely because this prompt exists.
 
-## Decisions required before the affected slice
+## Decisions required before the affected slice — resolved by S1-D1–D6
 
 Produce a short decision sheet citing existing product requirements. Request owner decisions only where those sources do not settle the rule; record accepted answers before implementation:
 
 - Student required fields, school identifier/matricule assignment, uniqueness scope, and edit/archive semantics. Do not infer identity from name alone.
-- Academic hierarchy and optional program/level/class relationships, year boundaries and overlapping-year policy. Terms and subjects appear in the broader specification but are excluded from this bounded slice unless the owner explicitly adds them.
+- Academic hierarchy and optional program/level/class relationships, year boundaries and overlapping-year policy. Optional terms/semesters/trimesters are included by approved S1-D2. Subjects remain excluded.
 - Enrollment statuses and allowed transitions, duplicate enrollment policy, transfers and historical correction rules. Do not silently overwrite history.
 - Guardian required fields, relationship metadata, duplicate matching, consent/notification preference defaults and archive/unlink behavior. A shared phone or email is not automatic authority to merge people or grant account access.
 - Explicit permission matrix for academic, student, guardian, enrollment and import operations, including read-only access. Existing foundation permissions do not authorize these new operations. No implicit grants to finance, cashiers, auditors or support.

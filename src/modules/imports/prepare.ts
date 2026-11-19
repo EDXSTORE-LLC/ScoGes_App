@@ -87,6 +87,7 @@ export async function prepareRows(
     const raw = rows[index];
     const data: Record<string, unknown> = {};
     let invalid = false;
+    const extraProblems: FieldKey[] = [];
     for (const f of entity.fields) {
       if (f.reference) {
         const code = (raw[f.name.replace(/_id$/, "_code")] ?? "")
@@ -122,19 +123,25 @@ export async function prepareRows(
         c.year_id !== data.year_id ||
         c.level_id !== data.level_id ||
         c.program_id !== data.program_id
-      )
+      ) {
         invalid = true;
+        extraProblems.push("class_id");
+      }
     }
     if (
       kind === "enrollments" &&
       data.status &&
       !["draft", "active"].includes(String(data.status))
-    )
+    ) {
       invalid = true;
+      extraProblems.push("status");
+    }
     const parsed = schoolSchemas[kind].safeParse(data);
     if (invalid || !parsed.success) {
       const problems = parsed.success
-        ? [kind === "enrollments" ? "class_id" : "code"]
+        ? extraProblems.length
+          ? extraProblems
+          : ["code"]
         : parsed.error.issues.map((issue) => String(issue.path[0]));
       prepared.push({
         line: index + 2,

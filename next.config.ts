@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   typedRoutes: true,
-  experimental: { serverActions: { bodySizeLimit: "16mb" } },
+  experimental: { serverActions: { bodySizeLimit: "5mb" } },
   allowedDevOrigins: ["127.0.0.1"],
   async headers() {
     const headers = [

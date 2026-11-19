@@ -69,7 +69,7 @@ export async function saveSchoolAction(
       record_data: parsed.data,
     });
     if (error) return { ok: false, message: schoolError(locale, error) };
-    revalidatePath("/dashboard", "layout");
+    revalidatePath(`/dashboard/school/${kind.data}`);
     return { ok: true, message: schoolText(locale, "saved") };
   } catch {
     return { ok: false, message: schoolText(locale, "unavailable") };

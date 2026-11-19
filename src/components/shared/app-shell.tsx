@@ -96,12 +96,12 @@ export function AppShell({
       </aside>
 
       <div className="min-w-0">
-        <header className="flex min-h-16 items-center justify-between border-b border-[var(--border)] bg-white px-5">
-          <div>
+        <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 py-3 border-b border-[var(--border)] bg-white px-5">
+          <div className="min-w-0 flex-1 basis-48">
             <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
               {foundationText(locale, "admin")}
             </p>
-            <p className="text-sm text-slate-800">{userEmail}</p>
+            <p className="truncate text-sm text-slate-800">{userEmail}</p>
           </div>
           <LanguageLinks />
           <form action={signOutAction}>

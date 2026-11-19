@@ -27,11 +27,27 @@ export type SchoolQuery = {
 };
 export async function SchoolPage({
   kind: rawKind,
-  query,
+  query: rawQuery,
 }: {
   kind: string;
   query: SchoolQuery;
 }) {
+  const validatedQuery = z
+    .object({
+      locale: z.string().optional(),
+      q: z.string().max(80).optional(),
+      status: z.string().max(30).optional(),
+      page: z.string().max(5).optional(),
+      id: z.string().max(36).optional(),
+      student_id: z.string().max(36).optional(),
+      year_id: z.string().max(36).optional(),
+    })
+    .safeParse(rawQuery);
+  if (!validatedQuery.success)
+    return (
+      <p role="alert">{schoolText(getLocale(rawQuery.locale), "invalid")}</p>
+    );
+  const query = validatedQuery.data;
   const parsedKind = schoolKindSchema.safeParse(rawKind);
   if (!parsedKind.success) notFound();
   const kind = parsedKind.data;
@@ -57,7 +73,9 @@ export async function SchoolPage({
     .select("*", { count: "exact" })
     .eq("tenant_id", ctx.membership.tenantId);
   if (q && entity.fields.some((f) => f.name === "code"))
-    listing = listing.or(`code.ilike.%${q}%,name.ilike.%${q}%`);
+    listing = listing.or(
+      `code.ilike.%${q.replaceAll("_", "\\_")}%,name.ilike.%${q.replaceAll("_", "\\_")}%`,
+    );
   if (status) listing = listing.eq("status", status);
   for (const name of ["student_id", "year_id"] as const)
     if (
@@ -107,10 +125,13 @@ export async function SchoolPage({
     return <p role="alert">{schoolText(locale, "unavailable")}</p>;
   const settings = await ctx.client
     .from("tenant_settings")
-    .select("default_locale")
+    .select("default_locale,timezone")
     .eq("tenant_id", ctx.membership.tenantId)
-    .maybeSingle<{ default_locale: "fr" | "en" }>();
-  const defaultLanguage = settings.data?.default_locale ?? "fr";
+    .maybeSingle<{ default_locale: "fr" | "en"; timezone: string }>();
+  if (settings.error || !settings.data)
+    return <p role="alert">{schoolText(locale, "unavailable")}</p>;
+  const defaultLanguage = settings.data.default_locale;
+  const timeZone = settings.data.timezone;
   const canWrite = hasPermission(
     ctx.membership.roles,
     `${entity.domain}.write`,
@@ -288,6 +309,7 @@ export async function SchoolPage({
                 {new Intl.DateTimeFormat(locale, {
                   dateStyle: "medium",
                   timeStyle: "short",
+                  timeZone,
                 }).format(new Date(event.created_at))}
                 :{" "}
                 {event.before_state

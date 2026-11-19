@@ -125,7 +125,19 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
           await expect(page.locator("html")).toHaveAttribute("lang", locale);
         }
         async function submit() {
-          await page.getByRole("button", { name: save, exact: true }).click();
+          const [response] = await Promise.all([
+            page.waitForResponse(
+              (r) =>
+                r.request().method() === "POST" &&
+                new URL(r.url()).pathname.startsWith("/dashboard/school/"),
+            ),
+            page.getByRole("button", { name: save, exact: true }).click(),
+          ]);
+          expect(response.status(), "School action response status").toBe(200);
+          expect(
+            response.headers()["content-type"],
+            "School action uses the RSC protocol",
+          ).toContain("text/x-component");
           await expect(page.getByRole("status")).toContainText(saved);
         }
         async function record(table: string, code: string) {
@@ -138,13 +150,32 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
           expect(r.error).toBeNull();
           return r.data!.id as string;
         }
+        await page.setViewportSize({ width: 390, height: 844 });
         await screen("years");
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= window.innerWidth,
+          ),
+          "School layout fits a mobile viewport",
+        ).toBe(true);
         await page.getByLabel(label.code, { exact: true }).fill("year26");
         await page.getByLabel(label.name, { exact: true }).fill("2026");
         await page.getByLabel(label.start, { exact: true }).fill("2026-01-01");
         await page.getByLabel(label.end, { exact: true }).fill("2026-12-31");
         await submit();
         const year = await record("academic_years", "year26");
+        await screen("terms");
+        await page.getByLabel(label.code, { exact: true }).fill("term1");
+        await page.getByLabel(label.name, { exact: true }).fill("Term 1");
+        await page.getByLabel(label.year, { exact: true }).selectOption(year);
+        await page.getByLabel(label.start).fill("2026-01-01");
+        await page.getByLabel(label.end).fill("2026-04-30");
+        await submit();
+        await screen("programs");
+        await page.getByLabel(label.code, { exact: true }).fill("program1");
+        await page.getByLabel(label.name, { exact: true }).fill("Program 1");
+        await submit();
+        const program = await record("academic_programs", "program1");
         await screen("levels");
         await page.getByLabel(label.code, { exact: true }).fill("grade1");
         await page.getByLabel(label.name, { exact: true }).fill("Grade 1");
@@ -155,6 +186,9 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
         await page.getByLabel(label.name, { exact: true }).fill("Group 1");
         await page.getByLabel(label.year, { exact: true }).selectOption(year);
         await page.getByLabel(label.level, { exact: true }).selectOption(level);
+        await page
+          .getByLabel(locale === "fr" ? "Filière" : "Program", { exact: true })
+          .selectOption(program);
         await submit();
         const group = await record("academic_classes", "group1");
         await screen("students");
@@ -200,6 +234,9 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
         await page.getByLabel(label.year, { exact: true }).selectOption(year);
         await page.getByLabel(label.level, { exact: true }).selectOption(level);
         await page.getByLabel(label.group, { exact: true }).selectOption(group);
+        await page
+          .getByLabel(locale === "fr" ? "Filière" : "Program", { exact: true })
+          .selectOption(program);
         await submit();
         const enrollment = await client
           .from("enrollments")
@@ -322,6 +359,79 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
           (await client.from("students").select("id").eq("tenant_id", tenantId))
             .data,
         ).toHaveLength(4);
+        await page.goto(
+          `/dashboard/school/students?locale=${locale}&id=${student}`,
+        );
+        await expect(
+          page.getByLabel(label.code, { exact: true }),
+        ).not.toBeEditable();
+        await page
+          .getByLabel(label.first, { exact: true })
+          .fill("Alex Updated");
+        await page
+          .getByLabel(label.status, { exact: true })
+          .last()
+          .selectOption("archived");
+        await submit();
+        expect(
+          (
+            await client
+              .from("students")
+              .select("status,code,first_name")
+              .eq("id", student)
+              .single()
+          ).data,
+        ).toMatchObject({
+          status: "archived",
+          code: "s001",
+          first_name: "Alex Updated",
+        });
+        expect(
+          (
+            await client
+              .from("enrollments")
+              .select("id")
+              .eq("tenant_id", tenantId)
+              .eq("student_id", student)
+          ).data,
+        ).toHaveLength(1);
+        expect(
+          (
+            await client
+              .from("student_guardians")
+              .select("id")
+              .eq("tenant_id", tenantId)
+              .eq("student_id", student)
+          ).data,
+        ).toHaveLength(1);
+        await page.goto(
+          `/dashboard/school/guardians?locale=${locale}&id=${guardian}`,
+        );
+        await page
+          .getByLabel(locale === "fr" ? "Téléphone" : "Phone", { exact: true })
+          .fill("+22800000000");
+        await page
+          .getByLabel(
+            locale === "fr"
+              ? "Préférence e-mail (ne vaut pas consentement)"
+              : "Email preference (does not constitute consent)",
+            { exact: true },
+          )
+          .check();
+        await submit();
+        expect(
+          (
+            await client
+              .from("guardians")
+              .select("phone,notify_email,code")
+              .eq("id", guardian)
+              .single()
+          ).data,
+        ).toMatchObject({
+          phone: "+22800000000",
+          notify_email: true,
+          code: "g001",
+        });
       } finally {
         if (tenantId) {
           const a = await admin

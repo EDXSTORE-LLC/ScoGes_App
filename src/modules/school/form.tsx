@@ -45,7 +45,10 @@ export function SchoolForm({
       <input type="hidden" name="contextTenantId" value={tenantId} />
       <input type="hidden" name="id" value={row?.id ?? ""} />
       <input type="hidden" name="revision" value={row?.revision ?? ""} />
-      <fieldset disabled={pending} className="grid gap-4 sm:grid-cols-2">
+      <fieldset
+        disabled={pending}
+        className="grid min-w-0 gap-4 sm:grid-cols-2"
+      >
         <legend className="mb-3 font-semibold">
           {schoolText(locale, row ? "edit" : "create")}
         </legend>

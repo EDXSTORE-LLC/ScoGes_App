@@ -165,7 +165,7 @@ export async function commitImportAction(
     const parsed = results.safeParse(data);
     if (error || !parsed.success)
       return { ok: false, message: schoolText(locale, "failed") };
-    revalidatePath("/dashboard", "layout");
+    revalidatePath(`/dashboard/school/${preview.kind}`);
     return {
       ok: true,
       message: schoolText(locale, "summary"),
