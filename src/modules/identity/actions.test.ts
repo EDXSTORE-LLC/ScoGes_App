@@ -88,6 +88,56 @@ describe("authentication actions", () => {
     ).toBe(false);
     expect(auth.resetPasswordForEmail).not.toHaveBeenCalled();
   });
+  for (const locale of ["fr", "en"] as const) {
+    it.each([
+      "Aa1!abcdefg",
+      "aa1!abcdefgh",
+      "AA1!ABCDEFGH",
+      "Aa!!abcdefgh",
+      "Aa12abcdefgh",
+    ])(
+      `rejects weak ${locale} signup/reset passwords before any protected side effect: %s`,
+      async (password) => {
+        const input = form({
+          email: "a@example.com",
+          password,
+          confirmPassword: password,
+          locale,
+        });
+        for (const action of [signUpAction, updatePasswordAction]) {
+          expect(await action({ ok: false }, input)).toEqual({
+            ok: false,
+            message: authText(locale, "passwordInvalid"),
+          });
+        }
+        expect(requestLimit).not.toHaveBeenCalled();
+        expect(auth.signUp).not.toHaveBeenCalled();
+        expect(auth.getUser).not.toHaveBeenCalled();
+        expect(auth.updateUser).not.toHaveBeenCalled();
+        expect(auth.signOut).not.toHaveBeenCalled();
+      },
+    );
+    it(`reports safe ${locale} provider weak-password feedback on reset without signing out`, async () => {
+      auth.getUser.mockResolvedValue({
+        data: { user: { id: "actor", email_confirmed_at: "2026-01-01" } },
+        error: null,
+      });
+      auth.updateUser.mockResolvedValue({
+        error: { code: "weak_password", message: "private provider payload" },
+      });
+      expect(
+        await updatePasswordAction(
+          { ok: false },
+          form({
+            password: "Aa1!abcdefgh",
+            confirmPassword: "Aa1!abcdefgh",
+            locale,
+          }),
+        ),
+      ).toEqual({ ok: false, message: authText(locale, "passwordRejected") });
+      expect(auth.signOut).not.toHaveBeenCalled();
+    });
+  }
   it("requests PKCE recovery with the configured origin and a fixed destination", async () => {
     auth.resetPasswordForEmail.mockResolvedValue({ error: null });
     const result = await requestPasswordResetAction(
@@ -131,7 +181,7 @@ describe("authentication actions", () => {
       { ok: false },
       form({
         email: "a@example.com",
-        password: "password123",
+        password: "Valid-PasswordAa1!",
         confirmPassword: "different",
       }),
     );
@@ -164,8 +214,8 @@ describe("authentication actions", () => {
             { ok: false },
             form({
               email: "a@example.com",
-              password: "password123",
-              confirmPassword: "password123",
+              password: "Valid-PasswordAa1!",
+              confirmPassword: "Valid-PasswordAa1!",
               locale,
             }),
           );
@@ -192,8 +242,8 @@ describe("authentication actions", () => {
           { ok: false },
           form({
             email: "a@example.com",
-            password: "password123",
-            confirmPassword: "password123",
+            password: "Valid-PasswordAa1!",
+            confirmPassword: "Valid-PasswordAa1!",
           }),
         ),
       ).toEqual({ ok: true, message: authText("fr", "checkEmail") });
@@ -222,8 +272,8 @@ describe("authentication actions", () => {
       { ok: false },
       form({
         email: "a@example.com",
-        password: "password123",
-        confirmPassword: "password123",
+        password: "Valid-PasswordAa1!",
+        confirmPassword: "Valid-PasswordAa1!",
         locale: "en",
       }),
     );
@@ -249,7 +299,10 @@ describe("authentication actions", () => {
     auth.getUser.mockResolvedValue({ data: { user: null }, error: null });
     const result = await updatePasswordAction(
       { ok: false },
-      form({ password: "password123", confirmPassword: "password123" }),
+      form({
+        password: "Valid-PasswordAa1!",
+        confirmPassword: "Valid-PasswordAa1!",
+      }),
     );
     expect(result.message).toBe(authText("fr", "invalidLink"));
     expect(auth.updateUser).not.toHaveBeenCalled();
@@ -265,13 +318,15 @@ describe("authentication actions", () => {
       updatePasswordAction(
         { ok: false },
         form({
-          password: "password123",
-          confirmPassword: "password123",
+          password: "Valid-PasswordAa1!",
+          confirmPassword: "Valid-PasswordAa1!",
           locale: "en",
         }),
       ),
     ).rejects.toThrow("REDIRECT:/login?notice=passwordUpdated&locale=en");
-    expect(auth.updateUser).toHaveBeenCalledWith({ password: "password123" });
+    expect(auth.updateUser).toHaveBeenCalledWith({
+      password: "Valid-PasswordAa1!",
+    });
     expect(auth.signOut).toHaveBeenCalledWith({ scope: "global" });
   });
 });
@@ -281,8 +336,8 @@ it.each(["limited", "unavailable"] as const)(
   async (decision) => {
     const input = form({
       email: "a@example.com",
-      password: "password123",
-      confirmPassword: "password123",
+      password: "Valid-PasswordAa1!",
+      confirmPassword: "Valid-PasswordAa1!",
       locale: "en",
     });
     for (const [action, scope, effect] of [

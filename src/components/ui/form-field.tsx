@@ -10,6 +10,7 @@ type FormFieldProps = {
   autoComplete?: string;
   minLength?: number;
   maxLength?: number;
+  "aria-describedby"?: string;
   value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 };
@@ -24,6 +25,7 @@ export function FormField({
   autoComplete,
   minLength,
   maxLength,
+  "aria-describedby": descriptionId,
   value,
   onChange,
 }: FormFieldProps) {
@@ -43,6 +45,7 @@ export function FormField({
         autoComplete={autoComplete}
         minLength={minLength}
         maxLength={maxLength}
+        aria-describedby={descriptionId}
         value={value}
         onChange={onChange}
       />

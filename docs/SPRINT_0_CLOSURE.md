@@ -1,5 +1,36 @@
 # Sprint 0 closure review — 2026-11-01
 
+Final security/quality review checkpoint — 2026-11-19: [bounded final validation](SPRINT_0_FINAL_VALIDATION_2026-11-19.md) reconciles all seven owner-named Advisor findings. First candidate 0b3284b passed isolated PR CI including 37 browser cases and security/concurrency/replay checks. Final-head CI and hosted password save/compatibility evidence remain separately required. This is readiness evidence, not owner acceptance of remaining operational deferrals or authorization to merge/deploy/start Sprint 1.
+
+2026-11-19 dependency checkpoint: [targeted dependency fixes](DEPENDENCY_SECURITY_2026-11-19.md) now yield a zero-finding registry audit with Next/config 16.4.5 and upstream TypeScript-ESLint 8.73.0. This supersedes the dependency-advisory blocker in older checkpoints, subject to final review-head CI. Hosted password-policy alignment and other applicable owner/operational gates remain open; no overall Sprint 0 closure, waiver, merge, deployment, pilot or Sprint 1 is claimed.
+
+Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.
+
+Final hosted review follow-up — **2026-11-18**: [owner-verified security review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) records **0 ERROR / 7 WARN / 1 INFO** and actual hosted Auth values. Missing connector access is no longer a report-count/password-value blocker. The weak **6-character/no-class** policy is unaccepted and blocks Sprint 0 security closure; password hardening is proposed, not executed. Dependency and final-head/disposable-CI requirements remain open. **SPRINT 0 SECURITY GATE BLOCKED — REMEDIATION STILL REQUIRED**. No new residual-risk waiver, merge, public preview/deployment, pilot, plan change or Sprint 1.
+
+Security gate checkpoint — **2026-11-18**: **SPRINT 0 SECURITY GATE BLOCKED —
+REMEDIATION STILL REQUIRED**. [Detailed remediation/evidence](SECURITY_ADVISOR_2026-11-18.md)
+records the applied function-privilege migration and passing hosted transactional
+negative/valid-flow checks. A full hosted Advisor refresh and hosted password
+policy verification remain inaccessible; leaked-password protection is still
+plan-constrained. Newly reported Next.js/picomatch dependency advisories require
+review/remediation. No additional risk acceptance, overall closure, merge, public
+deployment, real-data pilot or Sprint 1 is authorized or claimed.
+
+Current evidence review (2026-11-15): [R1–R7 acceptance matrix](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) separates completed R2 remediation, partial R1/R3/R6/R7 controls, the scoped R4 backup acceptance, unaccepted development deferrals and pilot blockers. It supersedes older absent-control/pending-deployment descriptions; overall Sprint 0 remains open.
+
+## Owner-approved backup risk disposition — 2026-11-15
+
+The owner manually verified the dashboard for configured Supabase project `jlaufrjmjjheisdqkkao` and reported: **organization plan Free; latest successful scheduled backup N/A (no automatic project backups on this plan); PITR disabled/unavailable**. This is owner-verified dashboard evidence, not a successful connector/API inspection. No off-site backup or recoverability is inferred.
+
+The owner explicitly accepts **this lack of automatic backup/PITR protection as a residual infrastructure risk for development and Sprint 0 technical closure only**. This supersedes the earlier unaccepted/pending disposition for the backup portion of R4. It does not accept every R4 item, other R1–R7 dispositions, or overall Sprint 0 completion. Keep Sprint 0 `in_progress` pending the remaining applicable checks and explicit overall acceptance; R3 and remaining R4 operational work stay open.
+
+**Pilot/production blocker:** before real school/student/financial data is used, approve and implement adequate backup/recovery protection and test restoration. A paid daily backup alone does not meet the approved four-hour RPO; off-site manual backups alone do not demonstrate the previously approved automated 24/7 objective. Retain the four-hour RPO/eight-covered-business-hour RTO as unproven pilot planning targets unless explicitly revised. No production readiness, purchase, upgrade, PITR activation, export, restore, destructive database operation, PR merge or Sprint 1 activation is authorized.
+
+Primary risk owner: project owner (user); technical backup remains unassigned. Reassess before pilot/production and before financial transactions become live. Execution evidence remains required for the operational protection, even though this scoped risk is accepted for development closure.
+
+## Historical baseline — read with the 2026-11-15 scoped disposition above
+
 Status: **gate open for remediation; proposed R1–R7 deferrals not accepted**. This record proposes technical closure, not production readiness, deployment or Sprint 1 activation. Sprint 0 stays `in_progress` at 100% until explicit owner acceptance is recorded through the validated closure PR.
 
 Review: [PR #8](https://github.com/Edleben/ScoGes_App/pull/8), [required checks](https://github.com/Edleben/ScoGes_App/pull/8/checks). Final-head run links and actual results belong in that PR; this document does not predeclare a pending check successful.

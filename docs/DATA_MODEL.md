@@ -1,5 +1,7 @@
 # Data Model
 
+Current hosted checkpoint — **2026-11-11**: PR #10 is merged; the R2 helper and R3 direct-RPC quota migrations are now applied to the configured project and post-deployment checks passed. [Deployment evidence](DEPLOYMENT_2026-11-11.md) supersedes older pending-deployment notes below. Full advisor refresh, Vercel/monitoring and Sprint 0 acceptance remain open; Sprint 1 is inactive.
+
 ## Sprint 0 Tables
 
 - `tenants`: tenant identity, slug, lifecycle status.
@@ -34,6 +36,14 @@ No financial production tables are created in Sprint 0. Billing, invoices, payme
 The administration migration adds two narrow write RPCs and a monotonic revision trigger on memberships/settings; no tables or financial entities are added. It preserves revoked membership records and role mappings, extends authorized directory profile reads to revoked members, and records safe before/after audit metadata in each write transaction. See [Administration](ADMINISTRATION.md).
 
 ## Verified migration chain
+
+2026-11-18 checkpoint: seven migrations are applied to the configured hosted
+development project, including the R2/R3 versions below and
+`20261118151125_security_advisor_function_privileges.sql`. The seventh changes
+function bodies/paths/ACLs and scoped creator defaults, without changing business
+tables or data. The legacy invitation wrapper and trusted service delivery are
+invoker functions; six authenticated atomic/authorization RPCs retain definer
+security. See [function review and rollout contract](SECURITY_ADVISOR_2026-11-18.md).
 
 | Version        | Scope                                                                        | Hosted checkpoint        |
 | -------------- | ---------------------------------------------------------------------------- | ------------------------ |

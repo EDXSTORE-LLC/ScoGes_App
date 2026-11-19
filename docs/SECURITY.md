@@ -1,5 +1,29 @@
 # Security
 
+Final verification checkpoint — 2026-11-19: [review/control matrix](SPRINT_0_FINAL_VALIDATION_2026-11-19.md) records six intentional authenticated definers plus Free-plan leaked-password protection, matches live function bodies/ACLs/paths to reviewed migrations and confirms no anonymous public definers. Initial isolated CI is green; final-head and owner-hosted policy evidence are tracked separately. No hosted function or setting is changed to obtain zero warnings.
+
+2026-11-19 dependency update: [targeted remediation](DEPENDENCY_SECURITY_2026-11-19.md) removes the three active moderate advisories (two Next.js and one transitive minimatch) using supported releases. Audit reports zero known findings; the former picomatch high advisory was withdrawn upstream and is not credited as a code fix. No audit/rule threshold was weakened. Existing hosted Auth and final-head isolated-CI/owner gates remain open.
+
+2026-11-19: [application password policy](PASSWORD_POLICY_2026-11-19.md) now enforces
+12–128 characters plus lowercase/uppercase/digit/supported symbol on signup/reset.
+Existing login rules remain unchanged. No hosted setting, RLS, permission or
+session-revocation control changed. Direct Auth policy remains an owner-action gate;
+application validation alone does not resolve the last verified hosted minimum six.
+
+Latest owner-verified assessment — **2026-11-18**: [hosted security review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) supersedes earlier missing-Advisor/password-value notes. Refreshed hosted result **0 ERROR / 7 WARN / 1 INFO** is owner-verified; current catalog/negative tests reconcile six deliberate authenticated definers and the plan-constrained password warning. Hosted minimum **6** with no required classes is a **Sprint 0 blocker**, not accepted development risk. Target **12 + digits/lowercase/uppercase/symbols** needs a coordinated application/test alignment and explicit owner dashboard action. No Auth setting changed; connector unavailability is not a security defect. Other password-change/OTP/public-exposure and dependency gates remain documented.
+
+2026-11-18: [Security Advisor remediation](SECURITY_ADVISOR_2026-11-18.md)
+records the applied seventh migration, exact function dispositions, anonymous
+revocations, hardened onboarding identity and server-only delivery bookkeeping.
+Six authenticated definer functions intentionally retain internal authorization;
+none of the flagged functions remains anonymously executable. Full Advisor
+after-count and hosted Auth password policy are unverified due access limits.
+Leaked-password protection remains a Free-plan residual and real-data gate.
+New dependency audit findings supersede historical zero-high evidence. Sprint 0
+security closure remains blocked.
+
+Current hosted checkpoint — **2026-11-11**: PR #10 is merged; the R2 helper and R3 direct-RPC quota migrations are now applied to the configured project and post-deployment checks passed. [Deployment evidence](DEPLOYMENT_2026-11-11.md) supersedes older pending-deployment notes below. Full advisor refresh, Vercel/monitoring and Sprint 0 acceptance remain open; Sprint 1 is inactive.
+
 ## Tenant Isolation
 
 Tenant isolation is enforced in layers:
@@ -90,3 +114,7 @@ The earlier statement that shared limits and CSP are absent is superseded for th
 ## Direct API backstop prepared — 2026-11-11
 
 [Private R3 write quotas](R3_DIRECT_RPC_BACKSTOP.md) now cover the audited onboarding, administration, invitation, delivery and acceptance mutation paths, including the legacy invitation wrapper. Fixed verified-user attribution, cross-tenant actor aggregation, private schema/RLS/revoked client privileges and atomic quota/audit rollback preserve authorization. The prepared append-only migration has not been applied to hosted Supabase. Only after deployment/verification may the direct-successful-write gap be considered mitigated there; request/DDoS, Vercel and quota/monitoring gates remain open.
+
+## R4 operational-security plan — 2026-11-11
+
+[R4 planning](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md) requires encrypted restricted backup/key custody, explicit source/target isolation and outbound-effect containment before restore, supported Auth/private-schema recovery, and reconciliation of post-backup role revocations/consumed credentials before reopening access. Recovery timings, full advisor scan, collector scrubbing/retention and alert delivery/acknowledgement remain unverified. No real source backup/restore, security-setting change or production rollout was executed by the planning task.

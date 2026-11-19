@@ -1,5 +1,19 @@
 # Sprint 0 remediation backlog — R1–R7
 
+Current evidence review (2026-11-15): [R1–R7 acceptance matrix](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) separates completed R2 remediation, partial R1/R3/R6/R7 controls, the scoped R4 backup acceptance, unaccepted development deferrals and pilot blockers. It supersedes older absent-control/pending-deployment descriptions; overall Sprint 0 remains open.
+
+## Owner-approved backup risk disposition — 2026-11-15
+
+The owner manually verified the dashboard for configured Supabase project `jlaufrjmjjheisdqkkao` and reported: **organization plan Free; latest successful scheduled backup N/A (no automatic project backups on this plan); PITR disabled/unavailable**. This is owner-verified dashboard evidence, not a successful connector/API inspection. No off-site backup or recoverability is inferred.
+
+The owner explicitly accepts **this lack of automatic backup/PITR protection as a residual infrastructure risk for development and Sprint 0 technical closure only**. This supersedes the earlier unaccepted/pending disposition for the backup portion of R4. It does not accept every R4 item, other R1–R7 dispositions, or overall Sprint 0 completion. Keep Sprint 0 `in_progress` pending the remaining applicable checks and explicit overall acceptance; R3 and remaining R4 operational work stay open.
+
+**Pilot/production blocker:** before real school/student/financial data is used, approve and implement adequate backup/recovery protection and test restoration. A paid daily backup alone does not meet the approved four-hour RPO; off-site manual backups alone do not demonstrate the previously approved automated 24/7 objective. Retain the four-hour RPO/eight-covered-business-hour RTO as unproven pilot planning targets unless explicitly revised. No production readiness, purchase, upgrade, PITR activation, export, restore, destructive database operation, PR merge or Sprint 1 activation is authorized.
+
+Primary risk owner: project owner (user); technical backup remains unassigned. Reassess before pilot/production and before financial transactions become live. Execution evidence remains required for the operational protection, even though this scoped risk is accepted for development closure.
+
+## Historical baseline — read with the 2026-11-15 scoped disposition above
+
 Checkpoint: **2026-11-01**. Owner decision: **“Keep the gate open for remediation.”** The previously proposed deferrals are **not accepted**. Sprint 0 remains `in_progress`; Sprint 1, deployment and hosted changes are not authorized by this record. The six delivered tracker milestones retain their historical 100% score; that score does not include completion of this remediation backlog.
 
 This is the actionable follow-up to the [closure risk register](SPRINT_0_CLOSURE.md) and [completion gate](SPRINT_0_COMPLETION_GATE.md). R1 is **partially remediated** with minimatch still open; R2–R7 remain **open**, with no assigned individual or promised date. Owners below are responsible functions pending assignment. Severity is an engineering assessment except R1's reported audit rating; priority describes work order, not a claim of active exploitation. Evidence is dated and must be refreshed before implementation.
@@ -99,3 +113,15 @@ R3 boundary verification (2026-11-10): authenticated EXECUTE grants on public on
 ## R3 direct API implementation follow-up — 2026-11-11
 
 The owner authorized and the branch now prepares [private database write quotas](R3_DIRECT_RPC_BACKSTOP.md), covering successful audited direct RPC mutations without changing RPC authorization. New migration/upgrade/concurrency/direct-HTTP checks must pass. Hosted deployment, Vercel verification and exercised monitoring remain release blockers; direct rejected-request flooding still needs perimeter/operational protection. R3 stays open.
+
+## Hosted R2/R3 deployment checkpoint — 2026-11-11
+
+Owner explicitly authorized both reviewed migrations. [Deployment evidence](DEPLOYMENT_2026-11-11.md) confirms their atomic application and history, preserved business/RPC/grant state, target helper/private-quota checks, actual direct HTTP429 and 20 post-deployment Chromium passes. Older missing-hosted-migration statements are superseded for this configured project. Full advisor refresh remains inaccessible through the connector and needs owner dashboard verification. R3's Vercel/monitoring/perimeter gates and R4 recovery/UAT remain open; no blanket risk acceptance or Sprint 0 closure is inferred.
+
+## R4 planning prepared — 2026-11-11
+
+[The bounded R4 package](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md) now supplies a decision register, verified inventory/permission gaps, backup options, isolated restore and release/incident runbooks, monitoring thresholds (proposed), ownership and UAT/acceptance evidence. Owner recovery objectives/budget/responders/targets are pending. R4 remains open/unexecuted; R3 deployed-environment/monitoring and full-advisor checks also remain open. No backup/restore capability, configured alert or pilot readiness is claimed. This is not roadmap Sprint 4 or Sprint 1 implementation.
+
+## R6a candidate checkpoint — 2026-11-15
+
+Non-secret onboarding field retention is implemented in the closure candidate, with eight bilingual retry tests and enhanced authenticated FR/EN browser evidence. See [validation and remaining R6b evidence](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md). The earlier historical R6a implementation gap is superseded; R6b remains open. This does not accept any other risk or close Sprint 0.

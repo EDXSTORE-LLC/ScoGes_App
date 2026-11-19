@@ -1,5 +1,38 @@
 # Shared handoff — Claude, Codex and Antigravity
 
+Final bounded validation checkpoint — 2026-11-19: [candidate/evidence](SPRINT_0_FINAL_VALIDATION_2026-11-19.md) records PR #11 candidate 0b3284b with green isolated CI (202 unit, 12 guards, 3 Redis, 37 browser cases and all fresh/upgrade/replay/concurrency/tenant checks). The next exact-head run must also validate explicit history ordering and direct local Auth policy boundaries. Hosted minimum-12/all-class confirmation and a fresh Advisor result are requested from the owner; do not infer them or close Sprint 0. PR metadata write access is unavailable; a manual body is prepared. No merge, deployment, paid action or Sprint 1.
+
+2026-11-19 final dependency verification: pnpm 11.19.0 frozen install, zero-finding audit, identical 123-file lint/rule coverage, matching/nonmatching parser glob probes, lint/typecheck, 202 unit/component tests, ten CI safety tests, rollback-only tenant/authorization suites and all 23 production Chromium cases pass. Next 16.4.5 builds on its first run without the former security warning. Final-head isolated CI and hosted Auth policy remain separate gates.
+
+2026-11-19 targeted dependency checkpoint: [dependency security remediation](DEPENDENCY_SECURITY_2026-11-19.md) raises Next/config to 16.4.5 and the official TypeScript-ESLint/parser family to 8.73.0 using two bounded same-major overrides. Final audit is zero; frozen install and unchanged 123-file lint/rule coverage pass. The prior password-hardening work is preserved. No application refactor, hosted configuration, schema, paid action, merge/deployment or Sprint 1. Record remaining command/browser evidence in the linked note; overall security closure is not implied.
+
+2026-11-19 verification: lint/typecheck, 202 unit/component tests, ten CI safety tests, rollback-only tenant/authorization SQL and all 23 production Chromium cases pass. Build passes on retry with the existing Next.js advisory warning retained. Hosted policy, dependencies and overall security gate remain unchanged.
+
+2026-11-19 application password hardening: [implementation and verification](PASSWORD_POLICY_2026-11-19.md)
+align signup/reset to 12–128 characters and all four character classes. Login
+compatibility, session/tenant guards and provider settings are preserved. This
+application-only authorization does not close the hosted password-policy gap or
+authorize dependency changes, merge, public deployment, paid services or Sprint 1.
+
+Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.
+
+Latest owner-verified hosted security follow-up — **2026-11-18**: [final review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) records Advisor **0 ERROR / 7 WARN / 1 INFO** after **0 / 14 / 1**, six intentionally authenticated definer functions and the plan-constrained leaked-password warning. Connector access is not a security defect or remaining count-verification blocker. Hosted password minimum **6**, no character requirements, disabled password-change protections and one-hour OTP lifetime are now owner-verified. No hosted Auth settings changed. Weak password policy has no accepted development exception and blocks the security gate, alongside dependency/required-CI issues. Preserve Sprint 0 in progress; no merge/deployment/pilot/plan change/Sprint 1.
+
+Security remediation checkpoint — **2026-11-18**: migration `20261118151125`
+is applied to the configured development project (seven versions). See
+[per-function review and actual verification](SECURITY_ADVISOR_2026-11-18.md).
+Anonymous function execution is revoked; delivery bookkeeping now requires the
+server-only secret client and service-role invoker RPC. Deploy that application
+change with this database contract; old user-session delivery calls fail closed.
+`SUPABASE_SECRET_KEY` is now required for application invitation bookkeeping as
+well as test fixtures; never expose it to the browser. Other business RPCs retain
+verified user sessions/RLS/permission guards. Full hosted Advisor refresh/password
+policy inspection remain blocked by connector access. Dependency audit now has
+one high and three moderate findings; older zero-high evidence is superseded.
+Sprint 0 remains open; no merge, public deployment, plan change or Sprint 1.
+
+Current hosted checkpoint — **2026-11-11**: PR #10 is merged; the R2 helper and R3 direct-RPC quota migrations are now applied to the configured project and post-deployment checks passed. [Deployment evidence](DEPLOYMENT_2026-11-11.md) supersedes older pending-deployment notes below. Full advisor refresh, Vercel/monitoring and Sprint 0 acceptance remain open; Sprint 1 is inactive.
+
 Checkpoint: **2026-11-01**, Sprint 0 closure candidate after merged PR #7 (`6a76c43`). Historical test counts below retain their original baseline. This is a repository handoff, not permission to execute the next sprint, deploy, reset databases, or contact recipients. Recheck repository and remote state before acting; conversation history and these dated counts can become stale.
 
 ## Start here
@@ -213,3 +246,31 @@ Owner authorized the database backstop after the direct-RPC risk explanation. [R
 [The backstop](R3_DIRECT_RPC_BACKSTOP.md) implementation `8de04cc` passed [PR validation](https://github.com/Edleben/ScoGes_App/actions/runs/42966995033) and [push validation](https://github.com/Edleben/ScoGes_App/actions/runs/42966987541): 134 unit/contract, 10 safety, 3 Redis, all database/RLS/audit/fresh-upgrade/race checks and 34 Chromium cases (zero failures/skips/flaky), plus lint/types/build/security. Dedicated logs confirm private quota permissions, expiry/storage/audit rollback, unchanged existing RPC/data/grants, cross-tenant final-slot races and direct HTTP429. Hosted baseline connectivity/rollback-only database tests and 20 Chromium cases also passed.
 
 Read-only hosted metadata confirms that neither this quota table/migration nor the R2 migration is applied. This is implementation/CI completion, not deployment, risk acceptance or R3/Sprint 0 closure. Review PR #10, then obtain separate hosted migration authorization. Vercel/HTTPS and quota/outage monitoring remain required before public exposure; rejected-request floods still need perimeter/operational controls. Later documentation-head CI must also pass.
+
+## R4 planning checkpoint — 2026-11-11
+
+Owner authorized R4 recovery/deployment/monitoring **planning**. [The plan](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md) and linked runbooks now define inventory gaps, decision IDs R4-D1–D7, backup options/scope/retention, isolated restore/identity/access reconciliation, controlled Vercel release/rollback, alerts and foundation UAT/evidence gates. Proposed pilot RPO≤1h/RTO≤4h is awaiting owner acceptance and feasibility; owners, budget, backup entitlement and restore/Vercel targets are unverified. No export/restore, cloud provisioning, spending, deployment, alert subscription or real communication was performed.
+
+Read-only provider inventory: Supabase project-settings access denied for the configured project; Vercel connector returned zero visible projects in the queried default scope, not proof no project exists elsewhere. Do not substitute another project/account or infer Supabase backup tier from the Redis Free selection. Repository has safe event logs and a DSN placeholder, not proven telemetry collection/alerts. Functional auth readiness must cover early fail-closed configuration/ingress paths that do not emit the Redis warning event.
+
+Original PR #11 runs [43048625819](https://github.com/Edleben/ScoGes_App/actions/runs/43048625819) and [43048526301](https://github.com/Edleben/ScoGes_App/actions/runs/43048526301) failed Chromium dependency installation because Ubuntu/Azure mirrors could not resolve. Quality/database checks passed; Chromium did not run in those attempts. Keep required checks intact and validate the new documentation head. R4/R3/Sprint 0 remain open; original six milestone percentages and Sprint 1 inactivity are unchanged.
+
+## R4 owner decisions — 2026-11-12
+
+Recorded primary incident/recovery owner as the project owner (user), technical backup unassigned, and business-hours coverage (exact window/timezone pending). Backup/monitoring evaluation may consider up to US$50/month total additional cost; every purchase/paid upgrade still needs explicit approval. Owner will provide different RPO/RTO values; earlier numerical proposals are not adopted. See [the updated decision register](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). No provider, paid resource, backup/restore, deployment, alert schedule or acceptance gate was changed.
+
+## R4 approved recovery targets — 2026-11-12
+
+Supersedes earlier pending numerical-target/coverage notes: owner approved Sprint 0 foundation/controlled-pilot RPO ≤4h with automated backups 24/7, RTO ≤8 covered business hours, Monday–Friday 09:00–17:00 Atlantic/Reykjavik; report elapsed outage separately. Primary: project owner (user); technical backup unassigned. Evaluate ≤US$50/month total additional backup/monitoring cost; purchases/upgrades require approval. See [implementation proposal](R4_IMPLEMENTATION_PROPOSAL.md) and [updated R4 plan](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). Daily backups alone are insufficient; published PITR pricing exceeds the ceiling; hourly encrypted backups remain a conditional proposal pending inventory, combined quote, completeness and measured isolated restoration. Off-hours failure response remains a gap. No provisioning, customer export or restore performed. R3, R4 and Sprint 0 gate remain open; reassess before financial transactions go live.
+
+R4 feasibility follow-up — 2026-11-12: read-only metadata on the exact configured project verified PostgreSQL 17.11, 13,096,627 database bytes, six migration versions, and zero Storage buckets/object records. Management connector still denies project access; plan/recovery points/PITR are unverified. The [proposal](R4_IMPLEMENTATION_PROPOSAL.md) now contains a concrete candidate (dedicated $6 runner, encrypted B2 storage, independent free heartbeat, possible $25 Pro increment) with $41.70 combined monthly estimate including $10 drill reserve; account quote/tax/usage/privilege/maintainer assumptions prevent a budget or recovery guarantee. No provisioning, export, restore, purchase or code change. R3/R4 and foundation gate remain open.
+
+## R4 scoped owner acceptance — 2026-11-15
+
+Owner verified configured project `jlaufrjmjjheisdqkkao` in the dashboard: organization Free; scheduled-backup timestamp N/A (no automatic project backups); PITR disabled/unavailable. Owner accepts this backup-protection gap for development and Sprint 0 technical closure only. See the [scoped risk disposition](SPRINT_0_CLOSURE.md) and [R4 plan](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). This is not acceptance of remaining R4/R3 work or overall completion. Sprint 0 stays `in_progress`; the PR stays unmerged. Adequate approved backup/recovery protection and tested restoration remain mandatory before real school/student/financial data in pilot/production. Four-hour RPO/24/7 automation and eight-covered-hour RTO remain unproven pilot targets. No upgrade, PITR activation, provisioning, export, restore, destructive operation or Sprint 1 is authorized. Source: owner-provided dashboard verification; API access remains denied.
+
+R1–R7 review — 2026-11-15: [acceptance matrix](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) records R2 targeted remediation deployed, R3 implementation/backstop delivered with operational gates open, one current moderate development minimatch advisory (zero high/critical), 20 full-format differences, and remaining R6/R7 evidence. Only R4's backup gap has development-only acceptance. PR #11 remains open/unmerged at e108ee9; PR CI run 43213159586 passed on that committed head, not these uncommitted edits. No additional waiver, merge, pilot approval, cloud action or Sprint 1 activation occurred.
+
+R6a closure-candidate implementation — 2026-11-15: onboarding alone prevents React's automatic native form reset so six editable non-secret settings survive safe failure replies and correction/retry. No auth form, server authorization, schema or shared field-control behavior changed. Added eight FR/EN retry tests and strengthened real authenticated FR/EN Chromium checks with non-default settings and persisted-setting assertions. [Risk review](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) records individual engineering recommendations; owner acceptance remains pending except the previously accepted R4 backup gap. Hosted advisor request remains permission-denied; no full report claimed. Overall Sprint 0 stays open and PR must remain unmerged.
+
+R6a validation checkpoint: 142 unit/component/contract, ten CI safety and three Redis integration tests, lint/typecheck/build, changed-file formatting and hosted rollback-only DB checks pass. Chromium: 18 regression cases passed, then both enhanced FR/EN onboarding cases passed after correcting a stale test expectation (not a clean single 20-case run). See [full limitations and risk decisions](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md). Full hosted advisor report and owner dispositions remain pending; final review-commit CI is still required.

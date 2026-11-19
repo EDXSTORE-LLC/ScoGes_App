@@ -70,7 +70,7 @@ export async function signUpAction(
   form: FormData,
 ): Promise<AuthActionState> {
   const parsed = signUpSchema.safeParse(Object.fromEntries(form));
-  if (!parsed.success) return authReply(form, false, "invalid");
+  if (!parsed.success) return authReply(form, false, "passwordInvalid");
   const limit = await requestLimit("signup");
   if (limit !== "allowed")
     return authReply(
@@ -147,7 +147,7 @@ export async function updatePasswordAction(
   form: FormData,
 ): Promise<AuthActionState> {
   const parsed = passwordSchema.safeParse(Object.fromEntries(form));
-  if (!parsed.success) return authReply(form, false, "invalid");
+  if (!parsed.success) return authReply(form, false, "passwordInvalid");
   const supabase = await createSupabaseServerClient();
   if (!supabase) return authReply(form, false, "unavailable");
   const {
@@ -166,7 +166,12 @@ export async function updatePasswordAction(
   const { error } = await supabase.auth.updateUser({
     password: parsed.data.password,
   });
-  if (error) return authReply(form, false, "unavailable");
+  if (error)
+    return authReply(
+      form,
+      false,
+      error.code === "weak_password" ? "passwordRejected" : "unavailable",
+    );
   const { error: signOutError } = await supabase.auth.signOut({
     scope: "global",
   });

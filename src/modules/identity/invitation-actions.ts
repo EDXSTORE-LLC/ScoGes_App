@@ -14,6 +14,7 @@ import { getActiveMembership, requireCurrentUser } from "@/lib/auth/session";
 import { hasPermission, canAssignRole } from "./permissions";
 import { invitationTokenSchema, inviteMemberSchema } from "./schemas";
 import { activeTenantCookie, invitationCookie } from "./auth-navigation";
+import { createInvitationDeliveryRecorder } from "./invitation-delivery";
 import { authReply, formLocale, type AuthActionState } from "./auth-state";
 
 export async function inviteMemberAction(
@@ -39,6 +40,8 @@ export async function inviteMemberAction(
     );
   const emailProvider = createEmailProvider();
   if (!emailProvider) return authReply(form, false, "smtpMissing");
+  const recordDelivery = createInvitationDeliveryRecorder();
+  if (!recordDelivery) return authReply(form, false, "unavailable");
   const supabase = await createSupabaseServerClient();
   if (!supabase) return authReply(form, false, "unavailable");
   const { data, error } = await supabase.rpc("issue_tenant_invitation", {
@@ -64,18 +67,13 @@ export async function inviteMemberAction(
   } catch {
     delivered = false;
   }
-  const { error: recordError } = await supabase.rpc(
-    "record_invitation_delivery",
-    {
-      invitation_id: issued.data.id,
-      token_digest: createHash("sha256")
-        .update(issued.data.token)
-        .digest("hex"),
-      delivered,
-    },
+  const recorded = await recordDelivery(
+    issued.data.id,
+    createHash("sha256").update(issued.data.token).digest("hex"),
+    delivered,
   );
   revalidatePath("/dashboard/users");
-  if (recordError) return authReply(form, false, "unavailable");
+  if (!recorded) return authReply(form, false, "unavailable");
   return authReply(form, delivered, delivered ? "delivered" : "deliveryFailed");
 }
 

@@ -2,7 +2,7 @@ import { test, expect } from "./fixtures";
 import { createClient } from "@supabase/supabase-js";
 import { existsSync, readFileSync } from "node:fs";
 import { parseEnv } from "node:util";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 
 const env = {
   ...(existsSync(".env.local")
@@ -101,6 +101,46 @@ test.describe("live authentication lifecycle", () => {
         throw new Error("Test account cleanup failed.");
   });
 
+  if (env.CI_ENFORCE_INTEGRATION === "1") {
+    test("isolated Auth rejects short and missing-class passwords directly", async () => {
+      // This provider-level negative probe must never run against hosted Auth.
+      expect(env.DATABASE_TEST_LOCAL).toBe("1");
+      expect(["127.0.0.1", "localhost", "[::1]"]).toContain(
+        new URL(env.NEXT_PUBLIC_SUPABASE_URL!).hostname,
+      );
+      const anonymous = createClient(
+        env.NEXT_PUBLIC_SUPABASE_URL!,
+        env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+        {
+          auth: { persistSession: false, autoRefreshToken: false },
+        },
+      );
+      for (const password of [
+        "Aa1!abcdefg",
+        "aa1!abcdefgh",
+        "AA1!ABCDEFGH",
+        "Aa!!abcdefgh",
+        "Aa12abcdefgh",
+      ]) {
+        const { data, error } = await anonymous.auth.signUp({
+          email: `edxstore-e2e-policy-${randomUUID()}@example.invalid`,
+          password,
+        });
+        // Exact synthetic account cleanup is retained even if the provider accepts a bad value.
+        if (data.user?.id) users.push(data.user.id);
+        expect(error?.code).toBe("weak_password");
+      }
+      const accepted = await anonymous.auth.signUp({
+        email: `edxstore-e2e-policy-${randomUUID()}@example.invalid`,
+        password: "Aa1!abcdefgh", // Exactly 12, with all four classes.
+      });
+      if (accepted.data.user?.id) users.push(accepted.data.user.id);
+      expect(accepted.error).toBeNull();
+      expect(accepted.data.user?.id).toBeTruthy();
+      expect(accepted.data.session).toBeNull(); // Confirmation remains required.
+    });
+  }
+
   test("sign in, protected dashboard, sign out and access denial", async ({
     page,
   }) => {
@@ -123,6 +163,57 @@ test.describe("live authentication lifecycle", () => {
     await page.goto("/dashboard");
     await expect(page).toHaveURL(/\/login$/);
   });
+  test("direct clients cannot forge invitation delivery and trusted service records only the current digest", async () => {
+    const owner = await account();
+    const tenantId = await tenant(owner, "Delivery ACL fixture");
+    const issued = await owner.client.rpc("issue_tenant_invitation", {
+      target_tenant_id: tenantId,
+      invitee_email: `delivery-${randomUUID()}@example.invalid`,
+      role_key: "cashier",
+    });
+    if (issued.error || !issued.data?.id || !issued.data?.token)
+      throw new Error("Delivery ACL fixture issuance failed.");
+    const args = {
+      invitation_id: issued.data.id,
+      token_digest: createHash("sha256")
+        .update(issued.data.token)
+        .digest("hex"),
+      delivered: false,
+    };
+    const anonymous = createClient(
+      env.NEXT_PUBLIC_SUPABASE_URL!,
+      env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+      {
+        auth: { persistSession: false, autoRefreshToken: false },
+      },
+    );
+    expect(
+      (await anonymous.rpc("record_invitation_delivery", args)).error?.code,
+    ).toBe("42501");
+    expect(
+      (await owner.client.rpc("record_invitation_delivery", args)).error?.code,
+    ).toBe("42501");
+    expect(
+      (
+        await admin().rpc("record_invitation_delivery", {
+          ...args,
+          token_digest: "wrong",
+        })
+      ).error?.message,
+    ).toBe("delivery update denied");
+    // Synthetic transport-failure bookkeeping only; no external email is sent.
+    expect(
+      (await admin().rpc("record_invitation_delivery", args)).error,
+    ).toBeNull();
+    const recorded = await owner.client
+      .from("invitations")
+      .select("delivery_status")
+      .eq("id", args.invitation_id)
+      .single();
+    expect(recorded.error).toBeNull();
+    expect(recorded.data?.delivery_status).toBe("failed");
+  });
+
   test("invitation acceptance selects the invited tenant and cannot be replayed", async ({
     page,
   }) => {
@@ -419,6 +510,10 @@ test.describe("live authentication lifecycle", () => {
         )
         .fill("X");
       await page.getByLabel("Slug", { exact: true }).fill(reserved.data.slug);
+      await page.locator('[name="country"]').fill("GH");
+      await page.locator('[name="baseCurrency"]').fill("GHS");
+      await page.locator('[name="timezone"]').fill("Africa/Accra");
+      await page.locator('[name="defaultLocale"]').selectOption("en");
       await page
         .getByRole("button", {
           name: locale === "fr" ? "Créer l'institution" : "Create institution",
@@ -429,6 +524,10 @@ test.describe("live authentication lifecycle", () => {
         locale === "fr"
           ? "Vérifiez les informations"
           : "Check the institution details",
+      );
+      await expect(page.locator('[name="name"]')).toHaveValue("X");
+      await expect(page.locator('[name="slug"]')).toHaveValue(
+        reserved.data.slug,
       );
       await page
         .getByLabel(
@@ -447,6 +546,18 @@ test.describe("live authentication lifecycle", () => {
           ? "Ce slug est déjà utilisé"
           : "This slug is already used",
       );
+      await expect(page.locator('[name="name"]')).toHaveValue(
+        "E2E browser institution",
+      );
+      await expect(page.locator('[name="slug"]')).toHaveValue(
+        reserved.data.slug,
+      );
+      await expect(page.locator('[name="country"]')).toHaveValue("GH");
+      await expect(page.locator('[name="baseCurrency"]')).toHaveValue("GHS");
+      await expect(page.locator('[name="timezone"]')).toHaveValue(
+        "Africa/Accra",
+      );
+      await expect(page.locator('[name="defaultLocale"]')).toHaveValue("en");
       const before = await owner.client
         .from("memberships")
         .select("id")
@@ -493,10 +604,10 @@ test.describe("live authentication lifecycle", () => {
         .single();
       expect(settings.error).toBeNull();
       expect(settings.data).toMatchObject({
-        country: "TG",
-        base_currency: "XOF",
-        timezone: "Africa/Lome",
-        default_locale: "fr",
+        country: "GH",
+        base_currency: "GHS",
+        timezone: "Africa/Accra",
+        default_locale: "en",
       });
       const audit = await owner.client
         .from("audit_events")

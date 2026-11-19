@@ -27,7 +27,14 @@ export function TenantOnboardingForm({ locale = "fr" }: { locale?: Locale }) {
   );
 
   return (
-    <form action={formAction} className="grid gap-4" lang={locale}>
+    <form
+      action={formAction}
+      className="grid gap-4"
+      lang={locale}
+      // A fulfilled failure reply still triggers React's native form reset.
+      // Preserve editable settings for correction/retry; success redirects away.
+      onReset={(event) => event.preventDefault()}
+    >
       <input type="hidden" name="locale" value={locale} />
       <FormField
         label={text("name")}

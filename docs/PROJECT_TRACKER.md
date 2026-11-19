@@ -1,5 +1,9 @@
 # Project tracker
 
+Latest hosted verification — **2026-11-18**: [owner-supplied Advisor/Auth evidence](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) resolves the missing dashboard-count/value evidence (**0 ERROR / 7 WARN / 1 INFO**), but the actual minimum **6/no character classes** is an unaccepted security blocker. No hosted Auth setting changed. Sprint 0 and milestone rows/progress remain unchanged; Sprint 1 is inactive.
+
+Security checkpoint — **2026-11-18**: [bounded Advisor remediation](SECURITY_ADVISOR_2026-11-18.md) is applied to hosted development with passing transactional isolation/privilege/invitation tests. Full Advisor refresh and password-policy verification are access-blocked; new dependency advisories require review. Milestone rows and UI statuses remain unchanged: Sprint 0 in progress; Sprint 1 inactive. No overall closure or residual-risk acceptance is inferred.
+
 Closure-review checkpoint: **2026-11-01**. Active sprint: **Sprint 0**, in progress. Work branch: `edwakson/ScoGes_App`; main changes only through validated PRs.
 
 This Markdown tracker and the UI consume the same milestone definitions in `src/modules/project-tracker/tracker-data.ts`. A unit test compares every row below with that data to prevent drift. Edit the data and this table together; rerun verification before changing completion status.
@@ -93,3 +97,31 @@ UI summary and this tracker now identify R3 Redis/CSP validation and pending dep
 ## R3 direct RPC validation checkpoint — 2026-11-11
 
 [Backstop implementation and evidence](R3_DIRECT_RPC_BACKSTOP.md) now pass isolated CI, including direct HTTP429 and concurrent cross-tenant quotas. Both UI language summaries distinguish CI validation from pending hosted migration/deployment/monitoring. Sprint 0 and R3 remain open; original milestones/progress and Sprint 1 inactivity are unchanged.
+
+## Authorized hosted rollout — 2026-11-11
+
+[R2/R3 deployment and post-checks](DEPLOYMENT_2026-11-11.md) are now executed on the configured Supabase project: six recorded migration versions, pinned invoker helper, enabled private quota enforcement, hosted SQL/PT429/direct HTTP429 and 20 clean Chromium cases. Both language summaries now reflect applied database migrations and the remaining Vercel/monitoring work. Full hosted advisor refresh is pending due connector permissions. Sprint 0 remains `in_progress` / 100% of its six historical milestones; Sprint 1 stays planned/zero. No acceptance gate is closed.
+
+## R4 planning package — 2026-11-11
+
+[Recovery/deployment/monitoring planning](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md) is prepared; owner decisions and operational drills are pending. UI French/English summaries now distinguish deployed R2/R3 database controls from unexecuted R4 recovery/monitoring work. Milestone rows/progress remain unchanged: Sprint 0 `in_progress` / historical 100%, later sprints planned/zero. PR #11's original Ubuntu-DNS browser-install failures remain disclosed; new review-head checks must pass before merge.
+
+## R4 owner decisions — 2026-11-12
+
+Recorded primary incident/recovery owner as the project owner (user), technical backup unassigned, and business-hours coverage (exact window/timezone pending). Backup/monitoring evaluation may consider up to US$50/month total additional cost; every purchase/paid upgrade still needs explicit approval. Owner will provide different RPO/RTO values; earlier numerical proposals are not adopted. See [the updated decision register](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). No provider, paid resource, backup/restore, deployment, alert schedule or acceptance gate was changed.
+
+## R4 approved recovery targets — 2026-11-12
+
+Supersedes earlier pending numerical-target/coverage notes: owner approved Sprint 0 foundation/controlled-pilot RPO ≤4h with automated backups 24/7, RTO ≤8 covered business hours, Monday–Friday 09:00–17:00 Atlantic/Reykjavik; report elapsed outage separately. Primary: project owner (user); technical backup unassigned. Evaluate ≤US$50/month total additional backup/monitoring cost; purchases/upgrades require approval. See [implementation proposal](R4_IMPLEMENTATION_PROPOSAL.md) and [updated R4 plan](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). Daily backups alone are insufficient; published PITR pricing exceeds the ceiling; hourly encrypted backups remain a conditional proposal pending inventory, combined quote, completeness and measured isolated restoration. Off-hours failure response remains a gap. No provisioning, customer export or restore performed. R3, R4 and Sprint 0 gate remain open; reassess before financial transactions go live.
+
+R4 feasibility follow-up — 2026-11-12: read-only metadata on the exact configured project verified PostgreSQL 17.11, 13,096,627 database bytes, six migration versions, and zero Storage buckets/object records. Management connector still denies project access; plan/recovery points/PITR are unverified. The [proposal](R4_IMPLEMENTATION_PROPOSAL.md) now contains a concrete candidate (dedicated $6 runner, encrypted B2 storage, independent free heartbeat, possible $25 Pro increment) with $41.70 combined monthly estimate including $10 drill reserve; account quote/tax/usage/privilege/maintainer assumptions prevent a budget or recovery guarantee. No provisioning, export, restore, purchase or code change. R3/R4 and foundation gate remain open.
+
+## R4 scoped owner acceptance — 2026-11-15
+
+Owner verified configured project `jlaufrjmjjheisdqkkao` in the dashboard: organization Free; scheduled-backup timestamp N/A (no automatic project backups); PITR disabled/unavailable. Owner accepts this backup-protection gap for development and Sprint 0 technical closure only. See the [scoped risk disposition](SPRINT_0_CLOSURE.md) and [R4 plan](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). This is not acceptance of remaining R4/R3 work or overall completion. Sprint 0 stays `in_progress`; the PR stays unmerged. Adequate approved backup/recovery protection and tested restoration remain mandatory before real school/student/financial data in pilot/production. Four-hour RPO/24/7 automation and eight-covered-hour RTO remain unproven pilot targets. No upgrade, PITR activation, provisioning, export, restore, destructive operation or Sprint 1 is authorized. Source: owner-provided dashboard verification; API access remains denied.
+
+R1–R7 review — 2026-11-15: [acceptance matrix](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) records R2 targeted remediation deployed, R3 implementation/backstop delivered with operational gates open, one current moderate development minimatch advisory (zero high/critical), 20 full-format differences, and remaining R6/R7 evidence. Only R4's backup gap has development-only acceptance. PR #11 remains open/unmerged at e108ee9; PR CI run 43213159586 passed on that committed head, not these uncommitted edits. No additional waiver, merge, pilot approval, cloud action or Sprint 1 activation occurred.
+
+R6a closure-candidate implementation — 2026-11-15: onboarding alone prevents React's automatic native form reset so six editable non-secret settings survive safe failure replies and correction/retry. No auth form, server authorization, schema or shared field-control behavior changed. Added eight FR/EN retry tests and strengthened real authenticated FR/EN Chromium checks with non-default settings and persisted-setting assertions. [Risk review](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) records individual engineering recommendations; owner acceptance remains pending except the previously accepted R4 backup gap. Hosted advisor request remains permission-denied; no full report claimed. Overall Sprint 0 stays open and PR must remain unmerged.
+
+R6a validation checkpoint: 142 unit/component/contract, ten CI safety and three Redis integration tests, lint/typecheck/build, changed-file formatting and hosted rollback-only DB checks pass. Chromium: 18 regression cases passed, then both enhanced FR/EN onboarding cases passed after correcting a stale test expectation (not a clean single 20-case run). See [full limitations and risk decisions](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md). Full hosted advisor report and owner dispositions remain pending; final review-commit CI is still required.

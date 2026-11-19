@@ -1,5 +1,11 @@
 # Sprint 0 validation
 
+Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.
+
+Latest hosted verification — **2026-11-18**: [final security assessment](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) uses owner-refreshed Advisor **0 ERROR / 7 WARN / 1 INFO** plus independently checked function ACLs and actual-role tests. Hosted Auth values are now owner-verified, not inferred; weak minimum **6/no required classes** blocks security closure. See the review for fresh command outcomes and remaining isolated-CI limits. No hosted configuration change.
+
+Latest security evidence — **2026-11-18**: [Security Advisor remediation](SECURITY_ADVISOR_2026-11-18.md) supersedes historical function-ACL/advisor status and zero-high dependency counts. The seventh migration is applied to configured hosted development. New rollback-only negative/valid-flow SQL assertions pass; full hosted Advisor/password-policy verification remains access-blocked. See that record for command results and limits.
+
 Latest checkpoint: **2026-11-01 — closure review**. Bilingual foundation and real email lifecycle verification are complete. [PR #8](https://github.com/Edleben/ScoGes_App/pull/8) refreshes exact-head checks and requests owner acceptance of [remaining risk dispositions](SPRINT_0_CLOSURE.md). The 2026-10-30 baseline below is historical; later checkpoints supersede its acceptance gaps and counts.
 
 ## Historical baseline — 2026-10-30
@@ -107,3 +113,7 @@ Refreshed triage found zero high/critical and three moderate development-tool ad
 [The backstop](R3_DIRECT_RPC_BACKSTOP.md) implementation `8de04cc` passed [PR validation](https://github.com/Edleben/ScoGes_App/actions/runs/42966995033) and [push validation](https://github.com/Edleben/ScoGes_App/actions/runs/42966987541): 134 unit/contract, 10 safety, 3 Redis, all database/RLS/audit/fresh-upgrade/race checks and 34 Chromium cases (zero failures/skips/flaky), plus lint/types/build/security. Dedicated logs confirm private quota permissions, expiry/storage/audit rollback, unchanged existing RPC/data/grants, cross-tenant final-slot races and direct HTTP429. Hosted baseline connectivity/rollback-only database tests and 20 Chromium cases also passed.
 
 Read-only hosted metadata confirms that neither this quota table/migration nor the R2 migration is applied. This is implementation/CI completion, not deployment, risk acceptance or R3/Sprint 0 closure. Review PR #10, then obtain separate hosted migration authorization. Vercel/HTTPS and quota/outage monitoring remain required before public exposure; rejected-request floods still need perimeter/operational controls. Later documentation-head CI must also pass.
+
+## Hosted migration post-validation — 2026-11-11
+
+After explicit owner approval, [R2 and R3 were applied atomically](DEPLOYMENT_2026-11-11.md) from merged PR #10. Target SQL metadata, rollback-only quota/privilege/atomicity probes, actual authenticated direct HTTP429 with exact synthetic cleanup, Auth/schema connectivity, database/RLS/invitation/administration/audit assertions and all 20 hosted-backed production Chromium cases passed. Full advisor scanning could not be performed because the connector denied access; this limitation remains explicit. No hosted reset or local-only destructive upgrade/race fixture was run.

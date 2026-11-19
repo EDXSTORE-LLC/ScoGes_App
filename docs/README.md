@@ -1,5 +1,11 @@
 # Project documentation map
 
+Latest hosted review — **2026-11-18**: [owner-verified Advisor/Auth reconciliation](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) supersedes missing-value notes: Advisor **0 ERROR / 7 WARN / 1 INFO**; hosted minimum **6**, no required character classes. The security gate remains blocked by unaccepted weak password policy and other required security/CI checks. No hosted Auth change or new waiver.
+
+Latest security checkpoint — **2026-11-18**: [Security Advisor function remediation](SECURITY_ADVISOR_2026-11-18.md) records the applied seventh migration, per-function dispositions, server-only invitation delivery and actual verification limits. Full hosted Advisor/password-policy inspection and newly reported dependency advisories keep the security gate open.
+
+Current hosted checkpoint — **2026-11-11**: PR #10 is merged; the R2 helper and R3 direct-RPC quota migrations are now applied to the configured project and post-deployment checks passed. [Deployment evidence](DEPLOYMENT_2026-11-11.md) supersedes older pending-deployment notes below. Full advisor refresh, Vercel/monitoring and Sprint 0 acceptance remain open; Sprint 1 is inactive.
+
 Closure-review checkpoint: 2026-11-01, after merged PR #7. Start with [AGENTS.md](../AGENTS.md) and [the shared handoff](AI_HANDOFF.md). Follow the repository's instruction precedence; this index does not replace the current human request or authorize implementation of a later sprint.
 
 ## Requirements and engineering authority
@@ -59,3 +65,9 @@ The [bounded Sprint 1 prompt](prompts/SPRINT_1_MASTER_PROMPT.md) is proposed and
 Security follow-up: [R3 distributed Redis limits and browser policy](R3_ABUSE_AND_BROWSER_SECURITY.md) records the owner-approved provider, server-only configuration, failure policy, evidence and pending deployment gate.
 
 Direct API follow-up: [R3 database write-quota backstop](R3_DIRECT_RPC_BACKSTOP.md) describes the prepared append-only migration, security/retention/transaction boundaries and pending deployment gate.
+
+R4 planning package: [recovery/deployment/monitoring plan](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md), [isolated restore runbook/evidence template](runbooks/RESTORE_DRILL.md), and [release/rollback/incident runbook](runbooks/RELEASE_MONITORING_INCIDENTS.md). These are plans, not executed recovery or production readiness. Owner objectives, budget, targets and responders remain pending.
+
+- [R4 implementation proposal and approved recovery targets](R4_IMPLEMENTATION_PROPOSAL.md): feasibility, budget gaps and staged approval; not executed.
+
+- [Current Sprint 0 R1–R7 acceptance review](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md): evidence, proposed development dispositions, pilot gates and remaining owner decisions (2026-11-15).

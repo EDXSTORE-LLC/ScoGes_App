@@ -19,7 +19,7 @@ select pg_temp.quota_reject(format('select public.create_tenant_with_admin(''For
 -- A role with no authenticated principal cannot exploit nullable legacy comparisons.
 select set_config('request.jwt.claim.sub','',true);
 select set_config('request.jwt.claims','{}',true);
-select pg_temp.quota_reject(format('select public.create_tenant_with_admin(''No principal'',''test-''||gen_random_uuid(),''TG'',''XOF'',''UTC'',''fr'',%L)',current_setting('quota_test.actor')),'42501');
+select pg_temp.quota_reject(format('select public.create_tenant_with_admin(''No principal'',''test-''||gen_random_uuid(),''TG'',''XOF'',''UTC'',''fr'',%L)',current_setting('quota_test.actor')),'P0001','actor mismatch');
 select pg_temp.quota_actor('actor');
 
 do $$
@@ -129,11 +129,15 @@ end;
 $$;
 reset role;
 insert into app_private.rpc_write_windows values(current_setting('quota_test.actor')::uuid,'invitation_delivery',array_fill(clock_timestamp(),array[40]));
-set local role authenticated;
+set local role service_role;
+select set_config('request.jwt.claims','{"role":"service_role"}',true);
+select set_config('request.jwt.claim.sub','',true);
 select pg_temp.quota_reject(format('select public.record_invitation_delivery(%L,encode(sha256(convert_to(current_setting(''quota_test.token''),''UTF8'')),''hex''),true)',current_setting('quota_test.invitation')),'PT429');
 reset role;
 update app_private.rpc_write_windows set occurred_at=array_fill(clock_timestamp(),array[39]) where actor_id=current_setting('quota_test.actor')::uuid and scope='invitation_delivery';
-set local role authenticated;
+set local role service_role;
+select set_config('request.jwt.claims','{"role":"service_role"}',true);
+select set_config('request.jwt.claim.sub','',true);
 select public.record_invitation_delivery(current_setting('quota_test.invitation')::uuid,encode(sha256(convert_to(current_setting('quota_test.token'),'UTF8')),'hex'),false);
 select pg_temp.quota_reject(format('select public.record_invitation_delivery(%L,encode(sha256(convert_to(current_setting(''quota_test.token''),''UTF8'')),''hex''),true)',current_setting('quota_test.invitation')),'PT429');
 reset role;
