@@ -81,9 +81,17 @@ export async function testRpcWriteQuotas(env) {
 
     stage = "upgrade";
     await client.query("begin");
-    // Reconstruct only the exact pre-migration state, never hosted or unguarded.
+    // Reconstruct the quota migration's original namespace without dropping
+    // later private-schema consumers. Everything here rolls back, is local-only,
+    // and runs before browser traffic; the historical migration stays unchanged.
+    const schoolBefore = await client.query(
+      "select oid,pronamespace,proname,proowner,proacl::text,prosrc,proconfig,prosecdef from pg_proc where proname in ('school_entity','school_authorize','school_record_guard','school_record_audit','save_school_record','commit_school_import') order by oid",
+    );
     await client.query(
-      "drop trigger a_enforce_rpc_write_quota on public.audit_events; drop function app_private.enforce_rpc_write_quota(); drop function app_private.rpc_write_policy(text); drop table app_private.rpc_write_windows; drop schema app_private;",
+      "drop trigger a_enforce_rpc_write_quota on public.audit_events; drop function app_private.enforce_rpc_write_quota(); drop function app_private.rpc_write_policy(text); drop table app_private.rpc_write_windows; alter schema app_private rename to ci_preserved_school_private;",
+    );
+    const schoolDataBefore = await client.query(
+      "select md5(coalesce(jsonb_agg(to_jsonb(t) order by to_jsonb(t)::text)::text,'')) fingerprint from ci_preserved_school_private.school_import_runs t",
     );
     await client.query(source("tests/rpc_quota_fixtures.sql"));
     await client.query(
@@ -92,6 +100,22 @@ export async function testRpcWriteQuotas(env) {
     const before = await snapshot(client);
     await client.query(migration);
     assert.deepEqual(await snapshot(client), before);
+    assert.deepEqual(
+      (
+        await client.query(
+          "select oid,pronamespace,proname,proowner,proacl::text,prosrc,proconfig,prosecdef from pg_proc where proname in ('school_entity','school_authorize','school_record_guard','school_record_audit','save_school_record','commit_school_import') order by oid",
+        )
+      ).rows,
+      schoolBefore.rows,
+    );
+    assert.deepEqual(
+      (
+        await client.query(
+          "select md5(coalesce(jsonb_agg(to_jsonb(t) order by to_jsonb(t)::text)::text,'')) fingerprint from ci_preserved_school_private.school_import_runs t",
+        )
+      ).rows,
+      schoolDataBefore.rows,
+    );
     const counts = await client.query(
       "select scope,cardinality(occurred_at) as count from app_private.rpc_write_windows where actor_id=current_setting('quota_test.actor')::uuid order by scope",
     );

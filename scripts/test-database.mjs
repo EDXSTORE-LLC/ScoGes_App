@@ -149,3 +149,9 @@ if (!process.exitCode && env.CI_ENFORCE_INTEGRATION === "1") {
   const { testRpcWriteQuotas } = await import("./tests/rpc-write-quotas.mjs");
   await testRpcWriteQuotas(env);
 }
+
+if (!process.exitCode && env.CI_ENFORCE_INTEGRATION === "1") {
+  const { testSchoolConcurrency } =
+    await import("./tests/school-concurrency.mjs");
+  await testSchoolConcurrency(env);
+}

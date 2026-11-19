@@ -85,3 +85,32 @@ do $$ begin
  if exists(select 1 from public.students) then raise exception 'test_cashier_read_allowed'; end if;
 end; $$;
 reset role;
+
+-- A failing audit insert must roll back the business mutation, not return success.
+reset role;
+create function pg_temp.fail_school_audit() returns trigger language plpgsql as $$
+begin if new.action like 'school.%' then raise exception 'school_audit_test_failure'; end if;return new;end;$$;
+create trigger z_school_audit_failure before insert on public.audit_events for each row execute function pg_temp.fail_school_audit();
+set local role authenticated;
+select set_config('request.jwt.claim.sub',current_setting('test.school_actor'),true);
+do $$ begin
+ begin
+  perform public.save_school_record(current_setting('test.tenant_a')::uuid,'students',null,null,'{"code":"rollback","first_name":"No","last_name":"Commit"}');
+  raise exception 'test_audit_failure_not_atomic';
+ exception when raise_exception then if sqlerrm<>'school_audit_test_failure' then raise; end if; end;
+ if exists(select 1 from public.students where code='rollback') then raise exception 'test_audit_failure_retained_row'; end if;
+end;$$;
+reset role;
+drop trigger z_school_audit_failure on public.audit_events;
+-- Revoke effective permission after a preview: the final commit must still fail.
+delete from public.role_permissions where role_id=(select id from public.roles where key='registrar') and permission_id=(select id from public.permissions where key='imports.commit');
+set local role authenticated;
+select set_config('request.jwt.claim.sub',current_setting('test.school_actor'),true);
+do $$ begin
+ begin
+  perform public.commit_school_import(current_setting('test.tenant_a')::uuid,'students',gen_random_uuid(),clock_timestamp()+interval '14 minutes',current_setting('test.school_rows')::jsonb);
+  raise exception 'test_revoked_import_allowed';
+ exception when insufficient_privilege then null; end;
+end;$$;
+reset role;
+insert into public.role_permissions(role_id,permission_id) select r.id,p.id from public.roles r cross join public.permissions p where r.key='registrar' and p.key='imports.commit';
