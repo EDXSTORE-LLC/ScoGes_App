@@ -1,5 +1,24 @@
 # Sprint 0 validation
 
+Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
+**development-only closure**, including documented residual risks with their
+existing gates; no mandatory security check or HIGH vulnerability is waived.
+[PR #11](https://github.com/Edleben/ScoGes_App/pull/11) is merged as
+`5a346d060a9cd95f793a5de59db4324faf1f3f61`;
+[merge CI](https://github.com/Edleben/ScoGes_App/actions/runs/44550187309) passed.
+[Current closure evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md) supersedes
+older pending-acceptance notes below. This follow-up records the approved tracker
+transition through a protected PR; it is not published to main until that PR
+merges. Public preview, real-data pilot and production remain separately gated.
+Sprint 1 planning is authorized only after the closure transition is finalized;
+implementation remains unauthorized. No deployment or plan change is authorized.
+
+Latest verification — 2026-11-19: [closure evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md)
+records owner-confirmed hosted 12/four-class policy, refreshed 0 ERROR / 7 WARN /
+1 INFO, final 7608a711 CI (202 unit/contract, 12 guards, 3 Redis, 38 E2E), and
+subsequent hosted compatibility results. Earlier counts/pending notes below are
+historical. Owner sprint acceptance remains separate.
+
 Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.
 
 Latest hosted verification — **2026-11-18**: [final security assessment](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) uses owner-refreshed Advisor **0 ERROR / 7 WARN / 1 INFO** plus independently checked function ACLs and actual-role tests. Hosted Auth values are now owner-verified, not inferred; weak minimum **6/no required classes** blocks security closure. See the review for fresh command outcomes and remaining isolated-CI limits. No hosted configuration change.

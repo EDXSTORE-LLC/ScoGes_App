@@ -1,5 +1,24 @@
 # Sprint 0 closure review — 2026-11-01
 
+Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
+**development-only closure**, including documented residual risks with their
+existing gates; no mandatory security check or HIGH vulnerability is waived.
+[PR #11](https://github.com/Edleben/ScoGes_App/pull/11) is merged as
+`5a346d060a9cd95f793a5de59db4324faf1f3f61`;
+[merge CI](https://github.com/Edleben/ScoGes_App/actions/runs/44550187309) passed.
+[Current closure evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md) supersedes
+older pending-acceptance notes below. This follow-up records the approved tracker
+transition through a protected PR; it is not published to main until that PR
+merges. Public preview, real-data pilot and production remain separately gated.
+Sprint 1 planning is authorized only after the closure transition is finalized;
+implementation remains unauthorized. No deployment or plan change is authorized.
+
+Latest closure verification — 2026-11-19: [owner review record](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md)
+supersedes the older pending hosted-policy/final-CI statements below. It records
+the owner-confirmed hosted policy and actual compatibility/CI outcome. This is
+technical readiness evidence; overall sprint acceptance, operational dispositions
+and any next action remain with the owner. Milestone status is unchanged.
+
 Final security/quality review checkpoint — 2026-11-19: [bounded final validation](SPRINT_0_FINAL_VALIDATION_2026-11-19.md) reconciles all seven owner-named Advisor findings. First candidate 0b3284b passed isolated PR CI including 37 browser cases and security/concurrency/replay checks. Final-head CI and hosted password save/compatibility evidence remain separately required. This is readiness evidence, not owner acceptance of remaining operational deferrals or authorization to merge/deploy/start Sprint 1.
 
 2026-11-19 dependency checkpoint: [targeted dependency fixes](DEPENDENCY_SECURITY_2026-11-19.md) now yield a zero-finding registry audit with Next/config 16.4.5 and upstream TypeScript-ESLint 8.73.0. This supersedes the dependency-advisory blocker in older checkpoints, subject to final review-head CI. Hosted password-policy alignment and other applicable owner/operational gates remain open; no overall Sprint 0 closure, waiver, merge, deployment, pilot or Sprint 1 is claimed.

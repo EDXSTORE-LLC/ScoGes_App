@@ -1,5 +1,24 @@
 # Security
 
+Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
+**development-only closure**, including documented residual risks with their
+existing gates; no mandatory security check or HIGH vulnerability is waived.
+[PR #11](https://github.com/Edleben/ScoGes_App/pull/11) is merged as
+`5a346d060a9cd95f793a5de59db4324faf1f3f61`;
+[merge CI](https://github.com/Edleben/ScoGes_App/actions/runs/44550187309) passed.
+[Current closure evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md) supersedes
+older pending-acceptance notes below. This follow-up records the approved tracker
+transition through a protected PR; it is not published to main until that PR
+merges. Public preview, real-data pilot and production remain separately gated.
+Sprint 1 planning is authorized only after the closure transition is finalized;
+implementation remains unauthorized. No deployment or plan change is authorized.
+
+Latest owner closure review — 2026-11-19: [current hosted/CI evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md)
+supersedes pending minimum-six/no-class and final-CI checkpoints below. Owner has
+saved minimum 12/four classes; all six intentional authenticated-definer
+dispositions and the Free-plan leaked-password residual remain unchanged. No
+authorization for public preview, pilot, production, merge or Sprint 1 follows.
+
 Final verification checkpoint — 2026-11-19: [review/control matrix](SPRINT_0_FINAL_VALIDATION_2026-11-19.md) records six intentional authenticated definers plus Free-plan leaked-password protection, matches live function bodies/ACLs/paths to reviewed migrations and confirms no anonymous public definers. Initial isolated CI is green; final-head and owner-hosted policy evidence are tracked separately. No hosted function or setting is changed to obtain zero warnings.
 
 2026-11-19 dependency update: [targeted remediation](DEPENDENCY_SECURITY_2026-11-19.md) removes the three active moderate advisories (two Next.js and one transitive minimatch) using supported releases. Audit reports zero known findings; the former picomatch high advisory was withdrawn upstream and is not credited as a code fix. No audit/rule threshold was weakened. Existing hosted Auth and final-head isolated-CI/owner gates remain open.

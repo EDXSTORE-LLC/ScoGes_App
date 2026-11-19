@@ -1,5 +1,23 @@
 # Project tracker
 
+Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
+**development-only closure**, including documented residual risks with their
+existing gates; no mandatory security check or HIGH vulnerability is waived.
+[PR #11](https://github.com/Edleben/ScoGes_App/pull/11) is merged as
+`5a346d060a9cd95f793a5de59db4324faf1f3f61`;
+[merge CI](https://github.com/Edleben/ScoGes_App/actions/runs/44550187309) passed.
+[Current closure evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md) supersedes
+older pending-acceptance notes below. This follow-up records the approved tracker
+transition through a protected PR; it is not published to main until that PR
+merges. Public preview, real-data pilot and production remain separately gated.
+Sprint 1 planning is authorized only after the closure transition is finalized;
+implementation remains unauthorized. No deployment or plan change is authorized.
+
+Latest closure-review evidence — **2026-11-19**: [hosted compatibility and exact-commit CI](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md)
+supersedes the weak-policy/final-CI pending checkpoints below. Owner confirms
+12/four classes; refreshed Advisor remains 0 ERROR / 7 WARN / 1 INFO. Preserve
+milestone rows until explicit owner sprint acceptance; Sprint 1 remains inactive.
+
 Latest hosted verification — **2026-11-18**: [owner-supplied Advisor/Auth evidence](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) resolves the missing dashboard-count/value evidence (**0 ERROR / 7 WARN / 1 INFO**), but the actual minimum **6/no character classes** is an unaccepted security blocker. No hosted Auth setting changed. Sprint 0 and milestone rows/progress remain unchanged; Sprint 1 is inactive.
 
 Security checkpoint — **2026-11-18**: [bounded Advisor remediation](SECURITY_ADVISOR_2026-11-18.md) is applied to hosted development with passing transactional isolation/privilege/invitation tests. Full Advisor refresh and password-policy verification are access-blocked; new dependency advisories require review. Milestone rows and UI statuses remain unchanged: Sprint 0 in progress; Sprint 1 inactive. No overall closure or residual-risk acceptance is inferred.
@@ -10,14 +28,14 @@ This Markdown tracker and the UI consume the same milestone definitions in `src/
 
 ## Sprint status
 
-| ID       | Status      | Progress | Scope                                       |
-| -------- | ----------- | -------- | ------------------------------------------- |
-| sprint-0 | in_progress | 100%     | Fondations plateforme                       |
-| sprint-1 | planned     | 0%       | Academique, eleves, responsables et imports |
-| sprint-2 | planned     | 0%       | Frais, facturation et echeanciers           |
-| sprint-3 | planned     | 0%       | Paiements, rapprochement et recus           |
-| sprint-4 | planned     | 0%       | Recouvrement et communications              |
-| sprint-5 | planned     | 0%       | Reporting et administration avancee         |
+| ID       | Status  | Progress | Scope                                       |
+| -------- | ------- | -------- | ------------------------------------------- |
+| sprint-0 | done    | 100%     | Fondations plateforme                       |
+| sprint-1 | planned | 0%       | Academique, eleves, responsables et imports |
+| sprint-2 | planned | 0%       | Frais, facturation et echeanciers           |
+| sprint-3 | planned | 0%       | Paiements, rapprochement et recus           |
+| sprint-4 | planned | 0%       | Recouvrement et communications              |
+| sprint-5 | planned | 0%       | Reporting et administration avancee         |
 
 ## Milestones
 

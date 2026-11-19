@@ -1,5 +1,23 @@
 # Project documentation map
 
+Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
+**development-only closure**, including documented residual risks with their
+existing gates; no mandatory security check or HIGH vulnerability is waived.
+[PR #11](https://github.com/Edleben/ScoGes_App/pull/11) is merged as
+`5a346d060a9cd95f793a5de59db4324faf1f3f61`;
+[merge CI](https://github.com/Edleben/ScoGes_App/actions/runs/44550187309) passed.
+[Current closure evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md) supersedes
+older pending-acceptance notes below. This follow-up records the approved tracker
+transition through a protected PR; it is not published to main until that PR
+merges. Public preview, real-data pilot and production remain separately gated.
+Sprint 1 planning is authorized only after the closure transition is finalized;
+implementation remains unauthorized. No deployment or plan change is authorized.
+
+Latest closure review — **2026-11-19**: [hosted compatibility and final CI](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md)
+supersedes pending hosted-policy/final-CI evidence below. Hosted minimum 12/four
+classes is owner-confirmed; Advisor is 0 ERROR / 7 WARN / 1 INFO. Preserve the
+development-only review boundary and await explicit owner closure acceptance.
+
 Latest hosted review — **2026-11-18**: [owner-verified Advisor/Auth reconciliation](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) supersedes missing-value notes: Advisor **0 ERROR / 7 WARN / 1 INFO**; hosted minimum **6**, no required character classes. The security gate remains blocked by unaccepted weak password policy and other required security/CI checks. No hosted Auth change or new waiver.
 
 Latest security checkpoint — **2026-11-18**: [Security Advisor function remediation](SECURITY_ADVISOR_2026-11-18.md) records the applied seventh migration, per-function dispositions, server-only invitation delivery and actual verification limits. Full hosted Advisor/password-policy inspection and newly reported dependency advisories keep the security gate open.

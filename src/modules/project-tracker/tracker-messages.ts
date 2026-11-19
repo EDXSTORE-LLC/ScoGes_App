@@ -3,7 +3,7 @@ import { sprintTrackers, type SprintTracker } from "./tracker-data";
 const english = [
   [
     "Platform foundations",
-    "All six technical milestones are delivered. The closure gate remains open: R2/R3 database migrations are verified; the automatic-backup gap is accepted for development only; pilot recovery and monitoring remain unvalidated. Sprint 1 is not active.",
+    "Sprint 0 accepted for development-only closure. Security and quality verified; residual risks accepted with their existing gates. Preview, pilot and production retain their own requirements. Sprint 1: planning only; implementation is not authorized.",
     [
       [
         "Workspace and quality",

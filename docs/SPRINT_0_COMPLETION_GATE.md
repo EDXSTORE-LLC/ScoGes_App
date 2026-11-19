@@ -1,5 +1,18 @@
 # Foundation completion gate
 
+Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
+**development-only closure**, including documented residual risks with their
+existing gates; no mandatory security check or HIGH vulnerability is waived.
+[PR #11](https://github.com/Edleben/ScoGes_App/pull/11) is merged as
+`5a346d060a9cd95f793a5de59db4324faf1f3f61`;
+[merge CI](https://github.com/Edleben/ScoGes_App/actions/runs/44550187309) passed.
+[Current closure evidence](SPRINT_0_OWNER_CLOSURE_REVIEW_2026-11-19.md) supersedes
+older pending-acceptance notes below. This follow-up records the approved tracker
+transition through a protected PR; it is not published to main until that PR
+merges. Public preview, real-data pilot and production remain separately gated.
+Sprint 1 planning is authorized only after the closure transition is finalized;
+implementation remains unauthorized. No deployment or plan change is authorized.
+
 Hosted-security evidence update — **2026-11-18**: [owner-verified review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) records Advisor **0 ERROR / 7 WARN / 1 INFO**, reconciled privileged RPCs and hosted Auth configuration. Advisor-count reduction does not close this gate: minimum **6/no classes** has no accepted exception; dependency/required final-head CI and owner dispositions remain outstanding. No overall development closure or subsequent phase is authorized.
 
 Current evidence review (2026-11-15): [R1–R7 acceptance matrix](SPRINT_0_RISK_ACCEPTANCE_REVIEW.md) separates completed R2 remediation, partial R1/R3/R6/R7 controls, the scoped R4 backup acceptance, unaccepted development deferrals and pilot blockers. It supersedes older absent-control/pending-deployment descriptions; overall Sprint 0 remains open.
