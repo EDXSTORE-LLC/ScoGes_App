@@ -1,6 +1,6 @@
 # Sprint 1 implementation decisions
 
-Status: **proposed rules awaiting owner answers**, not accepted business rules.
+Status: **S1-D1 through S1-D6 explicitly approved by the owner, with corrections below.**
 
 ## Verified starting point
 
@@ -23,7 +23,7 @@ authorization tests and valid-row import/error reporting. No specification fixes
 the numeric upload limits or a complete role/transition matrix.
 
 The active sprint prompt explicitly requires accepted decisions before the
-affected implementation. The following are proposed defaults for owner review.
+affected implementation. The following proposals are approved subject to the controlling clarifications below.
 
 | ID                | Proposed rule                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -57,3 +57,29 @@ not justify other Git cleanup.
 
 Unresolved rules block only their dependent slices. No accepted answer is inferred
 from silence or the broad implementation authorization.
+
+## Controlling owner clarifications — approved 2026-11-19
+
+- D1: Student and guardian codes are mandatory, tenant-unique and immutable. Names,
+  email, phone, preferred language and preferences remain editable by permission.
+  Email/phone are never the immutable identifier.
+- D2: Historical/future years may coexist and overlap. Exactly **at most one active
+  year per tenant** in Sprint 1, enforced with a partial unique index. No destructive
+  overwrite/deletion of historical years. Configurable hierarchy is approved.
+- D3: One canonical enrollment per student/year. Class/program/level/status changes
+  and transfers/withdrawals/completion preserve history and transactional audit.
+- D4: Tenant-safe many-to-many links, explicit relationship and primary-contact flag.
+  Contact details/preferences editable; fr/en supported. No implicit Auth access.
+- D5: Explicit administrative permissions for tenant admins and authorized registrars;
+  no authenticated-only write access and no new finance write permissions. Existing
+  role/permission architecture remains authoritative, with RLS as defense in depth.
+- D6: Stable-code matching, explicit existing-code conflicts at preview, no silent
+  updates. Per-row validation/errors and safe corrected-row retry are approved.
+  Configurable initial limits: 2 MiB, 500 rows, preview valid 15 minutes. Approved
+  parser/decompression/cell limits remain operational settings, not permanent
+  product promises. Dry-run must perform **no database writes**, including previews;
+  use a short-lived sealed actor/tenant-bound payload. Commit revalidates against
+  current state and records only non-PII results/audit.
+
+These explicit answers resolve the decision prerequisite. Proceed only within
+Sprint 1; no merge, hosted rollout, Sprint 2, billing or payments are authorized.

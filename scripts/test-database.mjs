@@ -114,6 +114,12 @@ try {
     );
   }
   console.log("Database authorization assertions: passed");
+  if (env.CI_ENFORCE_INTEGRATION === "1") {
+    await client.query(readFileSync("supabase/tests/sprint_1.sql", "utf8"));
+    console.log(
+      "Sprint 1 tenant isolation, permissions, references, identity, revisions and history: passed",
+    );
+  }
 } catch (error) {
   // Assertion messages contain only fixed test labels, never database values.
   console.error(

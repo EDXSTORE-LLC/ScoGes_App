@@ -1,5 +1,11 @@
 # Shared handoff — Claude, Codex and Antigravity
 
+Sprint 1 decisions S1-D1–D6 are now explicitly approved with owner clarifications
+in `SPRINT_1_DECISIONS.md`. Implementation is in progress on the dedicated branch.
+New migrations are for disposable validation only; no hosted rollout is authorized.
+Preview uses a separate local/staging encryption key and performs no DB writes.
+Do not treat the older pending-decision checkpoint below as current.
+
 Sprint 1 activation — **2026-11-19**: the owner confirms formal Sprint 0 closure
 and explicitly authorizes implementation, without automatic merge or Sprint 2.
 Fresh fetch verified clean main `2b248aaff8d85bfcdfaf9db94ca43c19852fbf99`, merged
