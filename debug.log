@@ -12,3 +12,15 @@
 [1118/153628.954:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
 [1118/164506.006:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
 [1118/164524.094:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/055617.280:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/055633.268:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/063902.766:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/063916.069:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/140345.410:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/140357.221:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/140406.074:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/140530.650:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/140731.805:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/140736.785:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/175054.589:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
+[1119/175113.522:ERROR:net\base\network_change_notifier_win.cc:224] WSALookupServiceBegin failed with: -1
