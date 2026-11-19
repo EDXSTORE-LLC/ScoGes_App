@@ -1,5 +1,17 @@
 # Shared handoff — Claude, Codex and Antigravity
 
+2026-11-19 final dependency verification: pnpm 11.19.0 frozen install, zero-finding audit, identical 123-file lint/rule coverage, matching/nonmatching parser glob probes, lint/typecheck, 202 unit/component tests, ten CI safety tests, rollback-only tenant/authorization suites and all 23 production Chromium cases pass. Next 16.4.5 builds on its first run without the former security warning. Final-head isolated CI and hosted Auth policy remain separate gates.
+
+2026-11-19 targeted dependency checkpoint: [dependency security remediation](DEPENDENCY_SECURITY_2026-11-19.md) raises Next/config to 16.4.5 and the official TypeScript-ESLint/parser family to 8.73.0 using two bounded same-major overrides. Final audit is zero; frozen install and unchanged 123-file lint/rule coverage pass. The prior password-hardening work is preserved. No application refactor, hosted configuration, schema, paid action, merge/deployment or Sprint 1. Record remaining command/browser evidence in the linked note; overall security closure is not implied.
+
+2026-11-19 verification: lint/typecheck, 202 unit/component tests, ten CI safety tests, rollback-only tenant/authorization SQL and all 23 production Chromium cases pass. Build passes on retry with the existing Next.js advisory warning retained. Hosted policy, dependencies and overall security gate remain unchanged.
+
+2026-11-19 application password hardening: [implementation and verification](PASSWORD_POLICY_2026-11-19.md)
+align signup/reset to 12–128 characters and all four character classes. Login
+compatibility, session/tenant guards and provider settings are preserved. This
+application-only authorization does not close the hosted password-policy gap or
+authorize dependency changes, merge, public deployment, paid services or Sprint 1.
+
 Fresh hosted-review checks: lint/typecheck, 148 unit/component tests, ten CI safety tests and rollback-only tenant/authorization SQL suites pass; dedicated production Chromium **21/21 in one clean run**. Build passes on retry with its dependency security warning retained; audit still has one high/three moderate findings. No hosted Auth setting changed. Required fresh disposable/exact-review-head CI remains outstanding.
 
 Latest owner-verified hosted security follow-up — **2026-11-18**: [final review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) records Advisor **0 ERROR / 7 WARN / 1 INFO** after **0 / 14 / 1**, six intentionally authenticated definer functions and the plan-constrained leaked-password warning. Connector access is not a security defect or remaining count-verification blocker. Hosted password minimum **6**, no character requirements, disabled password-change protections and one-hour OTP lifetime are now owner-verified. No hosted Auth settings changed. Weak password policy has no accepted development exception and blocks the security gate, alongside dependency/required-CI issues. Preserve Sprint 0 in progress; no merge/deployment/pilot/plan change/Sprint 1.

@@ -24,8 +24,11 @@ const fr = {
   invite: "Envoyer l’invitation",
   invitedEmail:
     "Connectez-vous ou créez un compte avec l’adresse e-mail invitée, puis acceptez l’invitation.",
-  invalid:
-    "Vérifiez les informations saisies. Le mot de passe doit contenir au moins 8 caractères et les deux mots de passe doivent correspondre.",
+  invalid: "Vérifiez les informations saisies.",
+  passwordHint:
+    "Au moins 12 caractères, avec une minuscule, une majuscule, un chiffre et un symbole (par exemple !, @ ou #).",
+  passwordInvalid:
+    "Vérifiez les informations saisies. Le mot de passe doit contenir au moins 12 caractères, avec une minuscule, une majuscule, un chiffre et un symbole. Les deux mots de passe doivent correspondre.",
   credentials:
     "Adresse e-mail ou mot de passe incorrect, ou compte non confirmé.",
   unavailable:
@@ -86,8 +89,11 @@ const en: Record<AuthMessageKey, string> = {
   invite: "Send invitation",
   invitedEmail:
     "Sign in or create an account using the invited email address, then accept the invitation.",
-  invalid:
-    "Check your details. The password must have at least 8 characters and both passwords must match.",
+  invalid: "Check your details.",
+  passwordHint:
+    "At least 12 characters, including a lowercase letter, an uppercase letter, a digit and a symbol (for example !, @ or #).",
+  passwordInvalid:
+    "Check your details. The password must have at least 12 characters, including a lowercase letter, an uppercase letter, a digit and a symbol. Both passwords must match.",
   credentials: "Incorrect email or password, or unconfirmed account.",
   unavailable:
     "The service is temporarily unavailable. Please try again later.",

@@ -1,5 +1,7 @@
 # R1 dependency remediation — 2026-11-01
 
+2026-11-19 superseding dependency checkpoint: [targeted remediation](DEPENDENCY_SECURITY_2026-11-19.md) uses Next/config 16.4.5 and upstream TypeScript-ESLint/parser 8.73.0 with a narrowly updated lockfile. Fresh registry audit reports zero vulnerabilities. The picomatch high advisory was withdrawn upstream; current minimatch affected range excludes the unchanged legacy v3 consumers. No global matcher override, shim, vendored patch, ESLint major upgrade, rule disable or audit suppression. Earlier R1 investigations below remain historical evidence, not the current blocker. Overall Sprint 0 closure/isolated CI and hosted password-policy alignment remain separate gates.
+
 Status: **partially remediated; minimatch remains open**. R1 is not closed and no residual-risk waiver is accepted. Sprint 0 stays open; R2–R7 and Sprint 1 status are unchanged.
 
 ## Applied change

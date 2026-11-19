@@ -18,11 +18,11 @@ test("signup rejects password mismatch without sending an email", async ({
 }) => {
   await page.goto("/signup?locale=en");
   await page.getByLabel("Email address").fill("test@example.invalid");
-  await page.getByLabel("Password", { exact: true }).fill("password123");
-  await page.getByLabel("Confirm password").fill("different123");
+  await page.getByLabel("Password", { exact: true }).fill("Valid-PasswordAa1!");
+  await page.getByLabel("Confirm password").fill("Different-PasswordAa1!");
   await page.getByRole("button", { name: "Continue", exact: true }).click();
   await expect(page.getByRole("status")).toContainText(
-    "both passwords must match",
+    "Both passwords must match",
   );
 });
 
@@ -51,6 +51,45 @@ test("invalid invitation has no enabled acceptance action", async ({
 });
 
 for (const locale of ["fr", "en"] as const) {
+  test(`signup enforces the ${locale} new-password policy without sending email`, async ({
+    page,
+  }) => {
+    await page.goto(`/signup?locale=${locale}`);
+    const password = page.getByLabel(
+      locale === "fr" ? "Mot de passe" : "Password",
+      { exact: true },
+    );
+    const confirm = page.getByLabel(
+      locale === "fr" ? "Confirmer le mot de passe" : "Confirm password",
+      { exact: true },
+    );
+    await expect(password).toHaveAttribute("minlength", "12");
+    await expect(password).toHaveAccessibleDescription(/12/);
+    await page
+      .getByLabel(locale === "fr" ? "Adresse e-mail" : "Email address")
+      .fill("policy@example.invalid");
+    // Browser length validation rejects this before submission.
+    await password.fill("Aa1!abcdefg");
+    await confirm.fill("Aa1!abcdefg");
+    expect(
+      await password.evaluate(
+        (field: HTMLInputElement) => field.validity.tooShort,
+      ),
+    ).toBe(true);
+    // A long-enough password missing classes reaches server-side validation.
+    await password.fill("abcdefghijkl");
+    await confirm.fill("abcdefghijkl");
+    await page
+      .getByRole("button", {
+        name: locale === "fr" ? "Continuer" : "Continue",
+        exact: true,
+      })
+      .click();
+    await expect(page.getByRole("status")).toContainText(
+      locale === "fr" ? "au moins 12 caractères" : "at least 12 characters",
+    );
+    await expect(page).toHaveURL(/\/signup/);
+  });
   test(`invalid sign-in reports a safe ${locale} failure`, async ({ page }) => {
     await page.goto(`/login?locale=${locale}`);
     await page

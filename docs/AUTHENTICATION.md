@@ -1,5 +1,11 @@
 # Authentication lifecycle — Sprint 0
 
+2026-11-19 application update: [bounded password hardening](PASSWORD_POLICY_2026-11-19.md)
+requires 12–128 characters with lowercase, uppercase, a digit and a supported symbol
+for signup/reset, with matching FR/EN validation and accessible guidance. Login
+retains its existing minimum eight and no class requirement. Hosted Auth settings
+remain unchanged; direct-provider policy alignment still requires owner action.
+
 Hosted Auth assessment — **2026-11-18**: [verified configuration and proposed migration](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) records minimum **6**, no required character classes, email provider/confirmation/secure email change enabled, secure password change/current-password requirement/leaked-password protection disabled, and email OTP **3600 seconds / 8 digits**. Source is owner dashboard verification. App signup/reset currently require only eight characters; direct Auth calls bypass that app minimum. No hosted settings or app password validation changed in this review. Target **12/all four classes** requires coordinated validation/FR/EN guidance/tests and owner save; current weak policy blocks closure. Test recent reauthentication and verified recovery before enabling password-change enforcement.
 
 ## Implemented flows

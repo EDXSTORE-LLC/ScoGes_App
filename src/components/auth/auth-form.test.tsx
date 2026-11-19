@@ -23,6 +23,35 @@ import { authText } from "@/modules/identity/auth-messages";
 afterEach(cleanup);
 
 for (const locale of ["fr", "en"] as const) {
+  it.each(["signup", "reset"] as const)(
+    `shows accessible ${locale} new-password requirements for %s`,
+    (mode) => {
+      render(<AuthForm mode={mode} locale={locale} />);
+      for (const label of ["password", "confirm"] as const) {
+        const field = screen.getByLabelText(authText(locale, label), {
+          exact: true,
+        });
+        expect(field).toHaveAttribute("minlength", "12");
+        expect(field).toHaveAttribute("maxlength", "128");
+        expect(field).toHaveAttribute("autocomplete", "new-password");
+        expect(field).toHaveAccessibleDescription(
+          authText(locale, "passwordHint"),
+        );
+      }
+    },
+  );
+  it(`keeps ${locale} legacy login fields free of new-password requirements`, () => {
+    render(<AuthForm mode="login" locale={locale} />);
+    const password = screen.getByLabelText(authText(locale, "password"), {
+      exact: true,
+    });
+    expect(password).toHaveAttribute("minlength", "8");
+    expect(password).toHaveAttribute("autocomplete", "current-password");
+    expect(password).not.toHaveAttribute("aria-describedby");
+    expect(
+      screen.queryByText(authText(locale, "passwordHint")),
+    ).not.toBeInTheDocument();
+  });
   it(`keeps the entered email and clears passwords after a ${locale} provider failure`, async () => {
     signup.mockResolvedValue({
       ok: false,

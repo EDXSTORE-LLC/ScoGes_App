@@ -1,5 +1,5 @@
 "use client";
-import { useActionState, useState, useSyncExternalStore } from "react";
+import { useActionState, useId, useState, useSyncExternalStore } from "react";
 import type { Route } from "next";
 import {
   signInAction,
@@ -12,6 +12,10 @@ import {
   captureInvitationAction,
 } from "@/modules/identity/invitation-actions";
 import { authText } from "@/modules/identity/auth-messages";
+import {
+  newPasswordMinLength,
+  newPasswordMaxLength,
+} from "@/modules/identity/password-policy";
 import type { Locale } from "@/types/foundation";
 import { FormField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";
@@ -44,6 +48,8 @@ export function AuthForm({
 }) {
   const [state, action, pending] = useActionState(actions[mode], { ok: false });
   const [email, setEmail] = useState("");
+  const passwordHintId = useId();
+  const choosingPassword = mode === "signup" || mode === "reset";
   const token = useSyncExternalStore<string | null>(
     subscribe,
     fragmentToken,
@@ -77,19 +83,26 @@ export function AuthForm({
           name="password"
           type="password"
           required
-          minLength={8}
-          maxLength={128}
+          minLength={choosingPassword ? newPasswordMinLength : 8}
+          maxLength={newPasswordMaxLength}
+          aria-describedby={choosingPassword ? passwordHintId : undefined}
           autoComplete={mode === "login" ? "current-password" : "new-password"}
         />
       )}
-      {["signup", "reset"].includes(mode) && (
+      {choosingPassword && (
+        <p id={passwordHintId} className="text-sm text-slate-600">
+          {authText(locale, "passwordHint")}
+        </p>
+      )}
+      {choosingPassword && (
         <FormField
           label={authText(locale, "confirm")}
           name="confirmPassword"
           type="password"
           required
-          minLength={8}
-          maxLength={128}
+          minLength={newPasswordMinLength}
+          maxLength={newPasswordMaxLength}
+          aria-describedby={passwordHintId}
           autoComplete="new-password"
         />
       )}

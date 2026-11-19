@@ -131,6 +131,9 @@ try {
 }
 
 if (!process.exitCode && env.CI_ENFORCE_INTEGRATION === "1") {
+  const { testSecurityAdvisorMigration } =
+    await import("./tests/security-advisor.mjs");
+  await testSecurityAdvisorMigration(env);
   const { testTimestampHardening } =
     await import("./tests/timestamp-hardening.mjs");
   await testTimestampHardening(env);

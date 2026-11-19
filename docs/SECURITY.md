@@ -1,5 +1,13 @@
 # Security
 
+2026-11-19 dependency update: [targeted remediation](DEPENDENCY_SECURITY_2026-11-19.md) removes the three active moderate advisories (two Next.js and one transitive minimatch) using supported releases. Audit reports zero known findings; the former picomatch high advisory was withdrawn upstream and is not credited as a code fix. No audit/rule threshold was weakened. Existing hosted Auth and final-head isolated-CI/owner gates remain open.
+
+2026-11-19: [application password policy](PASSWORD_POLICY_2026-11-19.md) now enforces
+12–128 characters plus lowercase/uppercase/digit/supported symbol on signup/reset.
+Existing login rules remain unchanged. No hosted setting, RLS, permission or
+session-revocation control changed. Direct Auth policy remains an owner-action gate;
+application validation alone does not resolve the last verified hosted minimum six.
+
 Latest owner-verified assessment — **2026-11-18**: [hosted security review](SPRINT_0_HOSTED_SECURITY_REVIEW_2026-11-18.md) supersedes earlier missing-Advisor/password-value notes. Refreshed hosted result **0 ERROR / 7 WARN / 1 INFO** is owner-verified; current catalog/negative tests reconcile six deliberate authenticated definers and the plan-constrained password warning. Hosted minimum **6** with no required classes is a **Sprint 0 blocker**, not accepted development risk. Target **12 + digits/lowercase/uppercase/symbols** needs a coordinated application/test alignment and explicit owner dashboard action. No Auth setting changed; connector unavailability is not a security defect. Other password-change/OTP/public-exposure and dependency gates remain documented.
 
 2026-11-18: [Security Advisor remediation](SECURITY_ADVISOR_2026-11-18.md)
