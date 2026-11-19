@@ -276,7 +276,7 @@ export async function SchoolPage({
             {schoolText(locale, "create")}
           </Link>
           <SchoolForm
-            key={`${kind}-${selected?.id ?? "new"}-${selected?.revision ?? 0}`}
+            key={`${kind}-${selected?.id ?? "new"}`}
             kind={kind}
             locale={locale}
             tenantId={ctx.membership.tenantId}

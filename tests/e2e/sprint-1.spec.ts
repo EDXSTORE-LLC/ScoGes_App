@@ -102,7 +102,9 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
               : "Guardian / responsible person",
           status: locale === "fr" ? "Statut" : "Status",
         };
+        let currentScreen = "years";
         async function screen(kind: string) {
+          currentScreen = kind;
           const response = await page.goto(
             `/dashboard/school/${kind}?locale=${locale}`,
           );
@@ -138,7 +140,10 @@ if (env.CI_ENFORCE_INTEGRATION === "1") {
             response.headers()["content-type"],
             "School action uses the RSC protocol",
           ).toContain("text/x-component");
-          await expect(page.getByRole("status")).toContainText(saved);
+          await expect(
+            page.getByRole("status"),
+            `Saving school record: ${currentScreen}`,
+          ).toContainText(saved);
         }
         async function record(table: string, code: string) {
           const r = await client
