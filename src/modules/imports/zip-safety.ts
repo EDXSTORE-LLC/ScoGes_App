@@ -1,5 +1,6 @@
 import { inflateRawSync, crc32 } from "node:zlib";
 import type { ImportLimits } from "./limits";
+import { inspectXlsxXml } from "./xml-safety";
 // Bounded ZIP preflight, independent of the XLSX reader. Reject ZIP64, encryption,
 // overlapping payloads, unsafe paths and mismatched actual expansion/CRC.
 export function inspectXlsxArchive(bytes: Buffer, limits: ImportLimits) {
@@ -97,48 +98,7 @@ export function inspectXlsxArchive(bytes: Buffer, limits: ImportLimits) {
     total += data.length;
     if (!name.endsWith("/")) {
       if (!/\.(xml|rels)$/i.test(name)) throw Error("unsupported_xlsx_content");
-      const xml = decoder
-        .decode(data)
-        .replace(/&#(x[0-9a-f]+|[0-9]+);/gi, (_, value: string) => {
-          const n =
-            value[0].toLowerCase() === "x"
-              ? parseInt(value.slice(1), 16)
-              : Number(value);
-          if (!Number.isInteger(n) || n < 0 || n > 0x10ffff)
-            throw Error("invalid_xlsx");
-          return String.fromCodePoint(n);
-        });
-      if (
-        /<!DOCTYPE|<!ENTITY|<(?:[\w]+:)?f(?:[\s/>])|TargetMode\s*=\s*["']External|macroEnabled|vbaProject|externalLink/i.test(
-          xml,
-        )
-      )
-        throw Error("unsupported_xlsx_content");
-      if (/^xl\/worksheets\/.*\.xml$/.test(name)) {
-        for (const tag of xml.matchAll(
-          /<(?:[\w]+:)?(c|row)\b[^>]*\br=["']([^"']+)["']/g,
-        )) {
-          const ref = tag[2];
-          const value = tag[1] === "row" ? ref : ref.replace(/^[A-Z]+/, "");
-          if (
-            !/^[1-9][0-9]*$/.test(value) ||
-            Number(value) > limits.maxRows + 1 ||
-            (tag[1] === "c" && !/^[A-Z]+[1-9][0-9]*$/.test(ref))
-          )
-            throw Error("invalid_cell_reference");
-        }
-
-        for (const match of xml.matchAll(
-          /\b(?:r|ref)=["'](?:[A-Z]+[1-9][0-9]*:)?([A-Z]+)([1-9][0-9]*)["']/g,
-        )) {
-          const col = [...match[1]].reduce(
-            (n, c) => n * 26 + c.charCodeAt(0) - 64,
-            0,
-          );
-          if (col > limits.maxColumns || Number(match[2]) > limits.maxRows + 1)
-            throw Error("too_many_rows_or_columns");
-        }
-      }
+      inspectXlsxXml(decoder.decode(data), limits);
     }
     position += 46 + length + extra + comment;
   }

@@ -16,6 +16,7 @@ import {
 import { schoolText, entityText, statusText, fieldText } from "./messages";
 import { SchoolForm } from "./form";
 import { PersonConnections } from "@/modules/people/connections";
+import { loadReferenceOptions } from "./references";
 export type SchoolQuery = {
   locale?: string;
   q?: string;
@@ -107,22 +108,18 @@ export async function SchoolPage({
     entity.fields.flatMap((f) => (f.reference ? [f.reference] : [])),
   );
   if (referenceKinds.has("classes")) referenceKinds.add("years");
-  const referenceResults = await Promise.all(
-    [...referenceKinds].map(async (k) => {
-      const r = await ctx.client
-        .from(schoolEntities[k].table)
-        .select("*")
-        .eq("tenant_id", ctx.membership.tenantId)
-        .order("created_at")
-        .limit(500)
-        .returns<SchoolRow[]>();
-      return [k, r] as const;
-    }),
-  );
-  const references: Partial<Record<SchoolKind, SchoolRow[]>> =
-    Object.fromEntries(referenceResults.map(([k, r]) => [k, r.data ?? []]));
-  if (referenceResults.some(([, r]) => r.error))
+  let references: Partial<Record<SchoolKind, SchoolRow[]>>;
+  try {
+    references = await loadReferenceOptions(
+      ctx.client,
+      ctx.membership.tenantId,
+      referenceKinds,
+      entity.fields,
+      selected,
+    );
+  } catch {
     return <p role="alert">{schoolText(locale, "unavailable")}</p>;
+  }
   const settings = await ctx.client
     .from("tenant_settings")
     .select("default_locale,timezone")

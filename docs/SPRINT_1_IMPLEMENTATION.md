@@ -1,10 +1,41 @@
 # Sprint 1 — implementation and verification record
 
-Status: **technical delivery verified; owner review pending, not formally closed**.
+Status: **technical delivery; owner review and exact-head CI required before merge, not formally closed**.
 Active scope and business rules: [approved S1-D1–D6](SPRINT_1_DECISIONS.md).
 Branch: `feat/sprint-1-academics-students-enrollments`, based on clean main
 `2b248aaff8d85bfcdfaf9db94ca43c19852fbf99` after Sprint 0 closure PR #12.
 No automatic merge, hosted migration, public deployment or Sprint 2.
+
+## PR #13 targeted review remediation — 2026-11-20
+
+The final review identified three cases absent from the original green suite:
+worksheet paths outside the hard-coded lowercase directory could bypass sparse
+coordinate checks; saved references outside the 500-option window could disappear
+on edit; and legal formula namespace prefixes could bypass regex rejection.
+
+The targeted fixes inspect every accepted XML part before workbook parsing, using
+namespace-aware SAX element/attribute events rather than path or prefix regexes.
+Coordinate/dimension and physical row/cell budgets apply regardless of part path;
+formula local names are rejected before cached values can be read. Ambiguous
+coordinate attributes fail closed. ZIP/CRC/expanded-byte limits, DTD/entity,
+external-link and macro/binary protections remain enforced. `saxes` 6.0.0, already
+resolved through jsdom, is now a pinned direct server dependency: Node has no
+built-in XML parser, and the XLSX reader's internal parser is not a supported
+public API. No package upgrade or additional resolved package is introduced.
+
+Edit pages retain the 500-item suggestion bound and tenant-scope fetch only the
+edited record's missing saved reference IDs, which come from the server-loaded
+record. Missing/inaccessible saved references fail closed; optional clearing still
+requires the user's explicit selection. New mandatory unit/component cases cover
+FR/EN preservation, clearing, in-window references and foreign-tenant denial.
+XLSX regressions cover canonical/case-variant/custom paths, extreme sparse rows
+and columns, decoded/ambiguous attributes, namespace variants and normal files;
+spies prove dangerous files are rejected before the workbook reader is invoked.
+
+No business-rule, migration, RLS, permission, CSP or hosted configuration change
+is part of this remediation. The original CI #102 is historical evidence only;
+the remediated PR head requires a fresh complete PR CI run. Final head/run,
+re-review and rollout checklist are recorded in `reports/PR_13_FINAL_REVIEW.md`.
 
 ## Baseline recheck — 2026-11-20
 

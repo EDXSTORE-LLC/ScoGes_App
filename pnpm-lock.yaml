@@ -51,6 +51,9 @@ importers:
       read-excel-file:
         specifier: 9.3.10
         version: 9.3.10
+      saxes:
+        specifier: 6.0.0
+        version: 6.0.0
       server-only:
         specifier: 0.0.1
         version: 0.0.1
