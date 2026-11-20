@@ -11,6 +11,7 @@ export function inspectXlsxXml(xml: string, limits: ImportLimits) {
   const parser = new SaxesParser({ xmlns: true });
   let rows = 0;
   let cells = 0;
+  let depth = 0;
   const maxRows = limits.maxRows + 1; // Includes the header.
   function coordinate(value: string) {
     const match = /^([A-Z]+)([1-9][0-9]*)$/.exec(value);
@@ -26,6 +27,8 @@ export function inspectXlsxXml(xml: string, limits: ImportLimits) {
     throw Error("unsupported_xlsx_content");
   });
   parser.on("opentag", (tag) => {
+    // Bound the safety parser's own namespace/element stack, not just ZIP bytes.
+    if (++depth > 64) throw Error("xlsx_xml_too_deep");
     // `local` handles unprefixed, hyphenated, dotted and Unicode prefixes alike,
     // including attributes and self-closing formula elements. Never use cached values.
     if (tag.local === "f") throw Error("unsupported_xlsx_content");
@@ -71,6 +74,9 @@ export function inspectXlsxXml(xml: string, limits: ImportLimits) {
         bounds.forEach(coordinate);
       }
     }
+  });
+  parser.on("closetag", () => {
+    depth--;
   });
   try {
     parser.write(xml).close();

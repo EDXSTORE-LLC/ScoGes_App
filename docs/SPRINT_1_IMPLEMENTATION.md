@@ -17,7 +17,8 @@ The targeted fixes inspect every accepted XML part before workbook parsing, usin
 namespace-aware SAX element/attribute events rather than path or prefix regexes.
 Coordinate/dimension and physical row/cell budgets apply regardless of part path;
 formula local names are rejected before cached values can be read. Ambiguous
-coordinate attributes fail closed. ZIP/CRC/expanded-byte limits, DTD/entity,
+coordinate attributes fail closed, and a 64-element XML depth cap bounds the safety
+parser's own stack. ZIP/CRC/expanded-byte limits, DTD/entity,
 external-link and macro/binary protections remain enforced. `saxes` 6.0.0, already
 resolved through jsdom, is now a pinned direct server dependency: Node has no
 built-in XML parser, and the XLSX reader's internal parser is not a supported

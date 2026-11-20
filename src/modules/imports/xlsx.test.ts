@@ -160,3 +160,10 @@ it("rejects dangerous archive content before XLSX parsing", () => {
     }),
   ).toThrow();
 });
+it("bounds XML nesting before the workbook reader or parser stack can grow", async () => {
+  const xml = `<worksheet xmlns="${spreadsheetNamespace}">${"<x>".repeat(65)}${"</x>".repeat(65)}</worksheet>`;
+  await expect(
+    parseXlsx(locatedWorksheet(xml, "custom/safe.xml"), importLimits({})),
+  ).rejects.toThrow();
+  expect(reader).not.toHaveBeenCalled();
+});
