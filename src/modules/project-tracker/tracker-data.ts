@@ -24,7 +24,7 @@ export const trackerCheckpoint = {
   validatedOn: "2026-11-19",
   validationPr: "https://github.com/Edleben/ScoGes_App/pull/11",
   validationRun:
-    "https://github.com/Edleben/ScoGes_App/actions/runs/44550187309",
+    "https://github.com/Edleben/ScoGes_App/actions/runs/44626834646",
 } as const;
 
 export const sprintTrackers: SprintTracker[] = [
@@ -35,7 +35,7 @@ export const sprintTrackers: SprintTracker[] = [
     status: "done",
     progress: 100,
     summary:
-      "Sprint 0 accepté pour clôture en développement uniquement. Sécurité et qualité vérifiées ; risques résiduels acceptés avec leurs gates existants. Preview, pilote et production restent bloqués par leurs exigences propres. Sprint 1 : planification uniquement, implémentation non autorisée.",
+      "Sprint 0 formellement clos pour le développement uniquement. Sécurité et qualité vérifiées ; risques résiduels acceptés avec leurs gates existants. Preview, pilote et production conservent leurs exigences propres. Sprint 1 autorisé séparément, en attente de revue propriétaire.",
     features: [
       {
         id: "workspace-quality",
@@ -97,18 +97,18 @@ export const sprintTrackers: SprintTracker[] = [
     id: "sprint-1",
     label: "Sprint 1",
     objective: "Academique, eleves, responsables et imports",
-    status: "planned",
-    progress: 0,
+    status: "in_progress",
+    progress: 100,
     summary:
-      "Configuration academique, dossiers eleves, responsables, inscriptions et import CSV/XLSX.",
+      "Fonctionnalités livrées et vérifiées en français/anglais. Revue propriétaire et PR en attente ; sprint non formellement clos. Migration hébergée et déploiement non effectués.",
     features: [
       {
         id: "academic-references",
         title: "References academiques",
         description:
           "Annees, programmes, niveaux, classes et statuts configurables.",
-        status: "planned",
-        progress: 0,
+        status: "done",
+        progress: 100,
         ownerArea: "Academics",
       },
       {
@@ -116,16 +116,16 @@ export const sprintTrackers: SprintTracker[] = [
         title: "Eleves et responsables",
         description:
           "CRUD tenant-safe, liens famille-eleve et recherche admin.",
-        status: "planned",
-        progress: 0,
+        status: "done",
+        progress: 100,
         ownerArea: "People",
       },
       {
         id: "enrollments",
         title: "Inscriptions",
         description: "Historique d'inscription par annee, niveau et classe.",
-        status: "planned",
-        progress: 0,
+        status: "done",
+        progress: 100,
         ownerArea: "Academics",
       },
       {
@@ -133,8 +133,8 @@ export const sprintTrackers: SprintTracker[] = [
         title: "Imports CSV/XLSX",
         description:
           "Validation, dry-run, erreurs ligne par ligne et recapitulatif.",
-        status: "planned",
-        progress: 0,
+        status: "done",
+        progress: 100,
         ownerArea: "Operations",
       },
     ],

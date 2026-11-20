@@ -39,18 +39,25 @@ describe("project tracker data", () => {
     expect(markdown).toContain(trackerCheckpoint.validationRun);
   });
 
-  it("tracks all roadmap sprints without starting Sprint 1 work", () => {
+  it("tracks delivered features without granting later-sprint authorization", () => {
     const summary = getProjectTrackerSummary();
 
     expect(summary.totalSprints).toBe(6);
     expect(summary.doneFeatures).toBe(
-      sprintTrackers[0].features.filter((feature) => feature.status === "done")
-        .length,
+      sprintTrackers
+        .flatMap((sprint) => sprint.features)
+        .filter((feature) => feature.status === "done").length,
     );
-    expect(sprintTrackers[1].status).toBe("planned");
+    expect(sprintTrackers[1].status).toBe("in_progress");
+    expect(sprintTrackers[1].progress).toBe(100);
+    expect(
+      sprintTrackers[1].features.every(
+        (feature) => feature.status === "done" && feature.progress === 100,
+      ),
+    ).toBe(true);
   });
 
-  it("records owner-approved development closure while keeping later sprints inactive", () => {
+  it("preserves Sprint 0 closure and keeps Sprint 2 onward inactive", () => {
     const sprint = sprintTrackers[0];
     expect(sprint.status).toBe("done");
     expect(sprint.progress).toBe(100);
@@ -67,7 +74,7 @@ describe("project tracker data", () => {
     ).toEqual([]);
     expect(
       sprintTrackers
-        .slice(1)
+        .slice(2)
         .every(
           (sprint) => sprint.status === "planned" && sprint.progress === 0,
         ),

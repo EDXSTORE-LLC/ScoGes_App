@@ -50,7 +50,7 @@ not justify other Git cleanup.
    RLS/FK/actor/revision/transactional-audit tests in disposable CI.
 2. Academics FR/EN administration, then students/guardians/linking, then enrollment
    history. Reuse established session, tenant, locale and error patterns.
-3. Bounded parser adapters and private preview/commit persistence with idempotency,
+3. Bounded parser adapters, sealed client-held previews and private non-PII commit results with idempotency,
    row errors, duplicate handling and current authorization checks.
 4. Full bilingual E2E journeys, existing foundation regressions, migration/security
    validation and documentation. No hosted migration or public deployment implied.

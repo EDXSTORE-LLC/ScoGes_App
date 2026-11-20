@@ -1,10 +1,33 @@
 # Sprint 1 — implementation and verification record
 
-Status: **implementation under verification; owner review pending**.
+Status: **technical delivery verified; owner review pending, not formally closed**.
 Active scope and business rules: [approved S1-D1–D6](SPRINT_1_DECISIONS.md).
 Branch: `feat/sprint-1-academics-students-enrollments`, based on clean main
 `2b248aaff8d85bfcdfaf9db94ca43c19852fbf99` after Sprint 0 closure PR #12.
 No automatic merge, hosted migration, public deployment or Sprint 2.
+
+## Baseline recheck — 2026-11-20
+
+Fresh `git fetch origin` confirms current `origin/main` is still
+`2b248aaff8d85bfcdfaf9db94ca43c19852fbf99`, the Sprint 0 closure PR #12 merge.
+The branch reflog records creation directly from that `origin/main` on
+2026-11-19 at 19:35:46 UTC. `git merge-base HEAD origin/main` returns the same
+commit; `git rev-list --left-right --count origin/main...HEAD` returns `0 9`
+before this documentation commit. No main commit is missing and no merge/rebase
+is necessary. All nine additional commits implement or verify Sprint 1; no old
+Sprint 0 branch work was carried independently. Existing applied migration files
+are unchanged; only the append-only Sprint 1 migration is added.
+
+CI #99 failed its two Sprint 1 browser cases because client-imported Zod validation
+probed dynamic code execution prohibited by the existing CSP. Commit `ddeb877`
+separates plain client metadata from server-only validation/import preparation;
+no CSP relaxation or test bypass was made. CI #100 passes all three mandatory
+jobs. Earlier fixture failures were corrected in place: explicit test role setup,
+preservation of the shared private schema during rollback-only quota replay, and
+complete tenant settings for concurrency fixtures. Form revision updates also
+preserve success feedback. `Required validation` is the aggregate dependency gate;
+it failed when integration failed, without an independent defect. Historical red
+runs remain visible and are superseded by green run #100, not erased or bypassed.
 
 ## Domain and UI
 
@@ -124,3 +147,59 @@ New checks cover schema/permissions, sealed previews, real XLSX safety, database
 atomicity, concurrent active years/enrollments/revisions and bilingual browser
 journeys, including CSV/XLSX preview/commit/corrected retry and a mobile viewport.
 Run links and actual counts belong in the final review report once complete.
+
+## Executed validation checkpoint — 2026-11-19
+
+Functional head `ddeb87763728e20120f21f36653202b120248e03` passed
+[CI 44626834646](https://github.com/Edleben/ScoGes_App/actions/runs/44626834646):
+Quality and security, Isolated integration and browser tests, Required validation.
+
+| Check                                                               | Executed result                             |
+| ------------------------------------------------------------------- | ------------------------------------------- |
+| Lint, route generation/typecheck, production build                  | Passed locally and in CI                    |
+| Unit/component/contract                                             | 234 passed, 32 files                        |
+| CI safety guards                                                    | 14 passed                                   |
+| Isolated Redis                                                      | 3 passed in CI                              |
+| Production browser suite                                            | 40 passed in CI; 0 failed, skipped or flaky |
+| Foundation local production browser regression                      | 23 passed on dedicated loopback port        |
+| Fresh migration application, ordering and privilege replay          | Passed in disposable CI                     |
+| Timestamp/quota upgrade preservation and concurrency                | Passed in disposable CI                     |
+| Tenant isolation, authorization, actor/ID spoofing and atomic audit | Passed in disposable CI                     |
+| Sprint 1 active-year/canonical-enrollment/revision races            | Passed in disposable CI                     |
+| Invitations, onboarding, administration and email lifecycle         | Passed in disposable CI                     |
+| Dependency audit                                                    | No known vulnerabilities, locally and in CI |
+
+The 40-case suite includes the existing 38 foundation cases and two full FR/EN
+Sprint 1 journeys: academic setup, student/guardian relationships, enrollment
+history, CSV preview without writes, conflicts/errors, corrected-row retry, XLSX
+preview/commit, editing/archiving and a 390px viewport. The strict CSP guard detects
+runtime, hydration and policy errors. Client metadata deliberately imports no Zod:
+schema validation and XLSX preparation stay server-only, avoiding CSP-blocked JIT.
+The local UI diagnostic used fake loopback services only; it is not DB security
+evidence. An initial default-port development browser run failed 2/23; the dedicated
+production run passed all 23 without changing tests. New DB/browser journeys ran
+against disposable CI, since the Sprint 1 migration is intentionally not hosted.
+
+The final documentation/tracker head requires its own green mandatory CI; the
+completion report must identify that exact head/run, not reuse this checkpoint.
+Tracker 100% describes delivered technical milestones, not owner acceptance,
+production readiness or permission to start Sprint 2.
+
+## Owner review and remaining deployment gates
+
+- Review the append-only migration, permission matrix and approved S1-D1–D6 rules;
+  merge only through normal protected review, with no automatic merge by the agent.
+- Before using these routes in another environment, separately approve/apply the
+  migration and configure a distinct `IMPORT_PREVIEW_SECRET`. Existing deployment,
+  ingress, recovery/backup and monitoring gates remain applicable. No real-data
+  readiness is inferred from isolated tests.
+- Sprint 0's hosted Advisor evidence remains 0 ERROR / 7 WARN / 1 INFO from the
+  owner, including six intentional authenticated definers and Free-plan leaked
+  password protection risk. This migration adds two reviewed authenticated-only
+  definers in disposable CI; no new hosted Advisor count is claimed. Anonymous
+  execution is denied and tested. Hosted password policy remains owner-confirmed
+  12 characters with all four classes; Auth behavior/configuration was not changed.
+- Imports are insert-only and bounded; larger batches, update mode, multiple
+  simultaneous active years and financial functions require future decisions.
+- No public deployment, hosted database change, paid service, Sprint 1 formal
+  closure or Sprint 2 implementation was performed by this delivery.
