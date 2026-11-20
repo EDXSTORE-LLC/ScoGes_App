@@ -1,5 +1,17 @@
 # Data Model
 
+## Sprint 1 schema — pending reviewed rollout
+
+Append-only migration `20261119210612_sprint_1_academics_people.sql` adds
+`academic_years`, `academic_programs`, `academic_levels`, `academic_classes`,
+`academic_terms`, `students`, `guardians`, `student_guardians`, `enrollments` and
+`enrollment_history`, plus private non-PII import batch results.
+Composite tenant foreign keys, immutable code checks, a single-active-year index,
+canonical student/year uniqueness, revision checks and transactional history/audit
+protect the approved model. No destructive domain deletion is exposed to clients.
+See [full constraints and transitions](SPRINT_1_IMPLEMENTATION.md). This schema is
+validated in disposable CI; no hosted application of the migration is claimed.
+
 Current hosted checkpoint — **2026-11-11**: PR #10 is merged; the R2 helper and R3 direct-RPC quota migrations are now applied to the configured project and post-deployment checks passed. [Deployment evidence](DEPLOYMENT_2026-11-11.md) supersedes older pending-deployment notes below. Full advisor refresh, Vercel/monitoring and Sprint 0 acceptance remain open; Sprint 1 is inactive.
 
 ## Sprint 0 Tables

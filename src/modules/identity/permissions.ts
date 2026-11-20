@@ -1,7 +1,25 @@
 import type { Permission, TenantRole } from "@/types/foundation";
 
+const schoolPermissions: Permission[] = [
+  "academics.read",
+  "academics.write",
+  "academics.archive",
+  "students.read",
+  "students.write",
+  "students.archive",
+  "guardians.read",
+  "guardians.write",
+  "guardians.archive",
+  "enrollments.read",
+  "enrollments.write",
+  "enrollments.archive",
+  "imports.preview",
+  "imports.commit",
+];
+
 export const rolePermissions: Record<TenantRole, Permission[]> = {
   tenant_admin: [
+    ...schoolPermissions,
     "tenant.settings.read",
     "tenant.settings.write",
     "users.read",
@@ -12,7 +30,7 @@ export const rolePermissions: Record<TenantRole, Permission[]> = {
   ],
   finance_manager: ["tenant.settings.read", "users.read", "audit.read"],
   cashier: ["tenant.settings.read"],
-  registrar: ["tenant.settings.read", "users.read"],
+  registrar: ["tenant.settings.read", "users.read", ...schoolPermissions],
   auditor: ["tenant.settings.read", "users.read", "audit.read"],
 };
 
@@ -24,7 +42,10 @@ export function hasPermission(roles: TenantRole[], permission: Permission) {
   return permissionsForRoles(roles).has(permission);
 }
 
-export function canAssignRole(actorRoles: TenantRole[], targetRole: TenantRole) {
+export function canAssignRole(
+  actorRoles: TenantRole[],
+  targetRole: TenantRole,
+) {
   if (!hasPermission(actorRoles, "users.manage_roles")) {
     return false;
   }

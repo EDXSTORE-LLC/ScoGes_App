@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import { signOutAction } from "@/modules/identity/actions";
 import { Button } from "@/components/ui/button";
+import { schoolText } from "@/modules/school/messages";
+import { hasPermission } from "@/modules/identity/permissions";
+import type { TenantRole } from "@/types/foundation";
 
 const navItems: {
   href: Route;
@@ -31,11 +34,13 @@ export function AppShell({
   locale,
   tenantName,
   userEmail,
+  roles = [],
 }: {
   children: React.ReactNode;
   locale: Locale;
   tenantName?: string;
   userEmail: string;
+  roles?: TenantRole[];
 }) {
   return (
     <div className="shell-grid min-h-screen">
@@ -63,6 +68,15 @@ export function AppShell({
           className="mt-6 grid gap-1"
           aria-label={foundationText(locale, "navigation")}
         >
+          {hasPermission(roles, "academics.read") && (
+            <Link
+              className="flex min-h-11 items-center gap-3 rounded-md px-3 text-sm font-medium text-slate-700 hover:bg-slate-100"
+              href={localizedPath("/dashboard/school", locale) as Route}
+            >
+              <Users aria-hidden size={18} />
+              {schoolText(locale, "title")}
+            </Link>
+          )}
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -82,12 +96,12 @@ export function AppShell({
       </aside>
 
       <div className="min-w-0">
-        <header className="flex min-h-16 items-center justify-between border-b border-[var(--border)] bg-white px-5">
-          <div>
+        <header className="flex min-h-16 flex-wrap items-center justify-between gap-3 py-3 border-b border-[var(--border)] bg-white px-5">
+          <div className="min-w-0 flex-1 basis-48">
             <p className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
               {foundationText(locale, "admin")}
             </p>
-            <p className="text-sm text-slate-800">{userEmail}</p>
+            <p className="truncate text-sm text-slate-800">{userEmail}</p>
           </div>
           <LanguageLinks />
           <form action={signOutAction}>

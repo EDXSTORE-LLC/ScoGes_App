@@ -11,6 +11,7 @@ const env = {
   UPSTASH_REDIS_REST_URL: "http://127.0.0.1:8079",
   UPSTASH_REDIS_REST_TOKEN: randomBytes(24).toString("hex"),
   SMTP_PASSWORD: randomBytes(24).toString("hex"),
+  IMPORT_PREVIEW_SECRET: randomBytes(32).toString("hex"),
   CI_TEST_PASSWORD: randomBytes(24).toString("hex") + "Aa1!",
   CI_TEST_UPDATED_PASSWORD: randomBytes(24).toString("hex") + "Bb2!",
 };
@@ -20,6 +21,7 @@ for (const value of [
     .map(([, value]) => value),
   env.UPSTASH_REDIS_REST_TOKEN,
   env.SMTP_PASSWORD,
+  env.IMPORT_PREVIEW_SECRET,
   env.CI_TEST_PASSWORD,
   env.CI_TEST_UPDATED_PASSWORD,
 ]) {

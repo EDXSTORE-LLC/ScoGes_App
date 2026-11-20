@@ -3,7 +3,7 @@ import { sprintTrackers, type SprintTracker } from "./tracker-data";
 const english = [
   [
     "Platform foundations",
-    "Sprint 0 accepted for development-only closure. Security and quality verified; residual risks accepted with their existing gates. Preview, pilot and production retain their own requirements. Sprint 1: planning only; implementation is not authorized.",
+    "Sprint 0 formally closed for development only. Security and quality verified; residual risks accepted with their existing gates. Preview, pilot and production retain their own requirements. Sprint 1 separately authorized and awaiting owner review.",
     [
       [
         "Workspace and quality",
@@ -33,7 +33,7 @@ const english = [
   ],
   [
     "Academics, students, guardians and imports",
-    "Academic configuration, student records, guardians, enrollments and CSV/XLSX imports.",
+    "Features delivered and verified in French/English. Owner and PR review pending; sprint not formally closed. Hosted migration and deployment not performed.",
     [
       [
         "Academic references",

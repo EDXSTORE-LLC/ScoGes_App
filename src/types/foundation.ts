@@ -4,6 +4,9 @@ export type TenantRole =
   "tenant_admin" | "finance_manager" | "cashier" | "registrar" | "auditor";
 
 export type Permission =
+  | `${"academics" | "students" | "guardians" | "enrollments"}.${"read" | "write" | "archive"}`
+  | "imports.preview"
+  | "imports.commit"
   | "tenant.settings.read"
   | "tenant.settings.write"
   | "users.read"

@@ -1,5 +1,23 @@
 # Security
 
+## Sprint 1 security boundary
+
+[Approved implementation](SPRINT_1_IMPLEMENTATION.md) extends explicit RBAC and
+RLS to school records without finance grants. Two new authenticated-only RPCs
+protect writes/history/audit and insert-only import commits; their static field
+allowlists, verified actor, locked active tenant, current permissions, empty
+search path and no anonymous execution are tested. The original six retained
+definer dispositions and owner-verified hosted Advisor counts remain unchanged
+because the new migration has not been deployed.
+Dry-run writes no database data. A separate random local/staging key seals
+actor/tenant-bound previews; expiry, tampering, current grants and references are
+checked again at commit. ZIP expansion/CRC/dimension controls precede XLSX parsing.
+New school/import request URLs and action arguments are excluded from development
+request logging; neither PII nor sealed tokens are audit metadata. The 5-MiB
+transport ceiling supports bounded uploads; actual configured file/row/cell limits
+remain lower. Existing Auth/session/rate-limit and preview/pilot/production gates
+are preserved. No production-readiness inference follows from this sprint.
+
 Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
 **development-only closure**, including documented residual risks with their
 existing gates; no mandatory security check or HIGH vulnerability is waived.

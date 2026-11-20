@@ -64,3 +64,24 @@ Retain the established `locale=fr|en` query convention. The proxy overwrites a v
 ## R4 operational planning note — 2026-11-11 (proposed, not accepted)
 
 Preserve the existing modular/provider stack while evaluating backup recovery, environment-separated deployment and alerting through [R4-D1–D7](R4_RECOVERY_DEPLOYMENT_MONITORING_PLAN.md). Selection of recovery targets, plan capabilities, costs, operators and restore/Vercel targets requires recorded owner decisions and executed proof. A completed runbook, a backup file, a DSN or a green CI run is not recovery/monitoring acceptance. No new provider, paid feature, architecture implementation or production behavior is approved by this note.
+
+## ADR-0010: Tenant-safe school records and stateless import previews
+
+Use normalized school tables, tenant-composite foreign keys and client SELECT-only
+RLS. A narrow entity registry plus typed per-domain schemas constrains one record
+mutation gateway; identity/permission/tenant/revision/status checks and required
+audit/history are database-atomic. A dedicated commit gateway inserts valid import
+rows and records idempotent non-PII batch results. Both revoke anonymous/PUBLIC
+execution and pin an empty search path; no existing definer policy is weakened.
+
+Dry-run is read-only, so avoid persistent previews. Seal validated rows with a
+separate AES-GCM key, actor/tenant/batch/expiry, then revalidate at final commit.
+Stable-code conflicts are explicit; there is no inferred update/merge mode.
+`read-excel-file` supplies XLSX reading missing from the stack, behind independent
+bounded ZIP preflight and adapter tests. Pin a published, audited version; no
+new service, queue or writer dependency. See [implementation](SPRINT_1_IMPLEMENTATION.md).
+
+Follow-up migration is append-only and not deployed by this task. New UI uses
+native Server Actions and preserves non-secret form values on reset, matching
+the foundation pattern. The existing strict CSP and zero-violation browser guard
+remain mandatory. Generated `next-env.d.ts` is ignored per the installed Next guide.

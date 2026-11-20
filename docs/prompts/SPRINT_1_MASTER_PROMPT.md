@@ -1,6 +1,11 @@
 # Sprint 1 — Academic references, students, guardians, enrollments and imports
 
-Status: **Proposed; inactive; foundation closure review pending.** Prepared 2026-10-30. This document is an approval-ready scope, not evidence of owner approval or authorization to begin implementation. Sprint 0 remains active.
+Status: **Active for owner-authorized implementation — 2026-11-19.** Sprint 0
+closure follow-up PR #12 is merged on main `2b248aaff8d85bfcdfaf9db94ca43c19852fbf99`,
+with successful merge CI. The owner explicitly authorized Sprint 1 and a dedicated
+feature branch. [Detailed decisions](../SPRINT_1_DECISIONS.md) record verified
+sources and unresolved business rules; approval of scope does not invent their
+answers. No automatic merge, hosted rollout or Sprint 2 is authorized.
 
 ## Authority and activation
 
@@ -14,14 +19,18 @@ Implementation may begin only after the [foundation completion gate](../SPRINT_0
 
 Deliver a tenant-safe administrative journey: configure an academic year and academic references, create a student and linked guardians, enroll the student, then import equivalent validated records. Every new flow must work in French and English with consistent locale navigation, accessible controls, and loading, empty, validation, permission, dependency-error and submitting states.
 
-Use the existing modular monolith and established server authorization, validation, database, audit and UI patterns. Work only on `edwakson/ScoGes_App`; main changes through reviewed PRs with required validation. Do not deploy or apply hosted migrations merely because this prompt exists.
+Use the existing modular monolith and established server authorization, validation,
+database, audit and UI patterns. For this execution the owner explicitly replaces
+the previous branch convention with `feat/sprint-1-academics-students-enrollments`;
+main changes still require reviewed PRs and required validation. Do not deploy or
+apply hosted migrations merely because this prompt exists.
 
-## Decisions required before the affected slice
+## Decisions required before the affected slice — resolved by S1-D1–D6
 
 Produce a short decision sheet citing existing product requirements. Request owner decisions only where those sources do not settle the rule; record accepted answers before implementation:
 
 - Student required fields, school identifier/matricule assignment, uniqueness scope, and edit/archive semantics. Do not infer identity from name alone.
-- Academic hierarchy and optional program/level/class relationships, year boundaries and overlapping-year policy. Terms and subjects appear in the broader specification but are excluded from this bounded slice unless the owner explicitly adds them.
+- Academic hierarchy and optional program/level/class relationships, year boundaries and overlapping-year policy. Optional terms/semesters/trimesters are included by approved S1-D2. Subjects remain excluded.
 - Enrollment statuses and allowed transitions, duplicate enrollment policy, transfers and historical correction rules. Do not silently overwrite history.
 - Guardian required fields, relationship metadata, duplicate matching, consent/notification preference defaults and archive/unlink behavior. A shared phone or email is not automatic authority to merge people or grant account access.
 - Explicit permission matrix for academic, student, guardian, enrollment and import operations, including read-only access. Existing foundation permissions do not authorize these new operations. No implicit grants to finance, cashiers, auditors or support.

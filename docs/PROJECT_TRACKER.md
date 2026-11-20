@@ -1,5 +1,21 @@
 # Project tracker
 
+Sprint 1 review checkpoint — **2026-11-19**: owner-approved S1-D1–D6 are
+implemented on `feat/sprint-1-academics-students-enrollments`. Functional head
+`ddeb87763728e20120f21f36653202b120248e03` passed
+[all mandatory CI jobs](https://github.com/Edleben/ScoGes_App/actions/runs/44626834646):
+234 unit/contract tests, 14 guards, 3 Redis tests, 40 browser journeys with zero
+failures/skips/flakiness, fresh migrations/order/replay, concurrency, tenant isolation
+and authorization. [Review record](SPRINT_1_IMPLEMENTATION.md) defines the boundaries.
+Sprint 1 is **in_progress / 100% technical delivery, owner review pending**, not
+formally closed. No merge, hosted migration, public deployment or Sprint 2.
+Sprint 0 remains formally closed for development only on main PR #12; its residual
+risk dispositions and preview/pilot/production gates are preserved.
+The final documentation/tracker commit must also pass its own CI before review.
+
+The dated entries below retain their historical context and are superseded by
+this checkpoint where they describe Sprint 1 as inactive or Sprint 0 as open.
+
 Owner acceptance — **2026-11-19**: the owner explicitly accepts Sprint 0 for
 **development-only closure**, including documented residual risks with their
 existing gates; no mandatory security check or HIGH vulnerability is waived.
@@ -28,14 +44,14 @@ This Markdown tracker and the UI consume the same milestone definitions in `src/
 
 ## Sprint status
 
-| ID       | Status  | Progress | Scope                                       |
-| -------- | ------- | -------- | ------------------------------------------- |
-| sprint-0 | done    | 100%     | Fondations plateforme                       |
-| sprint-1 | planned | 0%       | Academique, eleves, responsables et imports |
-| sprint-2 | planned | 0%       | Frais, facturation et echeanciers           |
-| sprint-3 | planned | 0%       | Paiements, rapprochement et recus           |
-| sprint-4 | planned | 0%       | Recouvrement et communications              |
-| sprint-5 | planned | 0%       | Reporting et administration avancee         |
+| ID       | Status      | Progress | Scope                                       |
+| -------- | ----------- | -------- | ------------------------------------------- |
+| sprint-0 | done        | 100%     | Fondations plateforme                       |
+| sprint-1 | in_progress | 100%     | Academique, eleves, responsables et imports |
+| sprint-2 | planned     | 0%       | Frais, facturation et echeanciers           |
+| sprint-3 | planned     | 0%       | Paiements, rapprochement et recus           |
+| sprint-4 | planned     | 0%       | Recouvrement et communications              |
+| sprint-5 | planned     | 0%       | Reporting et administration avancee         |
 
 ## Milestones
 
@@ -47,10 +63,10 @@ This Markdown tracker and the UI consume the same milestone definitions in `src/
 | foundation-ui              | done    | 100%     | sprint-0 | Shell UI administration                     |
 | bilingual-completion       | done    | 100%     | sprint-0 | Compléter la traduction de la fondation     |
 | email-lifecycle-validation | done    | 100%     | sprint-0 | Valider les parcours e-mail de bout en bout |
-| academic-references        | planned | 0%       | sprint-1 | References academiques                      |
-| students-guardians         | planned | 0%       | sprint-1 | Eleves et responsables                      |
-| enrollments                | planned | 0%       | sprint-1 | Inscriptions                                |
-| imports                    | planned | 0%       | sprint-1 | Imports CSV/XLSX                            |
+| academic-references        | done    | 100%     | sprint-1 | References academiques                      |
+| students-guardians         | done    | 100%     | sprint-1 | Eleves et responsables                      |
+| enrollments                | done    | 100%     | sprint-1 | Inscriptions                                |
+| imports                    | done    | 100%     | sprint-1 | Imports CSV/XLSX                            |
 | fee-configuration          | planned | 0%       | sprint-2 | Configuration des frais                     |
 | invoices                   | planned | 0%       | sprint-2 | Factures                                    |
 | installments               | planned | 0%       | sprint-2 | Echeanciers                                 |

@@ -1,5 +1,47 @@
 # Implementation Log
 
+## 2026-11-19 — Sprint 1 technical delivery for owner review
+
+Approved S1-D1–D6 implemented on the dedicated feature branch: academic years,
+periods, programs, levels/classes; immutable student/guardian codes, relationships,
+logical archive; canonical enrollments with audited history; bounded insert-only
+CSV/XLSX previews/commit and corrected-row retry. FR/EN routes enforce existing
+server membership/permissions and new RLS/tenant constraints. One append-only
+migration adds schema and two explicitly authenticated-only RPCs; no hosted apply.
+Only new dependency is the pinned XLSX reader behind a bounded safety adapter.
+`next-env.d.ts` is generated/ignored according to installed Next 16.4.5 guidance.
+
+Functional head `ddeb877` passed all jobs in
+[CI 44626834646](https://github.com/Edleben/ScoGes_App/actions/runs/44626834646):
+234 unit/contract tests, 14 guards, 3 Redis, 40 browser journeys with no skips or
+flakiness, fresh/order/replay/upgrade migrations, concurrency, isolation and
+authorization. Local lint/typecheck/build, 234 tests, 14 guards, 23 dedicated
+production browser cases and zero-finding dependency audit passed. See
+[full evidence, initial failed-run context and deployment gates](SPRINT_1_IMPLEMENTATION.md).
+Final documentation/tracker CI must pass independently. Technical milestones are
+delivered, while Sprint 1 remains in progress awaiting owner/PR review. Sprint 0
+closure and residual risks are preserved; no merge, public rollout or Sprint 2.
+
+## 2026-11-19 — Sprint 1 activation and independent preparation
+
+- Owner explicitly authorized implementation on a dedicated feature branch after
+  formal development-only Sprint 0 closure. Clean main `2b248aa` and its green
+  merge CI were verified before creating `feat/sprint-1-academics-students-enrollments`.
+- Activated the Sprint 1 prompt and recorded proposed unresolved business rules in
+  `SPRINT_1_DECISIONS.md`; those proposals are not accepted by silence. No domain
+  permissions, enrollment transition rules or duplicate import behavior are fixed
+  before the required answers.
+- Added a UTF-8 CSV string parser with caller-supplied byte/row/column/cell limits,
+  strict quoting/header/row-shape checks and safe error codes. It performs no
+  business writes, formula evaluation or file retention and is not a complete
+  preview/commit workflow. Sixteen parser tests plus the existing 202 tests pass.
+- Installed Next 16.4.5 documentation recommends ignoring and untracking generated
+  `next-env.d.ts`; kept its local copy and tsconfig include, verified `next typegen`
+  regeneration, and changed only its ignore/index state.
+- Local lint, route type generation, typecheck, 218 tests, 12 CI guards and build
+  pass for this preparation. Full browser/CI evidence must be recorded separately;
+  no new migration, hosted setting or Sprint 1 milestone completion is claimed.
+
 ## 2026-09-17 Sprint 0 Foundation
 
 Implemented repository initialization and platform foundation:

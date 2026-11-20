@@ -1,5 +1,15 @@
 # Architecture
 
+## Sprint 1 school administration — current implementation
+
+The modular monolith now includes `academics`, `people`, `enrollments`, `imports`
+and a small shared school workspace for typed forms/actions/registry. Domain
+validation stays in its modules; the XLSX adapter and sealed preview boundary
+stay under imports. [Implementation/security model](SPRINT_1_IMPLEMENTATION.md)
+describes guarded transactional RPCs, RLS, immutable history and import retries.
+This supersedes the historical Sprint 0-only scope below. No hosted rollout or
+financial domain is implemented by this change. Final-head CI remains required.
+
 ## Scope
 
 Sprint 0 implements the foundation of the EDXSTORE school management SaaS. It does not implement students, billing, payments, receipts, collections, reporting exports, or SaaS subscription checkout.

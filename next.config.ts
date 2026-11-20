@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   typedRoutes: true,
+  experimental: { serverActions: { bodySizeLimit: "5mb" } },
   allowedDevOrigins: ["127.0.0.1"],
   async headers() {
     const headers = [
@@ -29,7 +30,12 @@ const nextConfig: NextConfig = {
   logging: {
     // Auth action arguments can contain passwords and invitation tokens.
     serverFunctions: false,
-    incomingRequests: { ignore: [/\/auth\/callback(?:\?|$)/] },
+    incomingRequests: {
+      ignore: [
+        /\/auth\/callback(?:\?|$)/,
+        /\/dashboard\/(?:school|imports)(?:\/|\?|$)/,
+      ],
+    },
   },
 };
 

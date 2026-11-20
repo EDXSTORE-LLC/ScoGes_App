@@ -28,7 +28,12 @@ export default async function DashboardLayout({
     : { data: null };
 
   return (
-    <AppShell locale={locale} tenantName={tenant?.name} userEmail={user.email}>
+    <AppShell
+      locale={locale}
+      tenantName={tenant?.name}
+      userEmail={user.email}
+      roles={membership.roles}
+    >
       {children}
     </AppShell>
   );

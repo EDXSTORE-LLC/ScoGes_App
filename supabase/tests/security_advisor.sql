@@ -3,7 +3,10 @@ reset role;
 do $$
 declare f record; exposed text[] := array[
   'create_tenant_with_admin','current_user_has_permission','accept_tenant_invitation',
-  'administer_tenant_membership','issue_tenant_invitation','update_tenant_settings'];
+  'administer_tenant_membership','issue_tenant_invitation','update_tenant_settings',
+  -- Sprint 1 gateways: explicit per-entity permissions, locked active tenant,
+  -- static field allowlists, immutable identities, revisions and atomic audit.
+  'save_school_record','commit_school_import'];
 begin
   for f in select p.oid,p.proname,p.prosecdef,p.proconfig from pg_proc p
       where p.pronamespace='public'::regnamespace and p.prosecdef loop
